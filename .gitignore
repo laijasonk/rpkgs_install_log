@@ -1,5 +1,5 @@
 build/*
-lib-cran/*
-lib-r/*
+libs-cran/*
+libs-r/*
 log/*
 src/*
