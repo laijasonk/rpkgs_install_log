@@ -1,0 +1,5 @@
+build/*
+lib-cran/*
+lib-r/*
+log/*
+src/*
