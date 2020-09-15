@@ -30,6 +30,8 @@ function check_and_install() {
 }
 
 # Run BASH function from above
+check_and_install "testthat"
+echo
 check_and_install "devtools"
 echo
 check_and_install "roxygen2"

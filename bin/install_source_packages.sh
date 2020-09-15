@@ -148,15 +148,13 @@ do
     elif [[ "${pkg_type}" == "source" ]]
     then
 
-        for pkg_dir in "${src_dir}"/*/
-        do
-            cd ${pkg_dir}
-            echo "Building ${pkg_name} from ${pkg_url}"
-            build_log="${log_dir}/build_${pkg_name}.log"
-            Rscript -e "out_tarball <- devtools::build(); cat(out_tarball)" &> "${build_log}"
-            pkg_archive="$(tail -1 ${build_log} | sed -e 's/\r//g')"
-            cd ${curr_dir}
-        done
+        echo "Building ${pkg_name} from ${pkg_url}"
+        build_log="${log_dir}/build_${pkg_name}.log"
+
+        cd "$(dirname ${pkg_url})"
+        R CMD build "$(basename ${pkg_url})" &> "${build_log}"
+        pkg_archive="${src_dir}/$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
+        cd ${curr_dir}
 
     fi
 

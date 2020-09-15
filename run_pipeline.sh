@@ -63,8 +63,8 @@ function header_msg() {
 header_msg "Remove old files" "./bin/prune_files.sh"
 ./bin/prune_files.sh
 
-header_msg "Identify missing tools and install" "./bin/identify_missing_tools.sh"
-./bin/identify_missing_tools.sh
+#header_msg "Identify missing tools and install" "./bin/identify_missing_tools.sh"
+#./bin/identify_missing_tools.sh
 
 header_msg "Install source packages" "./bin/install_source_packages.sh"
 ./bin/install_source_packages.sh -i "${input_csv}"
