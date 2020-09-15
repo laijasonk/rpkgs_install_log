@@ -51,6 +51,7 @@ do
 done < "${dl_pkgs_log}"
 
 # Copy every source directory to the check directory
+shopt -s nullglob
 for pkg_src in "${src_dir}"/[!_]*/
 do
     echo "Copying ${pkg_src} for checking "

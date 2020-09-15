@@ -4,7 +4,7 @@
 #
 
 # Default values
-wait_between_commands=true
+wait_between_commands=false
 
 # Help message
 function usage {
