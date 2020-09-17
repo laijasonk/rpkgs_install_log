@@ -12,10 +12,10 @@ log_dir="$(readlink -f ./log)"
 
 # Help message
 function usage {
-    echo "Usage: $0 -i input.csv"
+    echo "Usage: $0 -i pkg_name"
     echo
     echo "Flags:"
-    echo "       -i input CSV containing a package on each newline"
+    echo "       -i name of package to be tested"
     exit 1
 }
 
@@ -24,7 +24,7 @@ while getopts "i:" opt
 do
     case $opt in
         i)
-            input_csv="${OPTARG}"
+            pkg_name="${OPTARG}"
             ;;
         :)
             usage
@@ -35,8 +35,8 @@ do
     esac
 done
 
-# Input CSV must be provided
-if [[ -z "${input_csv}" ]]
+# Package name must be provided
+if [[ -z "${pkg_name}" ]]
 then
     usage
 fi
@@ -52,13 +52,10 @@ else
     export R_LIBS_USER="${lib_dir}:${cran_dir}"
 fi
 
-# Test every package in input csv
-while IFS=, read -r pkg_name pkg_version pkg_type pkg_url
-do
-    echo "Testing ${pkg_name} with testthat"
-    testthat_log="${log_dir}/testthat_${pkg_name}.log"
-    Rscript -e "testthat::test_package(\"${pkg_name}\", reporter=\"location\"); testthat::test_package(\"${pkg_name}\", reporter=\"check\")" &> ${testthat_log}
-    echo "Results saved to ${testthat_log}"
-    echo
-done < "${input_csv}"
+# Test package
+echo "Testing '${pkg_name}' with testthat"
+testthat_log="${log_dir}/testthat_${pkg_name}.log"
+Rscript -e "testthat::test_package(\"${pkg_name}\", reporter=\"location\"); testthat::test_package(\"${pkg_name}\", reporter=\"check\")" &> ${testthat_log}
+echo "Results saved to '${testthat_log}'"
+echo
 

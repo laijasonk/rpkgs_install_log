@@ -24,20 +24,29 @@ fi
 # Rscript to check if package installed (if not, then install)
 function check_and_install() {
     pkg_name="${1}"
-    echo "Checking ${pkg_name}"
+    echo "Checking '${pkg_name}'"
     Rscript -e "require(\"${pkg_name}\")"
     Rscript -e "if (!require(\"${pkg_name}\")) install.packages(\"${pkg_name}\", repos=\"${external_repo}\", lib=\"${cran_dir}\")" %> /dev/null
 }
 
 # Run BASH function from above
-check_and_install "testthat"
-echo
-check_and_install "devtools"
-echo
-check_and_install "roxygen2"
-echo
 check_and_install "knitr"
 echo
-check_and_install "rmarkdown"
+check_and_install "testthat"
 echo
+check_and_install "yaml"
+echo
+
+#check_and_install "testthat"
+#echo
+#check_and_install "devtools"
+#echo
+#check_and_install "roxygen2"
+#echo
+#check_and_install "knitr"
+#echo
+#check_and_install "rmarkdown"
+#echo
+#check_and_install "covr"
+#echo
 

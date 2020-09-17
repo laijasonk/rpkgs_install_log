@@ -16,11 +16,11 @@ download_from_cran=false
 
 # Help message
 function usage {
-    echo "Usage: $0 -i ./input.csv"
-    echo "       $0 -i ./input.csv [-r /path/to/libs-r]"
-    echo "       $0 -i ./input.csv [-m] [-d /path/to/libs-cran]"
+    echo "Usage: $0 -i pkg_archive"
+    echo "       $0 -i pkg_archive [-r /path/to/libs-r]"
+    echo "       $0 -i pkg_archive [-m] [-d /path/to/libs-cran]"
     echo "Flags:"
-    echo "       -i input CSV containing a package on each newline"
+    echo "       -i path to source tarball"
     echo "       -r OPTIONAL lib path to the local R (default: ${lib_dir})"
     echo "       -m OPTIONAL install missing dependencies from CRAN"
     echo "       -d OPTIONAL lib path for missing dep (default: ${cran_dir})" 
@@ -32,7 +32,7 @@ while getopts "i:mr:d:" opt
 do
     case $opt in
         i)
-            input_csv="${OPTARG}"
+            pkg_archive="${OPTARG}"
             ;;
         r)
             lib_dir="${OPTARG}"
@@ -43,7 +43,7 @@ do
         d)
             cran_dir="${OPTARG}"
             ;;
-        :)
+        h)
             usage
             ;;
         *)
@@ -52,8 +52,8 @@ do
     esac
 done
 
-# Input CSV must be provided
-if [[ -z "${input_csv}" ]]
+# Package archive must be provided
+if [[ -z "${pkg_archive}" ]]
 then
     usage
 fi
@@ -71,9 +71,9 @@ fi
 
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.log"
-downloaded_packages="${log_dir}/_downloaded_packages.log"
+build_archives_log="${log_dir}/_build_archives.log"
 cat /dev/null > "${missing_dep_log}"
-cat /dev/null > "${downloaded_packages}"
+cat /dev/null > "${build_archives_log}"
 
 # Function for installing package
 function install_package() {
@@ -93,22 +93,22 @@ function install_package() {
         "${pkg_archive}" &> "${install_log}"
 
     # Install dependencies if missing
-    missing_dependency=$(grep 'ERROR: dependency' "${install_log}")
+    missing_dependency=$(grep 'ERROR: dependenc' "${install_log}")
     if [[ "${missing_dependency}" ]]
     then
         # Text manipulation to extract substring dependency from error line
         dependency=$(echo "${missing_dependency}" | awk '{print($3)}' | sed -e 's/[^A-Za-z0-9\.]//g')
 
         # Report missing dependency
-        echo "Package required missing dependency ${dependency}"
-        echo -n "${tarball} required missing dependency: ${dependency}" >> "${missing_dep_log}"
+        echo "Package required missing dependency '${dependency}'"
+        echo -n "'${tarball}' required missing dependency: ${dependency}" >> "${missing_dep_log}"
 
         # Install package from external repo if option is set
         if [ ${download_from_cran} = true ]
         then
             depinstall_log="${log_dir}/depinstall_${dependency}.log"
 
-            echo "Installing dependency ${dependency} from CRAN to ${cran_dir}"
+            echo "Installing dependency '${dependency}' from CRAN to '${cran_dir}'"
             Rscript -e "install.packages(\"${dependency}\", repos=\"${external_repo}\", lib=\"${cran_dir}\")" &> "${depinstall_log}"
         else
             # Reset and ignore after logging the issue above
@@ -117,64 +117,26 @@ function install_package() {
     fi
 }
 
-# Loop through every line of input CSV file
-while IFS=, read -r pkg_name pkg_version pkg_type pkg_url
+pkg_name="$(basename ${pkg_archive} | sed 's/_.*$//')"
+
+# Reset for new package
+missing_dependency=''
+
+# Call BASH function to install package
+echo "Installing '${pkg_name}' to '${lib_dir}'"
+install_package "${pkg_name}" "${pkg_archive}"
+
+# Repeat when missing dependencies
+while [[ "${missing_dependency}" ]]
 do
-    
-    if [[ "${pkg_type}" == "release" ]]
-    then
-        
-        # Check the extension
-        if [[ "${pkg_url:(-7)}" == ".tar.gz" ]]
-        then
-            ext="tar.gz"
-        elif [[ "${pkg_url:(-8)}" == ".tar.bz2" ]]
-        then
-            ext="tar.bz2"
-        else
-            ext="${pkg_url##*.}"
-        fi
-
-        # Define variables
-        pkg_archive="${src_dir}/${pkg_name}-${pkg_version}.${ext}" 
-        pkg_wget="${log_dir}/wget_${pkg_name}-${pkg_version}.log"
-        missing_dependency=''
-
-        # Use wget to download package
-        echo "Downloading ${pkg_name} to ${src_dir}"
-        wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_wget}"
-        echo "${pkg_archive}" >> "${downloaded_packages}"
-
-    elif [[ "${pkg_type}" == "source" ]]
-    then
-
-        echo "Building ${pkg_name} from ${pkg_url}"
-        build_log="${log_dir}/build_${pkg_name}.log"
-
-        cd "$(dirname ${pkg_url})"
-        R CMD build "$(basename ${pkg_url})" &> "${build_log}"
-        pkg_archive="${src_dir}/$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
-        cd ${curr_dir}
-
-    fi
-
-    # Call BASH function to install package
-    echo "Installing ${pkg_name} to ${lib_dir}"
+    echo "Resolved dependency. Installing '${pkg_name}' to '${lib_dir}'"
     install_package "${pkg_name}" "${pkg_archive}"
-
-    # Repeat when missing dependencies
-    while [[ "${missing_dependency}" ]]
-    do
-        echo "Resolved dependency. Installing ${pkg_name} to ${lib_dir}"
-        install_package "${pkg_name}" "${pkg_archive}"
-    done
-
-    echo
-
-done < "${input_csv}"
+done
 
 # Move installed build archives to build directory
-echo "Moving build files to ${build_dir}"
-mv "${curr_dir}"/*.tar.gz "${build_dir}"/
-echo
+echo "Moving build tarball to '${build_dir}'"
+build_archive="$(cat ${install_log} | grep 'packaged installation of' | sed -e 's/^.*’ as ‘//' -e 's/’.*$//')"
+mv "./${build_archive}" "${build_dir}"
+echo "${build_archive}" >> "${build_archives_log}"
+echo 
 

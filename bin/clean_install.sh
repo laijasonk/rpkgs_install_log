@@ -4,17 +4,19 @@
 #
 
 # Default values (TODO: add option flags?)
-src_dir="./src"
-build_dir="./build"
-lib_dir="./libs-r"
-check_dir="${src_dir}/_check/"
-log_dir="./log"
+src_dir="$(readlink -f ./src)"
+cran_dir="$(readlink -f ./src/cran)"
+github_dir="$(readlink -f ./src/github)"
+build_dir="$(readlink -f ./build)"
+lib_dir="$(readlink -f ./libs-r)"
+check_dir="$(readlink -f ./check)"
+log_dir="$(readlink -f ./log)"
 
 # Source files
 echo "Removing package source files: ${src_dir}"
 mkdir -p "${src_dir}"
-touch "${src_dir}/tmp.tar.gz"
-rm -R "${src_dir}"/*.tar.gz
+touch "${src_dir}/*.tar.gz" "${cran_dir}/tmp" "${github_dir}/tmp"
+rm -R "${src_dir}"/*.tar.gz "${cran_dir}"/* "${github_dir}"/*
 
 # Build files
 echo "Removing build files: ${build_dir}"
