@@ -14,7 +14,7 @@ log_dir="$(readlink -f ./log)"
 
 # Source files
 echo "Removing package source files: ${src_dir}"
-mkdir -p "${src_dir}"
+mkdir -p "${src_dir}" "${cran_dir}" "${github_dir}"
 touch "${src_dir}/*.tar.gz" "${cran_dir}/tmp" "${github_dir}/tmp"
 rm -R "${src_dir}"/*.tar.gz "${cran_dir}"/* "${github_dir}"/*
 
