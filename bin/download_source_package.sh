@@ -16,7 +16,7 @@ download_from_cran=false
 function usage {
     echo "Usage: $0 -n name -v version -s 'cran'"
     echo "       $0 -n name -v version -s 'github' -o org -p project -b branch"
-    echo "       $0 -n name -v version -s 'github' -o org -p project -h sha1"
+    echo "       $0 -n name -v version -s 'github' -o org -p project -h sha_hash"
     echo "Flags:"
     echo "       -n package name"
     echo "       -v package version number"
@@ -24,7 +24,7 @@ function usage {
     echo "       -o github organization"
     echo "       -p github project repository name"
     echo "       -b github branch name"
-    echo "       -h github SHA1 hash"
+    echo "       -h github SHA hash"
     exit 1
 }
 
@@ -51,7 +51,7 @@ do
             pkg_branch="${OPTARG}"
             ;;
         h)
-            pkg_sha1="${OPTARG}"
+            pkg_hash="${OPTARG}"
             ;;
         :)
             usage
@@ -74,7 +74,7 @@ then
     if [[ -z "${pkg_org}" ]] || [[ -z "${pkg_project}" ]]
     then
         usage
-    elif [[ -z "${pkg_branch}" ]] && [[ -z "${pkg_sha1}" ]]
+    elif [[ -z "${pkg_branch}" ]] && [[ -z "${pkg_hash}" ]]
     then
         usage
     else
@@ -132,7 +132,7 @@ then
 
     echo "Building '${pkg_name}' from '${src_dir}'"
     cd ${src_dir}
-    R CMD build "${pkg_build}" &> "${build_log}"
+    R CMD build --no-build-vignettes "${pkg_build}" &> "${build_log}"
     cd ${curr_dir}
     pkg_tarball="${src_dir}/$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
 
@@ -146,10 +146,10 @@ then
     pkg_extract="${log_dir}/extract_${pkg_name}.log"
     build_log="${log_dir}/build_${pkg_name}.log"
 
-    if [[ ! -z "${pkg_sha1}" ]]
+    if [[ ! -z "${pkg_hash}" ]]
     then
-        pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_sha1}.zip"
-        pkg_build="${src_dir}/github/${pkg_name}-${pkg_sha1}"
+        pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_hash}.zip"
+        pkg_build="${src_dir}/github/${pkg_name}-${pkg_hash}"
     elif [[ ! -z "{$pkg_branch}" ]]
     then
         pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_branch}.zip"
@@ -161,7 +161,6 @@ then
     wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_wget}"
 
     echo "Extracting '${pkg_name}' to '${src_dir}/github'"
-    echo ${pkg_archive}
     unzip -o "${pkg_archive}" -d "${src_dir}"/github/ &> "${pkg_extract}"
 
     echo "Building '${pkg_name}' from '${src_dir}'"
