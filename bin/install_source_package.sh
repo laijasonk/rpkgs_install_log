@@ -136,7 +136,12 @@ done
 # Move installed build archives to build directory
 echo "Moving build tarball to '${build_dir}'"
 build_archive="$(cat ${install_log} | grep 'packaged installation of' | sed -e 's/^.*’ as ‘//' -e 's/’.*$//')"
-mv "./${build_archive}" "${build_dir}"
+if [[ -f "./${build_archive}" ]]
+then
+    mv "./${build_archive}" "${build_dir}"
+else
+    echo "WARNING: Build tarball does not exist; build probably failed"
+fi
 echo "${build_archive}" >> "${build_archives_log}"
 echo 
 
