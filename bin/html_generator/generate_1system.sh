@@ -54,7 +54,7 @@ html="
                     <td class=\"spec-right\">${rversion}</td>
                 </tr>
                 <tr>
-                    <td class=\"spec-left\">R Binary: ${rbinary}</td>
+                    <td class=\"spec-left\">R Binary</td>
                     <td class=\"spec-right\">${rbinary}</td>
                 </tr>
                 <tr>

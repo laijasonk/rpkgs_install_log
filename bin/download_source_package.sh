@@ -121,7 +121,7 @@ then
     elif [[ $(wget -S --spider "${pkg_url_2}" 2>&1 | grep 'HTTP/1.1 200 OK') ]]
     then
         echo "Downloading '${pkg_name}' (archive) to '${src_dir}/cran'"
-        wget --continue -O "${pkg_archive}" "${pkg_url_1}" &> "${pkg_wget}"
+        wget --continue -O "${pkg_archive}" "${pkg_url_2}" &> "${pkg_wget}"
     else
         echo "Could not download '${pkg_name}' (see log)"
         echo "Could not download from '${pkg_url_1}' or '${pkg_url_2}'" &> "${pkg_wget}"

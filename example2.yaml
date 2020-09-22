@@ -1,0 +1,382 @@
+---
+re_pkgs:
+  cyclocomp:
+    package: cyclocomp
+    version: 1.1.0
+    source: github
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    source_info:
+      host: https://github.com/api/v3
+      repository: cyclocomp
+      organization: MangoTheCat
+      ref: NA
+      commit_sha: 6156a12c853ac70a428ef4d258dff9a81ade0d52
+  productplots:
+    package: productplots
+    version: 0.1.1
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    source: cran
+    dependencies:
+      imports:
+      - plyr
+      - ggplot2
+      suggests:
+      - reshape2
+      - testthat
+      - covr
+  ggmosaic:
+    package: ggmosaic
+    version: 0.2.0
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      depends: ggplot2
+      imports:
+      - dplyr
+      - plotly
+      - productplots
+      - purrr
+      - rlang
+      - tidyr
+      suggests:
+      - gridExtra
+      - knitr
+      - NHANES
+      - rmarkdown
+  hunspell:
+    package: hunspell
+    version: '3.0'
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - Rcpp
+      - digest
+      suggests:
+      - spelling
+      - testthat
+      - pdftools
+      - janeaustenr
+      - wordcloud2
+      - knitr
+      - stopwords
+      - rmarkdown
+      linkingto: Rcpp
+  xmlparsedata:
+    package: xmlparsedata
+    version: 1.0.3
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      suggests:
+      - covr
+      - testthat
+      - xml2
+  lintr:
+    package: lintr
+    version: 1.0.3.9000
+    source: github
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    source_info:
+      host: https://github.roche.com/api/v3
+      repository: lintr
+      organization: NEST
+      ref: NA
+      commit_sha: 994ab770eb8c67f79aaf08dd788829f9484ade04
+    dependencies:
+      imports:
+      - rex
+      - crayon
+      - codetools
+      - stringdist
+      - testthat
+      - digest
+      - rstudioapi
+      - httr
+      - jsonlite
+      - knitr
+      - xml2
+      - xmlparsedata
+      suggests:
+      - rmarkdown
+      - mockery
+  nomnoml:
+    package: nomnoml
+    version: 0.1.0
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - htmlwidgets
+      - png
+      - webshot
+      suggests:
+      - knitr
+      - rmarkdown
+      - testthat
+      - shinytest
+  pingr:
+    package: pingr
+    version: 2.0.0
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - processx
+      - utils
+      suggests:
+      - covr
+      - testthat
+  showimage:
+    package: showimage
+    version: 1.0.0
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - png
+      - tools
+      suggests:
+      - covr
+      - testthat
+  webdriver:
+    package: webdriver
+    version: 1.0.5
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - callr
+      - base64enc
+      - curl
+      - debugme
+      - httr
+      - jsonlite
+      - R6
+      - showimage
+      - utils
+      - withr
+      suggests:
+      - covr
+      - pingr
+      - rprojroot
+      - servr
+      - testthat
+  shinytest:
+    package: shinytest
+    version: 1.3.1
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - assertthat
+      - digest
+      - crayon
+      - debugme
+      - parsedate
+      - pingr
+      - callr
+      - R6
+      - rematch
+      - httr
+      - shiny
+      - testthat
+      - utils
+      - webdriver
+      - htmlwidgets
+      - jsonlite
+      - withr
+      - httpuv
+      - rstudioapi
+      suggests:
+      - rmarkdown
+      - flexdashboard
+  shinyWidgets:
+    package: shinyWidgets
+    version: 0.5.1
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - shiny
+      - htmltools
+      - jsonlite
+      - scales
+      suggests:
+      - shinydashboard
+      - viridisLite
+      - RColorBrewer
+      - testthat
+      - covr
+      - shinydashboardPlus
+      - bs4Dash
+      - argonR
+      - argonDash
+      - tablerDash
+  spelling:
+    package: spelling
+    version: 2.1.9000
+    source: github
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    source_info:
+      host: https://github.com/api/v3
+      repository: spelling
+      organization: ropensci
+      ref: NA
+      commit_sha: eac5ad4d1f9b210cad428357920c41cc77f4f759
+  strict:
+    package: strict
+    version: 0.0.0.9000
+    source: github
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    source_info:
+      host: https://github.roche.com/api/v3
+      repository: strict
+      organization: NEST
+      ref: NA
+      commit_sha: 5958c14d7c4a1752433002714c32d897bb9eba58
+    dependencies:
+      imports:
+      - rlang
+      - crayon
+      suggests:
+      - testthat
+      - covr
+  styler:
+    package: styler
+    version: 1.2.0
+    source: github
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    source_info:
+      host: https://github.com/api/v3
+      repository: styler
+      organization: r-lib
+      ref: NA
+      commit_sha: 437efd204a948ae72a5d9b459cdb672b0c6b3fe0
+  lme4:
+    package: lme4
+    version: 1.1-23
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      depends: Matrix
+      imports:
+      - MASS
+      - lattice
+      - boot
+      - nlme
+      - minqa
+      - nloptr
+      - statmod
+      linkingto:
+      - Rcpp
+      - RcppEigen
+      suggests:
+      - knitr
+      - rmarkdown
+      - PKPDmodels
+      - MEMSS
+      - testthat
+      - ggplot2
+      - mlmRev
+      - optimx
+      - gamm4
+      - pbkrtest
+      - HSAUR2
+      - numDeriv
+      - car
+      - dfoptim
+  lmerTest:
+    package: lmerTest
+    version: 3.1-2
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      depends: lme4
+      imports:
+      - numDeriv
+      - MASS
+      - ggplot2
+      suggests: pbkrtest
+  emmeans:
+    package: emmeans
+    version: 1.4.8
+    source: cran
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    dependencies:
+      imports:
+      - estimability
+      - numDeriv
+      - plyr
+      - mvtnorm
+      - xtable
+      suggests:
+      - bayesplot
+      - biglm
+      - brms
+      - car
+      - coda
+      - ggplot2
+      - lattice
+      - mediation
+      - mgcv
+      - multcomp
+      - multcompView
+      - nlme
+      - ordinal
+      - pbkrtest
+      - lme4
+      - lmerTest
+      - MASS
+      - MuMIn
+      - rsm
+      - knitr
+      - rmarkdown
+      - scales
+      - testthat
+  rtables:
+    package: rtables
+    version: 0.1.7
+    source: github
+    source_info:
+      branch: pre-release
+      host: https://github.roche.com/api/v3
+      organization: NEST
+      ref: v0.1.7
+      commit_sha: aac5230788983d62cb907ff1d23ee4d6bdc56fda

@@ -71,10 +71,16 @@ out <- lapply(x, function(pkg) {
     } else {
       pkg_hash <- ''
     }
+    if ("check" %in% names(pkg\$validnest_steps)) {
+      pkg_check <- pkg\$validnest_steps\$check
+    } else {
+      pkg_check <- TRUE
+    }
   } else {
     pkg_repo <- ''
     pkg_branch <- ''
     pkg_hash <- ''
+    pkg_check <- TRUE
   }
 
   data.frame(
@@ -84,7 +90,8 @@ out <- lapply(x, function(pkg) {
     pkg_org = pkg_org,
     pkg_repo = pkg_repo,
     pkg_branch = pkg_branch,
-    pkg_hash = pkg_hash
+    pkg_hash = pkg_hash,
+    pkg_check = pkg_check
   )
 })
 df <- do.call(rbind, out)
