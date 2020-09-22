@@ -43,7 +43,7 @@ fi
 
 # Variables
 input_csv=$(readlink -f ./input.csv)
-
+log_dir=$(readlink -f ./log/raw)
 
 # Basic message display between each package
 function header_msg() {
@@ -63,6 +63,7 @@ function header_msg() {
     fi
 }
 
+# Prepare system (commend out if unneeded
 header_msg "Initializing system"
 ./bin/clean_install.sh
 ./bin/yaml_to_csv.sh \
@@ -70,6 +71,11 @@ header_msg "Initializing system"
     -o "${input_csv}"
 #./bin/identify_missing_tools.sh
 
+# Log start timestamp and state
+echo "$(date)" > "${log_dir}/_start_timestamp.txt"
+./bin/export_installed_packages.sh -1
+
+# Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash
 do
     header_msg "${pkg_name}-${pkg_version}"
@@ -86,11 +92,18 @@ do
     ./bin/install_source_package.sh \
         -i "./src/${pkg_name}_${pkg_version}.tar.gz"
 
+    ./bin/check_source_package.sh \
+        -i "./src/${pkg_name}_${pkg_version}.tar.gz"
+    
     ./bin/test_installed_package.sh \
         -i "${pkg_name}"
 
-    ./bin/check_source_package.sh \
-        -i "./src/${pkg_name}_${pkg_version}.tar.gz"
-
 done < "${input_csv}"
+
+# Log end timestamp and state
+./bin/export_installed_packages.sh -2
+echo "$(date)" > "${log_dir}/_end_timestamp.txt"
+
+header_msg "Creating HTML log"
+./bin/generate_html.sh
 
