@@ -3,14 +3,14 @@
 # Check source packages
 #
 
-# Default values (TODO: add option flags)
+# Default values
 lib_dir="$(readlink -f ./libs-r)"
 cran_dir="$(readlink -f ./libs-cran)"
 src_dir="$(readlink -f ./src)"
 build_dir="$(readlink -f ./build)"
-log_dir="$(readlink -f ./log)"
+log_dir="$(readlink -f ./log/raw)"
 check_dir="$(readlink -f ./check)"
-pkg_archive_log="${log_dir}/_package_archives.log"
+pkg_archive_log="${log_dir}/_package_archives.txt"
 
 # Help message
 function usage {
@@ -57,7 +57,7 @@ fi
 # Define variables based on input
 pkg_tarball="$(readlink -f ${pkg_tarball})"
 pkg_name="$(basename ${pkg_tarball} | sed 's/_.*$//')"
-check_log="${log_dir}/check_${pkg_name}.log"
+check_log="${log_dir}/check_${pkg_name}.txt"
 
 # Check and log check of input package tarball
 cd ${check_dir}

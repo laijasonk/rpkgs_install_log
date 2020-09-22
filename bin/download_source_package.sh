@@ -9,7 +9,7 @@ curr_dir=$(pwd)
 lib_dir="$(readlink -f ./libs-r)"
 cran_dir="$(readlink -f ./libs-cran)"
 src_dir="$(readlink -f ./src)"
-log_dir="$(readlink -f ./log)"
+log_dir="$(readlink -f ./log/raw)"
 download_from_cran=false
 
 # Help message
@@ -94,8 +94,8 @@ else
 fi
 
 # Define log files
-missing_dep_log="${log_dir}/_missing_dependencies.log"
-pkg_archive_log="${log_dir}/_package_archives.log"
+missing_dep_log="${log_dir}/_missing_dependencies.text"
+pkg_archive_log="${log_dir}/_package_archives.txt"
 cat /dev/null > "${missing_dep_log}"
 cat /dev/null > "${pkg_archive_log}"
 
@@ -106,9 +106,9 @@ then
     # Define variables
     ext="tar.gz"
     pkg_archive="${src_dir}/cran/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_wget="${log_dir}/wget_${pkg_name}.log"
-    pkg_extract="${log_dir}/extract_${pkg_name}.log"
-    build_log="${log_dir}/build_${pkg_name}.log"
+    pkg_wget="${log_dir}/wget_${pkg_name}.txt"
+    pkg_extract="${log_dir}/extract_${pkg_name}.txt"
+    build_log="${log_dir}/build_${pkg_name}.txt"
     pkg_url_1="https://cran.r-project.org/src/contrib/${pkg_name}_${pkg_version}.tar.gz"
     pkg_url_2="https://cran.r-project.org/src/contrib/Archive/${pkg_name}/${pkg_name}_${pkg_version}.tar.gz"
     pkg_build="${src_dir}/cran/${pkg_name}"
@@ -142,9 +142,9 @@ then
     # Define variables
     ext="zip"
     pkg_archive="${src_dir}/github/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_wget="${log_dir}/wget_${pkg_name}.log"
-    pkg_extract="${log_dir}/extract_${pkg_name}.log"
-    build_log="${log_dir}/build_${pkg_name}.log"
+    pkg_wget="${log_dir}/wget_${pkg_name}.txt"
+    pkg_extract="${log_dir}/extract_${pkg_name}.txt"
+    build_log="${log_dir}/build_${pkg_name}.txt"
 
     if [[ ! -z "${pkg_hash}" ]]
     then

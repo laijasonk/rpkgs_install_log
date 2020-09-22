@@ -8,7 +8,7 @@ lib_dir="$(readlink -f ./libs-r)"
 cran_dir="$(readlink -f ./libs-cran)"
 src_dir="$(readlink -f ./src)"
 build_dir="$(readlink -f ./build)"
-log_dir="$(readlink -f ./log)"
+log_dir="$(readlink -f ./log/raw)"
 
 # Help message
 function usage {
@@ -54,7 +54,7 @@ fi
 
 # Test package
 echo "Testing '${pkg_name}' with testthat"
-testthat_log="${log_dir}/testthat_${pkg_name}.log"
+testthat_log="${log_dir}/testthat_${pkg_name}.txt"
 Rscript -e "testthat::test_package(\"${pkg_name}\", reporter=\"location\"); testthat::test_package(\"${pkg_name}\", reporter=\"check\")" &> ${testthat_log}
 echo "Results saved to '${testthat_log}'"
 echo

@@ -5,12 +5,12 @@
 
 curr_dir=$(pwd)
 
-# Default values (TODO: make these option flags)
+# Default values
 lib_dir="$(readlink -f ./libs-r)"
 cran_dir="$(readlink -f ./libs-cran)"
 src_dir="$(readlink -f ./src)"
 build_dir="$(readlink -f ./build)"
-log_dir="$(readlink -f ./log)"
+log_dir="$(readlink -f ./log/raw)"
 external_repo="http://cran.r-project.org"
 download_from_cran=false
 
@@ -70,8 +70,8 @@ else
 fi
 
 # Define log files
-missing_dep_log="${log_dir}/_missing_dependencies.log"
-build_archives_log="${log_dir}/_build_archives.log"
+missing_dep_log="${log_dir}/_missing_dependencies.txt"
+build_archives_log="${log_dir}/_build_archives.txt"
 cat /dev/null > "${missing_dep_log}"
 cat /dev/null > "${build_archives_log}"
 
@@ -83,7 +83,7 @@ function install_package() {
     pkg_archive="${2}"
 
     # Define log file
-    install_log="${log_dir}/install_${pkg_name}.log"
+    install_log="${log_dir}/install_${pkg_name}.txt"
 
     # Install package
     R CMD INSTALL \
@@ -106,7 +106,7 @@ function install_package() {
         # Install package from external repo if option is set
         if [ ${download_from_cran} = true ]
         then
-            depinstall_log="${log_dir}/depinstall_${dependency}.log"
+            depinstall_log="${log_dir}/depinstall_${dependency}.txt"
 
             echo "Installing dependency '${dependency}' from CRAN to '${cran_dir}'"
             Rscript -e "install.packages(\"${dependency}\", repos=\"${external_repo}\", lib=\"${cran_dir}\")" &> "${depinstall_log}"

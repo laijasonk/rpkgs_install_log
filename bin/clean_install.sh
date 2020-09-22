@@ -3,14 +3,14 @@
 # Remove old files
 #
 
-# Default values (TODO: add option flags?)
+# Default values
 src_dir="./src"
 cran_dir="./src/cran"
 github_dir="./src/github"
 build_dir="./build"
 lib_dir="./libs-r"
 check_dir="./check"
-log_dir="./log"
+log_dir="./log/raw"
 mkdir -p ./"${src_dir}" ./"${cran_dir}" ./"${github_dir}" ./"${build_dir}" ./"${lib_dir}" ./"${check_dir}" ./"${log_dir}"
 
 # Source files

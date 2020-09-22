@@ -3,12 +3,12 @@
 # Find missing tools and install if missing
 #
 
-# Default values (TODO: add option flags)
+# Default values
 external_repo="http://cran.r-project.org"
 lib_dir="$(readlink -f ./libs-r)"
 cran_dir="$(readlink -f ./libs-cran)"
-log_dir="$(readlink -f ./log)"
-tool_log="${log_dir}/missing_tool_install.log"
+log_dir="$(readlink -f ./log/raw)"
+tool_log="${log_dir}/missing_tool_install.txt"
 
 # Create directory if it doesn't exist
 mkdir -p "${lib_dir}" "${cran_dir}"
