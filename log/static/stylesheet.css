@@ -155,13 +155,13 @@ iframe.log {
 .spec-left {
     width: 15em;
     font-size: smaller;
-    padding-top: 1em;
+    padding: 0.5em;
 }
 
 .spec-right {
     font-family: "Courier New", Courier, monospace;
     font-size: smaller;
-    padding-top: 1em;
+    padding: 0.5em;
 }
 
 .pkg-table {
@@ -179,10 +179,17 @@ iframe.log {
     padding-bottom: 0.5em;
 }
 
-.pkg-column1 { width: 20% }
-.pkg-column2 { width: 50% }
-.pkg-column3 { width: 15% }
-.pkg-column4 { width: 15% }
+.pkg-column1,
+.pkg-column2,
+.pkg-column3,
+.pkg-column4 {
+    padding: 0.5em;
+}
+
+.pkg-column1 { width: 20%; }
+.pkg-column2 { width: 50%; }
+.pkg-column3 { width: 15%; }
+.pkg-column4 { width: 15%; }
 
 .summary-table {
     padding: 1em;
@@ -200,25 +207,41 @@ iframe.log {
 }
 
 .summary-left {
-    width: 35%;
+    width: 28%;
     font-size: smaller;
-    padding-top: 1em;
+    padding: 0.5em;
 }
 
 .summary-success {
-    width: 13%;
+    width: 9%;
     text-align: center;
     font-size: smaller;
     font-weight: bold;
     background-color: #b2d3c2;
+    padding: 0.5em;
+}
+.summary-ignore {
+    width: 9%;
+    text-align: center;
+    font-size: smaller;
+    font-weight: bold;
+    background-color: #fffdd0;
+    padding: 0.5em;
 }
 
 .summary-fail {
-    width: 10%;
+    width: 9%;
     text-align: center;
     font-size: smaller;
     font-weight: bold;
     background-color: #bc544b;
+    padding: 0.5em;
+}
+
+.summary-success a,
+.summary-ignore a,
+.summary-fail a {
+    text-decoration: none;
 }
 
 .center {

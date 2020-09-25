@@ -1,9 +1,36 @@
 #!/usr/bin/env bash
 
+# Help message
+function usage {
+    echo "Usage: $0 [-c config]"
+    echo
+    echo "Flags:"
+    echo "       -c OPTIONAL path to config file"
+    exit 1
+}
+
+# Argument flag handling
+while getopts "c:h" opt
+do
+    case $opt in
+        c)
+            config_file="${OPTARG}"
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+# Load config variables and convert to absolute pathes
+. ./bin/read_config.sh -c "${config_file}"
+
 # Default paths
-log_dir="$(readlink -f ./log)"
-input_csv="${log_dir}/raw/_preinstallation_packages.txt"
-output_html="${log_dir}/2prepackages.html"
+input_csv="${html_dir}/raw/_preinstallation_packages.txt"
+output_html="${html_dir}/2prepackages.html"
 row_num=0
 
 html="
@@ -34,9 +61,9 @@ do
 done < "${input_csv}"
 
 cat /dev/null > "${output_html}"
-cat "${log_dir}/base/2prepackages_top.html" >> "${output_html}"
-cat "${log_dir}/base/sidebar.html" >> "${output_html}"
-cat "${log_dir}/base/2prepackages_content.html" >> "${output_html}"
+cat "${html_dir}/base/2prepackages_top.html" >> "${output_html}"
+cat "${html_dir}/base/sidebar.html" >> "${output_html}"
+cat "${html_dir}/base/2prepackages_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${log_dir}/base/2prepackages_bottom.html" >> "${output_html}"
+cat "${html_dir}/base/2prepackages_bottom.html" >> "${output_html}"
 

@@ -3,21 +3,18 @@
 # Convert yaml file to csv
 # 
 
-# Default values
-input_csv="$(readlink -f ./input.csv)"
-
 # Help message
 function usage {
     echo "Usage: $0 -i input.yaml"
     echo "       $0 -i input.yaml [-o input.csv]"
     echo "Flags:"
     echo "       -i path and filename to input yaml file"
-    echo "       -o OPTIONAL path to output csv file (default: ${input_csv})"
+    echo "       -o OPTIONAL path to output csv file (default: ./input.csv)"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:o:" opt
+while getopts "i:o:c:h:" opt
 do
     case $opt in
         i)
@@ -40,6 +37,10 @@ if [[ -z "${input_yaml}" ]]
 then
     usage
 fi
+if [[ -z "${input_csv}" ]]
+then
+    input_csv="$(readlink -f ./input.csv)"
+fi
 
 echo "Converting '${input_yaml}' to '${input_csv}'"
 Rscript - <<EOF
@@ -54,7 +55,7 @@ out <- lapply(x, function(pkg) {
     pkg_org <- pkg\$source_info\$organization
   } else {
     pkg_org <- ''
-    }
+  }
   if (pkg_source == "github") {
     if ("repository" %in% names(pkg\$source_info)) {
       pkg_repo <- pkg\$source_info\$repository
@@ -71,15 +72,14 @@ out <- lapply(x, function(pkg) {
     } else {
       pkg_hash <- ''
     }
-    if ("check" %in% names(pkg\$validnest_steps)) {
-      pkg_check <- pkg\$validnest_steps\$check
-    } else {
-      pkg_check <- TRUE
-    }
   } else {
     pkg_repo <- ''
     pkg_branch <- ''
     pkg_hash <- ''
+  }
+  if ("check" %in% names(pkg\$validnest_steps)) {
+    pkg_check <- pkg\$validnest_steps\$check
+  } else {
     pkg_check <- TRUE
   }
 

@@ -4,13 +4,16 @@ re_pkgs:
     package: base64enc
     version: 0.1-3
     source: cran
-  productplots:
-    package: htmltools
-    version: 0.5.0
     validnest_steps:
       check: FALSE
       covr: FALSE
+  htmltools:
+    package: htmltools
+    version: 0.5.0
     source: cran
+    validnest_steps:
+      check: TRUE
+      covr: FALSE
   rtables:
     package: rtables
     version: 0.1.7
@@ -20,3 +23,17 @@ re_pkgs:
       organization: Roche
       ref: v0.1.7
       commit_sha: aac5230788983d62cb907ff1d23ee4d6bdc56fda
+  cyclocomp:
+    package: cyclocomp
+    version: 1.1.0
+    source: github
+    validnest_steps:
+      check: FALSE
+      covr: FALSE
+    source_info:
+      host: https://github.com/api/v3
+      repository: cyclocomp
+      organization: MangoTheCat
+      ref: NA
+      commit_sha: 6156a12c853ac70a428ef4d258dff9a81ade0d52
+

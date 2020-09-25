@@ -1,19 +1,37 @@
 #!/usr/bin/env bash
 
+# Help message
+function usage {
+    echo "Usage: $0 [-c config]"
+    echo
+    echo "Flags:"
+    echo "       -c OPTIONAL path to config file"
+    exit 1
+}
+
+# Argument flag handling
+while getopts "c:h" opt
+do
+    case $opt in
+        c)
+            config_file="${OPTARG}"
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+# Load config variables and convert to absolute pathes
+. ./bin/read_config.sh -c "${config_file}"
+
 # Default paths
-lib_dir="$(readlink -f ./libs-r)"
-cran_dir="$(readlink -f ./libs-cran)"
-log_dir="$(readlink -f ./log)"
-output_html="${log_dir}/1system.html"
+output_html="${html_dir}/1system.html"
 
-# Set lib paths
-if [[ "$R_LIBS_USER" ]]
-then
-    export R_LIBS_USER="${lib_dir}:${cran_dir}:${R_LIBS_USER}"
-else
-    export R_LIBS_USER="${lib_dir}:${cran_dir}"
-fi
-
+# System information
 base_path=$(pwd)
 machine_host=$(hostname)
 rbinary=$(which R)
@@ -24,8 +42,8 @@ platform=$(echo $rinfo | sed -e 's/^.*Platform: //g' -e 's/R is free software.*$
 kernelrelease=$(uname -r)
 rlib=$(R_LIBS_USER=${R_LIBS_USER} Rscript -e ".libPaths()")
 
-start_timestamp="$(cat ${log_dir}/raw/_start_timestamp.txt)"
-end_timestamp="$(cat ${log_dir}/raw/_end_timestamp.txt)"
+start_timestamp="$(cat ${log_dir}/_start_timestamp.txt)"
+end_timestamp="$(cat ${log_dir}/_end_timestamp.txt)"
 
 html="
             <table class=\"spec-table\">
@@ -77,9 +95,9 @@ html="
 "
 
 cat /dev/null > "${output_html}"
-cat "${log_dir}/base/1system_top.html" >> "${output_html}"
-cat "${log_dir}/base/sidebar.html" >> "${output_html}"
-cat "${log_dir}/base/1system_content.html" >> "${output_html}"
+cat "${html_dir}/base/1system_top.html" >> "${output_html}"
+cat "${html_dir}/base/sidebar.html" >> "${output_html}"
+cat "${html_dir}/base/1system_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${log_dir}/base/1system_bottom.html" >> "${output_html}"
+cat "${html_dir}/base/1system_bottom.html" >> "${output_html}"
 

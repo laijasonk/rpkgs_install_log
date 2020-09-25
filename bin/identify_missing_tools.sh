@@ -3,23 +3,36 @@
 # Find missing tools and install if missing
 #
 
-# Default values
-external_repo="http://cran.r-project.org"
-lib_dir="$(readlink -f ./libs-r)"
-cran_dir="$(readlink -f ./libs-cran)"
-log_dir="$(readlink -f ./log/raw)"
+# Help message
+function usage {
+    echo "Usage: $0 [-c config]"
+    echo
+    echo "Flags:"
+    echo "       -c OPTIONAL path to config file"
+    exit 1
+}
+
+# Argument flag handling
+while getopts "c:h" opt
+do
+    case $opt in
+        c)
+            config_file="${OPTARG}"
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+# Load config variables and convert to absolute pathes
+. ./bin/read_config.sh -c "${config_file}"
+
+# Log files
 tool_log="${log_dir}/missing_tool_install.txt"
-
-# Create directory if it doesn't exist
-mkdir -p "${lib_dir}" "${cran_dir}"
-
-# Set lib paths
-if [[ "$R_LIBS_USER" ]]
-then
-    export R_LIBS_USER="${lib_dir}:${cran_dir}:${R_LIBS_USER}"
-else
-    export R_LIBS_USER="${lib_dir}:${cran_dir}"
-fi
 
 # Rscript to check if package installed (if not, then install)
 function check_and_install() {
@@ -30,8 +43,6 @@ function check_and_install() {
 }
 
 # Run BASH function from above
-check_and_install "knitr"
-echo
 check_and_install "testthat"
 echo
 check_and_install "yaml"

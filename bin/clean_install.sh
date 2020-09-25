@@ -3,35 +3,53 @@
 # Remove old files
 #
 
-# Default values
-src_dir="./src"
-cran_dir="./src/cran"
-github_dir="./src/github"
-build_dir="./build"
-lib_dir="./libs-r"
-check_dir="./check"
-log_dir="./log/raw"
-mkdir -p ./"${src_dir}" ./"${cran_dir}" ./"${github_dir}" ./"${build_dir}" ./"${lib_dir}" ./"${check_dir}" ./"${log_dir}"
+# Help message
+function usage {
+    echo "Usage: $0 [-c config]"
+    echo
+    echo "Flags:"
+    echo "       -c OPTIONAL path to config file"
+    exit 1
+}
+
+# Argument flag handling
+while getopts "c:h" opt
+do
+    case $opt in
+        c)
+            config_file="${OPTARG}"
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+# Load config variables and convert to absolute pathes
+. ./bin/read_config.sh -c "${config_file}"
 
 # Source files
 echo "Removing package source files: ${src_dir}"
-touch ./"${src_dir}"/tmp.tar.gz ./"${cran_dir}"/tmp ./"${github_dir}"/tmp && \
-    rm -R -- ./"${src_dir}"/*.tar.gz ./"${cran_dir}"/* ./"${github_dir}"/*
+touch "${src_dir}"/tmp.tar.gz "${src_cran_dir}"/tmp "${src_github_dir}"/tmp && \
+    rm -R -- "${src_dir}"/*.tar.gz "${src_cran_dir}"/* "${src_github_dir}"/*
 
 # Build files
 echo "Removing build files: ${build_dir}"
-touch ./"${build_dir}"/tmp && \
-    rm -R -- ./"${build_dir}"/*
+touch "${build_dir}"/tmp && \
+    rm -R -- "${build_dir}"/*
 
 # Library files
 echo "Removing local library files: ${lib_dir}"
-touch ./"${lib_dir}"/tmp && \
-    rm -R -- ./"${lib_dir}"/*
+touch "${lib_dir}"/tmp && \
+    rm -R -- "${lib_dir}"/*
 
 # Check files
 echo "Removing checked packages: ${check_dir}"
-touch ./"${check_dir}"/tmp && \
-    rm -R -- ./"${check_dir}"/*
+touch "${check_dir}"/tmp && \
+    rm -R -- "${check_dir}"/*
 
 # Log files
 echo "Removing log files: ${log_dir}"
