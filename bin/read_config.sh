@@ -93,10 +93,9 @@ check_variables check_dir "${check_dir}"
 check_variables external_repo "${external_repo}"
 
 # Set lib paths for R
-if [[ "$R_LIBS_USER" ]]
-then
-    export R_LIBS_USER="${r_libs_user}:${R_LIBS_USER}"
-else
-    export R_LIBS_USER="${r_libs_user}"
-fi
+IFS=':' read -r -a lib_paths <<< "${r_libs_user}"
+for lib_path in "${lib_paths[@]}"
+do
+    export R_LIBS_USER="$(readlink -f ${lib_path}):${R_LIBS_USER}"
+done
 

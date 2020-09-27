@@ -81,7 +81,7 @@ fi
 . ./bin/read_config.sh -c "${config_file}"
 
 # Define log files
-missing_dep_log="${log_dir}/_missing_dependencies.text"
+missing_dep_log="${log_dir}/_missing_dependencies.txt"
 cat /dev/null > "${missing_dep_log}"
 
 # Download instructions for different sources

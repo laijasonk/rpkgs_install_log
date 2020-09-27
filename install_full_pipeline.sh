@@ -8,20 +8,20 @@ wait_between_packages=false
 
 # Help message
 function usage {
-    echo "Usage: $0 -i input.yaml"
-    echo "       $0 -i input.yaml [-w] [-c config]"
+    echo "Usage: $0 -y input.yaml"
+    echo "       $0 -y input.yaml [-w] [-c config]"
     echo "Flags:"
-    echo "       -i input yaml containing release packages"
+    echo "       -y input yaml containing release packages"
     echo "       -w OPTIONAL stop between each package and wait for user"
     echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:wc:h" opt
+while getopts "y:wc:h" opt
 do
     case $opt in
-        i)
+        y)
             input_yaml="$(readlink -fq ${OPTARG})"
             ;;
         w)

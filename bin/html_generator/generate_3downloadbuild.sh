@@ -30,7 +30,7 @@ done
 
 # Default paths
 output_html="${html_dir}/3downloadbuild.html"
-input_csv=$(readlink -f ./input.csv)
+input_csv=$(readlink -f ${log_dir}/_input.csv)
 
 html=""
 log_html=""
