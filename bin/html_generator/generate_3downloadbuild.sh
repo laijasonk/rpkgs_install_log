@@ -50,13 +50,13 @@ do
             <h2><a id=\"${pkg_name}\">${pkg_name}</a></h2>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_download\" >Download log</a></p>
-            <iframe class=\"log text-above\" src=\"./raw/wget_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above\" src=\"./log/wget_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_extract\">Extract log</a></p>
-            <iframe class=\"log text-above\" src=\"./raw/extract_${pkg_name}.txt\" style=\"height: 200px; margin-bottom: 5em;\"></iframe>
+            <iframe class=\"log text-above\" src=\"./log/extract_${pkg_name}.txt\" style=\"height: 200px; margin-bottom: 5em;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_build\" >Build log</a></p>
-            <iframe class=\"log text-above\" src=\"./raw/build_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above\" src=\"./log/build_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             "
 done < "${input_csv}"
@@ -69,9 +69,9 @@ ${list_html}
 ${log_html}"
 
 cat /dev/null > "${output_html}"
-cat "${html_dir}/base/3downloadbuild_top.html" >> "${output_html}"
-cat "${html_dir}/base/sidebar.html" >> "${output_html}"
-cat "${html_dir}/base/3downloadbuild_content.html" >> "${output_html}"
+cat "${html_template}/3downloadbuild_top.html" >> "${output_html}"
+cat "${html_template}/sidebar.html" >> "${output_html}"
+cat "${html_template}/3downloadbuild_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_dir}/base/3downloadbuild_bottom.html" >> "${output_html}"
+cat "${html_template}/3downloadbuild_bottom.html" >> "${output_html}"
 

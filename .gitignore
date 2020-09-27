@@ -2,5 +2,5 @@ build/*
 check/*
 libs-cran/*
 libs-r/*
-log/raw/*
+log/*
 src/*

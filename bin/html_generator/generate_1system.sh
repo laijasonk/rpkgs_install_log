@@ -95,9 +95,9 @@ html="
 "
 
 cat /dev/null > "${output_html}"
-cat "${html_dir}/base/1system_top.html" >> "${output_html}"
-cat "${html_dir}/base/sidebar.html" >> "${output_html}"
-cat "${html_dir}/base/1system_content.html" >> "${output_html}"
+cat "${html_template}/1system_top.html" >> "${output_html}"
+cat "${html_template}/sidebar.html" >> "${output_html}"
+cat "${html_template}/1system_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_dir}/base/1system_bottom.html" >> "${output_html}"
+cat "${html_template}/1system_bottom.html" >> "${output_html}"
 

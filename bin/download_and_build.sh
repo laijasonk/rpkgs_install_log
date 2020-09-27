@@ -5,7 +5,6 @@
 
 # Default values
 curr_dir=$(pwd)
-download_from_cran=false
 
 # Help message
 function usage {
@@ -91,37 +90,37 @@ then
     
     # Define variables
     ext="tar.gz"
-    pkg_archive="${src_dir}/cran/${pkg_name}_${pkg_version}.${ext}" 
+    pkg_archive="${src_cran_dir}/${pkg_name}_${pkg_version}.${ext}" 
     pkg_wget="${log_dir}/wget_${pkg_name}.txt"
     pkg_extract="${log_dir}/extract_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
     pkg_url_1="https://cran.r-project.org/src/contrib/${pkg_name}_${pkg_version}.tar.gz"
     pkg_url_2="https://cran.r-project.org/src/contrib/Archive/${pkg_name}/${pkg_name}_${pkg_version}.tar.gz"
-    pkg_build="${src_dir}/cran/${pkg_name}"
+    pkg_build="${src_cran_dir}/${pkg_name}"
 
     echo "Searching for valid '${pkg_name}' URL to download"
     if [[ $(wget -S --spider "${pkg_url_1}" 2>&1 | grep 'HTTP/1.1 200 OK') ]]
     then
-        echo "Downloading '${pkg_name}' (latest) to '${src_dir}/cran'"
+        echo "Downloading '${pkg_name}' (latest) to '${src_cran_dir}'"
         wget --continue -O "${pkg_archive}" "${pkg_url_1}" &> "${pkg_wget}"
     elif [[ $(wget -S --spider "${pkg_url_2}" 2>&1 | grep 'HTTP/1.1 200 OK') ]]
     then
-        echo "Downloading '${pkg_name}' (archive) to '${src_dir}/cran'"
+        echo "Downloading '${pkg_name}' (archive) to '${src_cran_dir}'"
         wget --continue -O "${pkg_archive}" "${pkg_url_2}" &> "${pkg_wget}"
     else
         echo "Could not download '${pkg_name}' (see log)"
         echo "Could not download from '${pkg_url_1}' or '${pkg_url_2}'" &> "${pkg_wget}"
     fi
 
-    echo "Extracting '${pkg_name}' to '${src_dir}/cran'"
-    tar xvf "${pkg_archive}" --directory "${src_dir}"/cran/ &> "${pkg_extract}"
+    echo "Extracting '${pkg_name}' to '${src_cran_dir}'"
+    tar xvf "${pkg_archive}" --directory "${src_cran_dir}" &> "${pkg_extract}"
 
 elif [[ "${pkg_source}" == "github" ]]
 then
 
     # Define variables
     ext="zip"
-    pkg_archive="${src_dir}/github/${pkg_name}_${pkg_version}.${ext}" 
+    pkg_archive="${src_github_dir}/${pkg_name}_${pkg_version}.${ext}" 
     pkg_wget="${log_dir}/wget_${pkg_name}.txt"
     pkg_extract="${log_dir}/extract_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
@@ -129,19 +128,19 @@ then
     if [[ ! -z "${pkg_hash}" ]]
     then
         pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_hash}.zip"
-        pkg_build="${src_dir}/github/${pkg_name}-${pkg_hash}"
+        pkg_build="${src_github_dir}/${pkg_name}-${pkg_hash}"
     elif [[ ! -z "{$pkg_branch}" ]]
     then
         pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_branch}.zip"
         pkg_branch_clean="$(echo ${pkg_branch} | sed 's/\//-/g')"
-        pkg_build="${src_dir}/github/${pkg_name}-${pkg_branch_clean}"
+        pkg_build="${src_github_dir}/${pkg_name}-${pkg_branch_clean}"
     fi
 
-    echo "Downloading '${pkg_name}' to '${src_dir}/github'"
+    echo "Downloading '${pkg_name}' to '${src_github_dir}'"
     wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_wget}"
 
-    echo "Extracting '${pkg_name}' to '${src_dir}/github'"
-    unzip -o "${pkg_archive}" -d "${src_dir}"/github/ &> "${pkg_extract}"
+    echo "Extracting '${pkg_name}' to '${src_github_dir}'"
+    unzip -o "${pkg_archive}" -d "${src_github_dir}" &> "${pkg_extract}"
 
 fi
  

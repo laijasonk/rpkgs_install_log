@@ -6,10 +6,11 @@
 # Help message
 function usage {
     echo "Usage: $0 -i input.yaml"
-    echo "       $0 -i input.yaml [-o input.csv]"
+    echo "       $0 -i input.yaml [-o input.csv] [-c config]"
     echo "Flags:"
     echo "       -i path and filename to input yaml file"
     echo "       -o OPTIONAL path to output csv file (default: ./input.csv)"
+    echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
@@ -22,6 +23,9 @@ do
             ;;
         o)
             input_csv="$(readlink -f ${OPTARG})"
+            ;;
+        c)
+            config_file="${OPTARG}"
             ;;
         h)
             usage
@@ -37,9 +41,14 @@ if [[ -z "${input_yaml}" ]]
 then
     usage
 fi
+
+# Load config variables and convert to absolute pathes
+. ./bin/read_config.sh -c "${config_file}"
+
+# Set input csv to default if not given
 if [[ -z "${input_csv}" ]]
 then
-    input_csv="$(readlink -f ./input.csv)"
+    input_csv="$(readlink -f ${log_dir}/_input.csv)"
 fi
 
 echo "Converting '${input_yaml}' to '${input_csv}'"

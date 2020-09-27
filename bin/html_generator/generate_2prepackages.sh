@@ -29,7 +29,7 @@ done
 . ./bin/read_config.sh -c "${config_file}"
 
 # Default paths
-input_csv="${html_dir}/raw/_preinstallation_packages.txt"
+input_csv="${log_dir}/_preinstallation_packages.txt"
 output_html="${html_dir}/2prepackages.html"
 row_num=0
 
@@ -61,9 +61,9 @@ do
 done < "${input_csv}"
 
 cat /dev/null > "${output_html}"
-cat "${html_dir}/base/2prepackages_top.html" >> "${output_html}"
-cat "${html_dir}/base/sidebar.html" >> "${output_html}"
-cat "${html_dir}/base/2prepackages_content.html" >> "${output_html}"
+cat "${html_template}/2prepackages_top.html" >> "${output_html}"
+cat "${html_template}/sidebar.html" >> "${output_html}"
+cat "${html_template}/2prepackages_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_dir}/base/2prepackages_bottom.html" >> "${output_html}"
+cat "${html_template}/2prepackages_bottom.html" >> "${output_html}"
 

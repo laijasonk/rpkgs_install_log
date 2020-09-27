@@ -25,6 +25,16 @@ do
     esac
 done
 
+# Load config variables and convert to absolute pathes
+. ./bin/read_config.sh -c "${config_file}"
+
+echo "Copying static files"
+cp -R "${html_template}"/static/ "${html_dir}"
+
+echo "Copying log files"
+mkdir -p "${html_dir}/log"
+cp "${log_dir}"/*.txt "${html_dir}"/log/
+
 echo "Generating home page"
 ./bin/html_generator/generate_0home.sh -c "${config_file}"
 

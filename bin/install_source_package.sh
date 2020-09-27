@@ -96,8 +96,8 @@ function install_package() {
         then
             depinstall_log="${log_dir}/depinstall_${dependency}.txt"
 
-            echo "Installing dependency '${dependency}' from CRAN to '${cran_dir}'"
-            Rscript -e "install.packages(\"${dependency}\", repos=\"${external_repo}\", lib=\"${cran_dir}\")" &> "${depinstall_log}"
+            echo "Installing missing dependency '${dependency}' to '${lib_dir}'"
+            Rscript -e "install.packages(\"${dependency}\", repos=\"${external_repo}\", lib=\"${lib_dir}\")" &> "${depinstall_log}"
         else
             # Reset and ignore after logging the issue above
             missing_dependency=''

@@ -18,7 +18,7 @@ function usage {
 }
 
 # Argument flag handling
-while getopts "i:w" opt
+while getopts "i:wc:h" opt
 do
     case $opt in
         i)
@@ -47,7 +47,7 @@ fi
 
 # Variables
 . ./bin/read_config.sh -c "${config_file}"
-input_csv=$(readlink -f ./input.csv)
+input_csv="$(readlink -f ${log_dir}/_input.csv)"
 
 # Basic message display between each package
 function header_msg() {
@@ -69,15 +69,17 @@ function header_msg() {
 
 # Prepare system (commend out if unneeded
 header_msg "Initializing system"
+
 ./bin/clean_install.sh -c "${config_file}"
+
 ./bin/yaml_to_csv.sh \
     -i "${input_yaml}" \
-    -o "${input_csv}"
+    -o "${input_csv}" \
+    -c "${config_file}"
 
-# Log start timestamp and state
 ./bin/export_installed_packages.sh -1 -c "${config_file}"
-echo "Saving start timestamp"
 echo "$(date)" > "${log_dir}/_start_timestamp.txt"
+
 echo
 
 # Build, install, check, and test every package
@@ -96,13 +98,13 @@ do
         -c "${config_file}"
 
     ./bin/install_source_package.sh \
-        -i "./build/${pkg_name}_${pkg_version}.tar.gz" \
+        -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -c "${config_file}"
 
     if [[ "${pkg_check}" == "TRUE" ]]
     then
         ./bin/check_source_package.sh \
-            -i "./build/${pkg_name}_${pkg_version}.tar.gz" \
+            -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
             -c "${config_file}"
     else
         echo "validnest_steps check = FALSE" > "${log_dir}/check_${pkg_name}.txt"

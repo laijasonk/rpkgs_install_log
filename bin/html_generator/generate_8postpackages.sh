@@ -61,9 +61,9 @@ do
 done < "${input_csv}"
 
 cat /dev/null > "${output_html}"
-cat "${html_dir}/base/8postpackages_top.html" >> "${output_html}"
-cat "${html_dir}/base/sidebar.html" >> "${output_html}"
-cat "${html_dir}/base/8postpackages_content.html" >> "${output_html}"
+cat "${html_template}/8postpackages_top.html" >> "${output_html}"
+cat "${html_template}/sidebar.html" >> "${output_html}"
+cat "${html_template}/8postpackages_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_dir}/base/8postpackages_bottom.html" >> "${output_html}"
+cat "${html_template}/8postpackages_bottom.html" >> "${output_html}"
 

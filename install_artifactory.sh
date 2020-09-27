@@ -18,7 +18,7 @@ function usage {
 }
 
 # Argument flag handling
-while getopts "i:w" opt
+while getopts "i:wc:h" opt
 do
     case $opt in
         i)
@@ -47,7 +47,7 @@ fi
 
 # Variables
 . ./bin/read_config.sh -c "${config_file}"
-input_csv="$(readlink -f ./input.csv)"
+input_csv="$(readlink -f ${log_dir}/_input.csv)"
 
 # Basic message display between each package
 function header_msg() {
@@ -69,16 +69,18 @@ function header_msg() {
 
 # Prepare system (commend out if unneeded
 header_msg "Initializing system"
+
 ./bin/yaml_to_csv.sh \
     -i "${input_yaml}" \
-    -o "${input_csv}"
+    -o "${input_csv}" \
+    -c "${config_file}"
+
 ./bin/inspect_artifactory.sh \
     -i "${input_csv}" \
     -c ${config_file}
 
-# Log start timestamp and state
-echo "$(date)" > "${log_dir}/_start_timestamp.txt"
 ./bin/export_installed_packages.sh -1 -c "${config_file}"
+echo "$(date)" > "${log_dir}/_start_timestamp.txt"
 
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
@@ -87,7 +89,7 @@ do
 
     ./bin/install_source_package.sh \
         -a \
-        -i "./build/${pkg_name}_${pkg_version}.tar.gz" \
+        -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -c "${config_file}"
 
     ./bin/test_installed_package.sh \

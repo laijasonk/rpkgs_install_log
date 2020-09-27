@@ -33,10 +33,10 @@ output_html="${html_dir}/0home.html"
 index_html="${html_dir}/index.html"
 
 cat /dev/null > "${output_html}"
-cat "${html_dir}/base/0home_top.html" >> "${output_html}"
-cat "${html_dir}/base/sidebar.html" >> "${output_html}"
-cat "${html_dir}/base/0home_content.html" >> "${output_html}"
-cat "${html_dir}/base/0home_bottom.html" >> "${output_html}"
+cat "${html_template}/0home_top.html" >> "${output_html}"
+cat "${html_template}/sidebar.html" >> "${output_html}"
+cat "${html_template}/0home_content.html" >> "${output_html}"
+cat "${html_template}/0home_bottom.html" >> "${output_html}"
 
 cp "${output_html}" "${index_html}"
 

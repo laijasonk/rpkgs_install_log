@@ -48,7 +48,7 @@ do
             <h2><a id=\"${pkg_name}\">${pkg_name}</a></h2>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_test\" >Test log</a></p>
-            <iframe class=\"log text-above\" src=\"./raw/testthat_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>
+            <iframe class=\"log text-above\" src=\"./log/testthat_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>
 
             "
 done < "${input_csv}"
@@ -61,9 +61,9 @@ ${list_html}
 ${log_html}"
 
 cat /dev/null > "${output_html}"
-cat "${html_dir}/base/7test_top.html" >> "${output_html}"
-cat "${html_dir}/base/sidebar.html" >> "${output_html}"
-cat "${html_dir}/base/7test_content.html" >> "${output_html}"
+cat "${html_template}/7test_top.html" >> "${output_html}"
+cat "${html_template}/sidebar.html" >> "${output_html}"
+cat "${html_template}/7test_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_dir}/base/7test_bottom.html" >> "${output_html}"
+cat "${html_template}/7test_bottom.html" >> "${output_html}"
 

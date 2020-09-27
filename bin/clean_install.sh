@@ -33,8 +33,8 @@ done
 
 # Source files
 echo "Removing package source files: ${src_dir}"
-touch "${src_dir}"/tmp.tar.gz "${src_cran_dir}"/tmp "${src_github_dir}"/tmp && \
-    rm -R -- "${src_dir}"/*.tar.gz "${src_cran_dir}"/* "${src_github_dir}"/*
+touch "${src_dir}"/tmp.tar.gz "${src_github_dir}"/tmp && \
+    rm -R -- "${src_dir}"/*.tar.gz "${src_github_dir}"/*
 
 # Build files
 echo "Removing build files: ${build_dir}"
