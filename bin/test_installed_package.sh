@@ -43,8 +43,8 @@ fi
 
 # Test package
 echo "Testing '${pkg_name}' with testthat"
-testthat_log="${log_dir}/testthat_${pkg_name}.txt"
-Rscript -e "testthat::test_package(\"${pkg_name}\", reporter=\"location\"); testthat::test_package(\"${pkg_name}\", reporter=\"check\")" &> ${testthat_log}
-echo "Results saved to '${testthat_log}'"
+test_log="${log_dir}/test_${pkg_name}.txt"
+Rscript -e "testthat::test_package(\"${pkg_name}\", reporter=\"location\"); testthat::test_package(\"${pkg_name}\", reporter=\"check\")" &> ${test_log}
+echo "Results saved to '${test_log}'"
 echo
 

@@ -94,8 +94,9 @@ check_variables external_repo "${external_repo}"
 
 # Set lib paths for R
 IFS=':' read -r -a lib_paths <<< "${r_libs_user}"
+R_LIBS_USER=""
 for lib_path in "${lib_paths[@]}"
 do
-    export R_LIBS_USER="$(readlink -f ${lib_path}):${R_LIBS_USER}"
+    export R_LIBS_USER="${R_LIBS_USER}:$(readlink -f ${lib_path})"
 done
 

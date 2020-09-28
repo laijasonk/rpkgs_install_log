@@ -117,5 +117,5 @@ echo "$(date)" > "${log_dir}/_end_timestamp.txt"
 
 header_msg "Creating HTML log"
 ./bin/summarize_logs.sh -i "${input_csv}" -c "${config_file}" &> /dev/null
-./bin/generate_html.sh -c "${config_file}"
+./bin/generate_html.sh -2 -c "${config_file}"
 

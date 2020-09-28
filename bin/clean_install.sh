@@ -31,6 +31,11 @@ done
 # Load config variables and convert to absolute pathes
 . ./bin/read_config.sh -c "${config_file}"
 
+# Log files
+echo "Removing log files: ${log_dir}"
+touch "${log_dir}"/tmp && \
+    rm -R -- "${log_dir}"/*
+
 # Source files
 echo "Removing package source files: ${src_dir}"
 touch "${src_dir}"/tmp.tar.gz "${src_github_dir}"/tmp && \
@@ -50,11 +55,6 @@ touch "${lib_dir}"/tmp && \
 echo "Removing checked packages: ${check_dir}"
 touch "${check_dir}"/tmp && \
     rm -R -- "${check_dir}"/*
-
-# Log files
-echo "Removing log files: ${log_dir}"
-touch "${log_dir}"/tmp && \
-    rm -R -- "${log_dir}"/*
 
 # Nicer display
 echo

@@ -29,14 +29,11 @@ done
 . ./bin/read_config.sh -c "${config_file}"
 
 # Default paths
-output_html="${html_dir}/0home.html"
-index_html="${html_dir}/index.html"
+output_html="${html_dir}/pages/home.html"
 
 cat /dev/null > "${output_html}"
-cat "${html_template}/0home_top.html" >> "${output_html}"
+cat "${html_template}/home_top.html" >> "${output_html}"
 cat "${html_template}/sidebar.html" >> "${output_html}"
-cat "${html_template}/0home_content.html" >> "${output_html}"
-cat "${html_template}/0home_bottom.html" >> "${output_html}"
-
-cp "${output_html}" "${index_html}"
+cat "${html_template}/home_content.html" >> "${output_html}"
+cat "${html_template}/home_bottom.html" >> "${output_html}"
 

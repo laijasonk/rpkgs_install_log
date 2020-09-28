@@ -88,7 +88,6 @@ do
     header_msg "${pkg_name}-${pkg_version}"
 
     ./bin/install_source_package.sh \
-        -a \
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -c "${config_file}"
 
@@ -103,5 +102,5 @@ echo "$(date)" > "${log_dir}/_end_timestamp.txt"
 
 header_msg "Creating HTML log"
 ./bin/summarize_logs.sh -i "${input_csv}" -c "${config_file}"
-./bin/generate_html.sh -c "${config_file}"
+./bin/generate_html.sh -3 -c "${config_file}"
 

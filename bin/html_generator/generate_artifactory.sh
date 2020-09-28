@@ -29,7 +29,7 @@ done
 . ./bin/read_config.sh -c "${config_file}"
 
 # Default paths
-output_html="${html_dir}/6artifactory.html"
+output_html="${html_dir}/pages/artifactory.html"
 input_csv=$(readlink -f ${log_dir}/_input.csv)
 
 html=""
@@ -43,21 +43,17 @@ do
                     <ul>
                         <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_artifactfile\">Artifact file log</a></li>
                         <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_artifactinstall\">Artifact check log</a></li>
-                        <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_artifactcheck\">Artifact install log</a></li>
                     </ul>
                 </li>"
         log_html="${log_html}
             <h2><a id=\"${pkg_name}\">${pkg_name}</a></h2>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_artifactfile\" >Artifact file log</a></p>
-            <iframe class=\"log text-above\" src=\"./log/artifactfile_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above\" src=\"../log/artifactfile_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_artifactcheck\" >Artifact check log</a></p>
-            <iframe class=\"log text-above\" src=\"./log/artifactcheck_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above\" src=\"../log/artifactcheck_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
             
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_artifactinstall\">Artifact install log</a></p>
-            <iframe class=\"log text-above\" src=\"./log/artifactinstall_${pkg_name}.txt\" style=\"height: 200px; margin-bottom: 5em;\"></iframe>
-
             "
 done < "${input_csv}"
 
@@ -69,9 +65,9 @@ ${list_html}
 ${log_html}"
 
 cat /dev/null > "${output_html}"
-cat "${html_template}/6artifactory_top.html" >> "${output_html}"
+cat "${html_template}/artifactory_top.html" >> "${output_html}"
 cat "${html_template}/sidebar.html" >> "${output_html}"
-cat "${html_template}/6artifactory_content.html" >> "${output_html}"
+cat "${html_template}/artifactory_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_template}/6artifactory_bottom.html" >> "${output_html}"
+cat "${html_template}/artifactory_bottom.html" >> "${output_html}"
 

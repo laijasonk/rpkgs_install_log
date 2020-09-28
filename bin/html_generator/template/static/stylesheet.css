@@ -207,13 +207,20 @@ iframe.log {
 }
 
 .summary-left {
-    width: 28%;
+    width: 40%;
     font-size: smaller;
     padding: 0.5em;
 }
 
+.summary-4col {
+    width: 15%;
+}
+
+.summary-5col {
+    width: 12%
+}
+
 .summary-success {
-    width: 9%;
     text-align: center;
     font-size: smaller;
     font-weight: bold;
@@ -221,7 +228,6 @@ iframe.log {
     padding: 0.5em;
 }
 .summary-ignore {
-    width: 9%;
     text-align: center;
     font-size: smaller;
     font-weight: bold;
@@ -230,7 +236,6 @@ iframe.log {
 }
 
 .summary-fail {
-    width: 9%;
     text-align: center;
     font-size: smaller;
     font-weight: bold;

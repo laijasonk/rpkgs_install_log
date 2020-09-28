@@ -29,7 +29,7 @@ done
 . ./bin/read_config.sh -c "${config_file}"
 
 # Default paths
-output_html="${html_dir}/1system.html"
+output_html="${html_dir}/pages/system.html"
 
 # System information
 base_path=$(pwd)
@@ -95,9 +95,9 @@ html="
 "
 
 cat /dev/null > "${output_html}"
-cat "${html_template}/1system_top.html" >> "${output_html}"
+cat "${html_template}/system_top.html" >> "${output_html}"
 cat "${html_template}/sidebar.html" >> "${output_html}"
-cat "${html_template}/1system_content.html" >> "${output_html}"
+cat "${html_template}/system_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_template}/1system_bottom.html" >> "${output_html}"
+cat "${html_template}/system_bottom.html" >> "${output_html}"
 
