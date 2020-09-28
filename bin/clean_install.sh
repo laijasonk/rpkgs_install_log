@@ -56,6 +56,3 @@ echo "Removing checked packages: ${check_dir}"
 touch "${check_dir}"/tmp && \
     rm -R -- "${check_dir}"/*
 
-# Nicer display
-echo
-

@@ -113,5 +113,3 @@ echo "Cleaning '${input_csv}' for scripts"
 sed -i "s/[\"'‘’]//g" "${input_csv}"
 cat "${input_csv}" | tail +2 | sed 's/^[0-9]*,//g' > "${input_csv}.bak" && mv "${input_csv}.bak" "${input_csv}"
 
-echo
-

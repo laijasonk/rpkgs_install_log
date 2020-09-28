@@ -46,5 +46,4 @@ echo "Testing '${pkg_name}' with testthat"
 test_log="${log_dir}/test_${pkg_name}.txt"
 Rscript -e "testthat::test_package(\"${pkg_name}\", reporter=\"location\"); testthat::test_package(\"${pkg_name}\", reporter=\"check\")" &> ${test_log}
 echo "Results saved to '${test_log}'"
-echo
 

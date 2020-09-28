@@ -41,18 +41,18 @@ do
                 <!--li><a href=\"#${pkg_name}\">${pkg_name}</a-->
                 <li>${pkg_name}
                     <ul>
-                        <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_artifactfile\">Artifact file log</a></li>
+                        <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_artifact\">Artifact status log</a></li>
                         <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_artifactinstall\">Artifact check log</a></li>
                     </ul>
                 </li>"
         log_html="${log_html}
             <h2><a id=\"${pkg_name}\">${pkg_name}</a></h2>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_artifactfile\" >Artifact file log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/artifactfile_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <p class=\"above-caption left\"><a id=\"${pkg_name}_artifact\" >Artifact status log</a></p>
+            <iframe class=\"log text-above\" src=\"../log/artifact_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_artifactcheck\" >Artifact check log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/artifactcheck_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above bottom-space\" src=\"../log/artifactcheck_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
             
             "
 done < "${input_csv}"

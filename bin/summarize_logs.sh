@@ -56,17 +56,15 @@ do
     build_log="${log_dir}/build_${pkg_name}.txt"
     install_log="${log_dir}/install_${pkg_name}.txt"
     check_log="${log_dir}/check_${pkg_name}.txt"
-    artifactfile_log="${log_dir}/artifactfile_${pkg_name}.txt"
-    artifactinstall_log="${log_dir}/artifactinstall_${pkg_name}.txt"
+    artifact_log="${log_dir}/artifact_${pkg_name}.txt"
     artifactcheck_log="${log_dir}/artifactcheck_${pkg_name}.txt"
-    test_log="${log_dir}/testthat_${pkg_name}.txt"
+    test_log="${log_dir}/test_${pkg_name}.txt"
 
     wget_status=0
     build_status=0
     install_status=0
     check_status=0
-    artifactfile_status=0
-    artifactinstall_status=0
+    artifact_status=0
     artifactcheck_status=0
     test_status=0
 
@@ -115,28 +113,17 @@ do
         check_status=2
     fi
     
-    # Artifact file log
-    status1="$(cat ${artifactfile_log} | grep -c 'Missing file')"
+    # Artifact status log
+    status1="$(cat ${artifact_log} | grep -c 'Missing file')"
     if [[ "${status1}" -gt 0 ]]
     then
-        artifactfile_status=1
+        artifact_status=1
     fi
-    if [[ ! -f "${artifactfile_log}" ]]
+    if [[ ! -f "${artifact_log}" ]]
     then
-        artifactfile_status=2
+        artifact_status=2
     fi
 
-    # Artifact install log
-    status1="$(cat ${artifactinstall_log} | grep -c 'ERROR')"
-    if [[ "${status1}" -gt 0 ]]
-    then
-        artifactinstall_status=1
-    fi
-    if [[ ! -f "${artifactinstall_log}" ]]
-    then
-        artifactinstall_status=2
-    fi
-    
     # Artifact check log
     status1="$(cat ${artifactcheck_log} | grep -c 'neither a file nor directory')"
     status2="$(cat ${artifactcheck_log} | grep -c 'ERROR')"
@@ -162,5 +149,6 @@ do
         test_status=2
     fi
 
-    echo "${pkg_name},${pkg_version},${pkg_source},${wget_status},${build_status},${install_status},${check_status},${artifactfile_status},${artifactcheck_status},${artifactinstall_status},${test_status}" >> "${status_csv}"
+    echo "${pkg_name},${pkg_version},${pkg_source},${wget_status},${build_status},${install_status},${check_status},${artifact_status},${artifactcheck_status},${test_status}" >> "${status_csv}"
 done < "${input_csv}"
+

@@ -132,6 +132,10 @@ iframe.log {
     text-align: left;
 }
 
+.bottom-space {
+    margin-bottom: 0.5em;
+}
+
 .list-caption {
     text-align: left;
     margin-bottom: 0;

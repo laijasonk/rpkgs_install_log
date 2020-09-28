@@ -48,7 +48,7 @@ do
             <h2><a id=\"${pkg_name}\">${pkg_name}</a></h2>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_check\" >Check log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/check_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>
+            <iframe class=\"log text-above bottom-space\" src=\"../log/check_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>
 
             "
 done < "${input_csv}"

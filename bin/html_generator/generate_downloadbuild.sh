@@ -53,10 +53,10 @@ do
             <iframe class=\"log text-above\" src=\"../log/wget_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_extract\">Extract log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/extract_${pkg_name}.txt\" style=\"height: 200px; margin-bottom: 5em;\"></iframe>
+            <iframe class=\"log text-above\" src=\"../log/extract_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_build\" >Build log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/build_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above bottom-space\" src=\"../log/build_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             "
 done < "${input_csv}"

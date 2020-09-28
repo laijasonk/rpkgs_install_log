@@ -57,20 +57,20 @@ function status_fail() {
                 <td class=\"summary-fail\"><a href=\"${1}\">X</a></td>"
 }
 
-while IFS=, read -r pkg_name pkg_version pkg_source download build install check artifactfile artifactcheck artifactinstall test
+while IFS=, read -r pkg_name pkg_version pkg_source download build install check artifact artifactcheck test
 do
     html="${html}
             <tr>
                 <td class=\"summary-left\">${pkg_name}</td>"
 
-    if [[ "${artifactfile}" -eq 0 ]]
+    if [[ "${artifact}" -eq 0 ]]
     then
-        status_success "artifactory.html#${pkg_name}_artifactfile"
-    elif [[ "${artifactfile}" -eq 2 ]]
+        status_success "artifactory.html#${pkg_name}_artifact"
+    elif [[ "${artifact}" -eq 2 ]]
     then
-        status_ignore "artifactory.html#${pkg_name}_artifactfile"
+        status_ignore "artifactory.html#${pkg_name}_artifact"
     else
-        status_fail "artifactory.html#${pkg_name}_artifactfile"
+        status_fail "artifactory.html#${pkg_name}_artifact"
     fi
   
     if [[ "${artifactcheck}" -eq 0 ]]

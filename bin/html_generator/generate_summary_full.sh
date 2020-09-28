@@ -58,7 +58,7 @@ function status_fail() {
                 <td class=\"summary-fail\"><a href=\"${1}\">X</a></td>"
 }
 
-while IFS=, read -r pkg_name pkg_version pkg_source download build install check artifactfile artifactcheck artifactinstall test
+while IFS=, read -r pkg_name pkg_version pkg_source download build install check artifact artifactcheck test
 do
     html="${html}
             <tr>
