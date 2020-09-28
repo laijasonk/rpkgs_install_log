@@ -78,6 +78,7 @@ header_msg "Initializing system"
     -c "${config_file}"
 
 ./bin/export_installed_packages.sh -1 -c "${config_file}"
+echo "Saving start timestamp"
 echo "$(date)" > "${log_dir}/_start_timestamp.txt"
 echo
 
@@ -112,6 +113,8 @@ do
     ./bin/test_installed_package.sh \
         -i "${pkg_name}" \
         -c "${config_file}" \
+
+    echo
 
 done < "${input_csv}"
 

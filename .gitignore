@@ -4,3 +4,4 @@ libs-cran/*
 libs-r/*
 log/*
 src/*
+bin/html_generator/template/sidebar.html
