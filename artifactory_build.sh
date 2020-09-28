@@ -79,6 +79,7 @@ header_msg "Initializing system"
 
 ./bin/export_installed_packages.sh -1 -c "${config_file}"
 echo "$(date)" > "${log_dir}/_start_timestamp.txt"
+echo
 
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
