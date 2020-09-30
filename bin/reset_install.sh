@@ -38,8 +38,8 @@ touch "${log_dir}"/tmp.tmp && \
 
 # Source files
 echo "Removing package source files: ${src_dir}"
-touch "${src_dir}"/tmp.tar.gz "${src_github_dir}"/tmp.tmp "${src_cran_dir}"/tmp.tmp && \
-    rm -R -- "${src_dir}"/*.tar.gz "${src_github_dir}"/*.* "${src_github_dir}"/*.*
+touch "${src_dir}"/tmp.tar.gz && \
+    rm -R -- "${src_dir}"/*.tar.gz
 
 # Build files
 echo "Removing build files: ${build_dir}"

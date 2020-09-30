@@ -49,8 +49,6 @@ fi
 mkdir -p \
     "${lib_dir}" \
     "${src_dir}" \
-    "${src_cran_dir}" \
-    "${src_github_dir}" \
     "${build_dir}" \
     "${build_check_dir}" \
     "${html_dir}" \
@@ -61,8 +59,6 @@ mkdir -p \
 # Change any relative paths to absolute paths
 export lib_dir="$(readlink -f ${lib_dir})"
 export src_dir="$(readlink -f ${src_dir})"
-export src_cran_dir="$(readlink -f ${src_cran_dir})"
-export src_github_dir="$(readlink -f ${src_github_dir})"
 export build_dir="$(readlink -f ${build_dir})"
 export build_check_dir="$(readlink -f ${build_check_dir})"
 export html_dir="$(readlink -f ${html_dir})"
@@ -82,8 +78,6 @@ function check_variables() {
 check_variables lib_dir "${lib_dir}"
 check_variables r_libs_user "${r_libs_user}"
 check_variables src_dir "${src_dir}"
-check_variables src_cran_dir "${src_cran_dir}"
-check_variables src_github_dir "${src_github_dir}"
 check_variables build_dir "${build_dir}"
 check_variables build_check_dir "${build_check_dir}"
 check_variables html_dir "${html_dir}"
