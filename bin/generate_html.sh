@@ -63,7 +63,7 @@ cp "${sidebar_template}" "${html_template}"/sidebar.html
 
 echo "Copying log files"
 mkdir -p "${html_dir}/log"
-cp "${log_dir}"/*.txt "${html_dir}"/log/
+cp "${log_dir}"/*.* "${html_dir}"/log/
 
 echo "Creating directory for HTML pages"
 mkdir -p "${html_dir}/pages"

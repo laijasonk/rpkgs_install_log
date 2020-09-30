@@ -8,21 +8,21 @@ wait_between_packages=false
 
 # Help message
 function usage {
-    echo "Usage: $0 -y input.yaml"
-    echo "       $0 -y input.yaml [-w] [-c config]"
+    echo "Usage: $0 -i input.csv"
+    echo "       $0 -i input.csv [-w] [-c config]"
     echo "Flags:"
-    echo "       -y input yaml containing release packages"
+    echo "       -i input csv containing release packages"
     echo "       -w OPTIONAL stop between each package and wait for user"
     echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
 # Argument flag handling
-while getopts "y:wc:h" opt
+while getopts "i:wc:h" opt
 do
     case $opt in
-        y)
-            input_yaml="$(readlink -fq ${OPTARG})"
+        i)
+            input_csv="$(readlink -fq ${OPTARG})"
             ;;
         w)
             wait_between_commands=true
@@ -47,7 +47,6 @@ fi
 
 # Variables
 . ./bin/read_config.sh -c "${config_file}"
-input_csv="$(readlink -f ${log_dir}/_input.csv)"
 
 # Basic message display between each package
 function header_msg() {
@@ -70,10 +69,8 @@ function header_msg() {
 # Prepare system (commend out if unneeded
 header_msg "Initializing system"
 
-./bin/yaml_to_csv.sh \
-    -i "${input_yaml}" \
-    -o "${input_csv}" \
-    -c "${config_file}"
+pkg_csv="${log_dir}/_input.csv"
+./bin/strip_csv.sh -1 -i "${input_csv}" -o "${pkg_csv}"
 
 ./bin/inspect_artifactory.sh \
     -i "${input_csv}" \
@@ -85,7 +82,7 @@ echo "$(date)" > "${log_dir}/_start_timestamp.txt"
 echo
 
 # Build, install, check, and test every package
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
 do
 
     header_msg "${pkg_name}-${pkg_version}"
@@ -100,7 +97,7 @@ do
 
     echo
 
-done < "${input_csv}"
+done < "${pkg_csv}"
 
 header_msg "Post-Installation"
 ./bin/export_installed_packages.sh -2 -c "${config_file}"
@@ -109,6 +106,6 @@ echo "$(date)" > "${log_dir}/_end_timestamp.txt"
 echo
 
 header_msg "Creating HTML log"
-./bin/summarize_logs.sh -i "${input_csv}" -c "${config_file}"
+./bin/summarize_logs.sh -i "${pkg_csv}" -c "${config_file}"
 ./bin/generate_html.sh -3 -c "${config_file}"
 

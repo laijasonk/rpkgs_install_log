@@ -33,18 +33,18 @@ done
 
 # Log files
 echo "Removing log files: ${log_dir}"
-touch "${log_dir}"/tmp && \
-    rm -R -- "${log_dir}"/*
+touch "${log_dir}"/tmp.tmp && \
+    rm -R -- "${log_dir}"/*.*
 
 # Source files
 echo "Removing package source files: ${src_dir}"
-touch "${src_dir}"/tmp.tar.gz "${src_github_dir}"/tmp && \
-    rm -R -- "${src_dir}"/*.tar.gz "${src_github_dir}"/*
+touch "${src_dir}"/tmp.tar.gz "${src_github_dir}"/tmp.tmp "${src_cran_dir}"/tmp.tmp && \
+    rm -R -- "${src_dir}"/*.tar.gz "${src_github_dir}"/*.* "${src_github_dir}"/*.*
 
 # Build files
 echo "Removing build files: ${build_dir}"
-touch "${build_dir}"/tmp && \
-    rm -R -- "${build_dir}"/*
+touch "${build_dir}"/tmp.tar.gz && \
+    rm -R -- "${build_dir}"/*.*
 
 # Library files
 echo "Removing local library files: ${lib_dir}"

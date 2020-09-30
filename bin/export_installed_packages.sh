@@ -48,6 +48,6 @@ pkg_log="${log_dir}/${pkg_log}"
 # Clear input installed packages list
 cat /dev/null > "${pkg_log}"
 
-echo "Exporting installed package snapshot to ${pkg_log}"
+echo "Exporting package snapshot to ${pkg_log}"
 Rscript -e "write.csv(installed.packages()[, c(2, 3, 16)], \"${pkg_log}\")"
 
