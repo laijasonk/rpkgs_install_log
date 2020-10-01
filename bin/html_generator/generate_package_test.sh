@@ -52,7 +52,7 @@ do
 
     html="${html}
             <tr>
-                <td class=\"summary-left\"><a href=\"package_${pkg_name}_test.html\">${pkg_name}-${pkg_version}</a></td>"
+                <td class=\"summary-left\">${pkg_name}-${pkg_version}</td>"
 
     if [[ "${build}" -eq 0 ]]
     then

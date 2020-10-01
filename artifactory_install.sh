@@ -40,7 +40,7 @@ do
 done
 
 # Input CSV must be provided
-if [[ -z "${input_yaml}" ]] || [[ ! -f "${input_yaml}" ]]
+if [[ -z "${input_csv}" ]] || [[ ! -f "${input_csv}" ]]
 then
     usage
 fi

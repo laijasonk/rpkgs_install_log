@@ -33,35 +33,35 @@ input_csv="${log_dir}/_summary.csv"
 output_html="${html_dir}/pages/summary_build.html"
 
 html="
-        <table class=\"summary-table\">
-            <tr>
-                <td class=\"summary-header\">Package</td>
-                <td class=\"summary-header summary-4col center\">Download</td>
-                <td class=\"summary-header summary-4col center\">Build</td>
-                <td class=\"summary-header summary-4col center\">Install</td>
-                <td class=\"summary-header summary-4col center\">Check</td>
-            </tr>"
+            <table class=\"summary-table\">
+                <tr>
+                    <td class=\"summary-header\">Package</td>
+                    <td class=\"summary-header summary-4col center\">Download</td>
+                    <td class=\"summary-header summary-4col center\">Build</td>
+                    <td class=\"summary-header summary-4col center\">Install</td>
+                    <td class=\"summary-header summary-4col center\">Check</td>
+                </tr>"
 
 function status_success() {
     html="${html}
-                <td class=\"summary-success\"><a href=\"${1}\">pass</a></td>"
+                    <td class=\"summary-success\"><a href=\"${1}\">pass</a></td>"
 }
 
 function status_ignore() {
     html="${html}
-                <td class=\"summary-ignore\"><a href=\"${1}\">skip</a></td>"
+                    <td class=\"summary-ignore\"><a href=\"${1}\">skip</a></td>"
 }
 
 function status_fail() {
     html="${html}
-                <td class=\"summary-fail\"><a href=\"${1}\">fail</a></td>"
+                    <td class=\"summary-fail\"><a href=\"${1}\">fail</a></td>"
 }
 
 while IFS=, read -r pkg_name pkg_version pkg_source download build check install artifact artifactcheck test
 do
     html="${html}
-            <tr>
-                <td class=\"summary-left\">${pkg_name}</td>"
+                <tr>
+                    <td class=\"summary-left\">${pkg_name}</td>"
 
     if [[ "${download}" -eq 0 ]]
     then
@@ -104,8 +104,15 @@ do
     fi
    
     html="${html}
-            </tr>"
+                </tr>"
+
 done < "${input_csv}"
+
+html="${html}
+            </table>
+
+            <p>Command output</p>
+            <iframe class=\"log text-above space-below\" src=\"../log/_stdout.txt\" style=\"height: 300px;\"></iframe>"
 
 cat /dev/null > "${output_html}"
 cat "${html_template}/summary_top.html" >> "${output_html}"
