@@ -58,6 +58,7 @@ cat "${input_csv}" \
 if [[ "${header}" -eq 1 ]]
 then
     tail +2 "${input_csv}".tmp > "${output_csv}"
+    touch "${input_csv}".tmp && rm "${input_csv}".tmp
 else
     mv "${input_csv}".tmp "${output_csv}"
 fi

@@ -132,8 +132,9 @@ iframe.log {
     text-align: left;
 }
 
-.bottom-space {
-    margin-bottom: 0.5em;
+.space-below {
+    padding-bottom: 0.5em;
+    margin-bottom: 1.0em;
 }
 
 .list-caption {
@@ -214,6 +215,18 @@ iframe.log {
     width: 40%;
     font-size: smaller;
     padding: 0.5em;
+}
+
+.summary-1col {
+    width: 60%;
+}
+
+.summary-2col {
+    width: 30%;
+}
+
+.summary-3col {
+    width: 20%;
 }
 
 .summary-4col {

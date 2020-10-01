@@ -45,20 +45,20 @@ html="
 
 function status_success() {
     html="${html}
-                <td class=\"summary-success\"><a href=\"${1}\">O</a></td>"
+                <td class=\"summary-success\"><a href=\"${1}\">pass</a></td>"
 }
 
 function status_ignore() {
     html="${html}
-                <td class=\"summary-ignore\"><a href=\"${1}\">--</a></td>"
+                <td class=\"summary-ignore\"><a href=\"${1}\">skip</a></td>"
 }
 
 function status_fail() {
     html="${html}
-                <td class=\"summary-fail\"><a href=\"${1}\">X</a></td>"
+                <td class=\"summary-fail\"><a href=\"${1}\">fail</a></td>"
 }
 
-while IFS=, read -r pkg_name pkg_version pkg_source download build install check artifact artifactcheck test
+while IFS=, read -r pkg_name pkg_version pkg_source download build check install artifact artifactcheck test
 do
     html="${html}
             <tr>
@@ -66,52 +66,52 @@ do
 
     if [[ "${download}" -eq 0 ]]
     then
-        status_success "downloadbuild.html#${pkg_name}_download"
+        status_success "package_${pkg_name}_download.html#${pkg_name}_download"
     elif [[ "${download}" -eq 2 ]]
     then
-        status_ignore "downloadbuild.html#${pkg_name}_download"
+        status_ignore "package_${pkg_name}_download.html#${pkg_name}_download"
     else
-        status_fail "downloadbuild.html#${pkg_name}_download"
+        status_fail "package_${pkg_name}_download.html#${pkg_name}_download"
     fi
 
     if [[ "${build}" -eq 0 ]]
     then
-        status_success "downloadbuild.html#${pkg_name}_build"
+        status_success "package_${pkg_name}_full.html#${pkg_name}_build"
     elif [[ "${build}" -eq 2 ]]
     then
-        status_ignore "downloadbuild.html#${pkg_name}_build"
+        status_ignore "package_${pkg_name}_full.html#${pkg_name}_build"
     else
-        status_fail "downloadbuild.html#${pkg_name}_build"
+        status_fail "package_${pkg_name}_full.html#${pkg_name}_build"
     fi
 
     if [[ "${install}" -eq 0 ]]
     then
-        status_success "install.html#${pkg_name}_install"
+        status_success "package_${pkg_name}_full.html#${pkg_name}_install"
     elif [[ "${install}" -eq 2 ]]
     then
-        status_ignore "install.html#${pkg_name}_install"
+        status_ignore "package_${pkg_name}_full.html#${pkg_name}_install"
     else
-        status_fail "install.html#${pkg_name}_install"
+        status_fail "package_${pkg_name}_full.html#${pkg_name}_install"
     fi
    
     if [[ "${check}" -eq 0 ]]
     then
-        status_success "check.html#${pkg_name}_check"
+        status_success "package_${pkg_name}_full.html#${pkg_name}_check"
     elif [[ "${check}" -eq 2 ]]
     then
-        status_ignore "check.html#${pkg_name}_check"
+        status_ignore "package_${pkg_name}_full.html#${pkg_name}_check"
     else
-        status_fail "check.html#${pkg_name}_check"
+        status_fail "package_${pkg_name}_full.html#${pkg_name}_check"
     fi
     
     if [[ "${test}" -eq 0 ]]
     then
-        status_success "test.html#${pkg_name}_test"
+        status_success "package_${pkg_name}_test.html#${pkg_name}_test"
     elif [[ "${test}" -eq 2 ]]
     then
-        status_ignore "test.html#${pkg_name}_test"
+        status_ignore "package_${pkg_name}_test.html#${pkg_name}_test"
     else
-        status_fail "test.html#${pkg_name}_test"
+        status_fail "package_${pkg_name}_test.html#${pkg_name}_test"
     fi
 
     html="${html}

@@ -29,26 +29,26 @@ done
 . ./bin/read_config.sh -c "${config_file}"
 
 # Default paths
-output_html="${html_dir}/pages/install.html"
+output_html="${html_dir}/pages/downloadartifact.html"
 input_csv=$(readlink -f ${log_dir}/_input.csv)
 
 html=""
 log_html=""
 list_html=""
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
 do
     list_html="${list_html}
                 <!--li><a href=\"#${pkg_name}\">${pkg_name}</a-->
                 <li>${pkg_name}
                     <ul>
-                        <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_install\">Install log</a></li>
+                        <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_artifact\">Artifact log</a></li>
                     </ul>
                 </li>"
         log_html="${log_html}
             <h2><a id=\"${pkg_name}\">${pkg_name}</a></h2>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_install\">Install log</a></p>
-            <iframe class=\"log text-above space-below\" src=\"../log/install_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>
+            <p class=\"above-caption left\"><a id=\"${pkg_name}_artifact\" >Artifact downloadj log</a></p>
+            <iframe class=\"log text-above space-below\" src=\"../log/artifact_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             "
 done < "${input_csv}"
@@ -61,9 +61,9 @@ ${list_html}
 ${log_html}"
 
 cat /dev/null > "${output_html}"
-cat "${html_template}/install_top.html" >> "${output_html}"
+cat "${html_template}/downloadartifact_top.html" >> "${output_html}"
 cat "${html_template}/sidebar.html" >> "${output_html}"
-cat "${html_template}/install_content.html" >> "${output_html}"
+cat "${html_template}/downloadartifact_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_template}/install_bottom.html" >> "${output_html}"
+cat "${html_template}/downloadartifact_bottom.html" >> "${output_html}"
 

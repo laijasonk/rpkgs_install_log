@@ -50,20 +50,20 @@ fi
 cat /dev/null > "${status_csv}"
 
 # Loop through input csv file
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
 do
     wget_log="${log_dir}/wget_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
-    install_log="${log_dir}/install_${pkg_name}.txt"
     check_log="${log_dir}/check_${pkg_name}.txt"
+    install_log="${log_dir}/install_${pkg_name}.txt"
     artifact_log="${log_dir}/artifact_${pkg_name}.txt"
     artifactcheck_log="${log_dir}/artifactcheck_${pkg_name}.txt"
     test_log="${log_dir}/test_${pkg_name}.txt"
 
     wget_status=0
     build_status=0
-    install_status=0
     check_status=0
+    install_status=0
     artifact_status=0
     artifactcheck_status=0
     test_status=0
@@ -89,18 +89,7 @@ do
     then
         build_status=2
     fi
-    
-    # Install log
-    status1="$(cat ${install_log} | grep -c 'ERROR')"
-    if [[ "${status1}" -gt 0 ]]
-    then
-        install_status=1
-    fi
-    if [[ ! -f "${install_log}" ]]
-    then
-        install_status=2
-    fi
-    
+     
     # Check log
     status1="$(cat ${check_log} | grep -c 'neither a file nor directory')"
     status2="$(cat ${check_log} | grep -c 'ERROR')"
@@ -112,7 +101,18 @@ do
     then
         check_status=2
     fi
-    
+
+    # Install log
+    status1="$(cat ${install_log} | grep -c 'ERROR')"
+    if [[ "${status1}" -gt 0 ]]
+    then
+        install_status=1
+    fi
+    if [[ ! -f "${install_log}" ]]
+    then
+        install_status=2
+    fi
+       
     # Artifact status log
     status1="$(cat ${artifact_log} | grep -c 'Missing file')"
     if [[ "${status1}" -gt 0 ]]
@@ -149,6 +149,6 @@ do
         test_status=2
     fi
 
-    echo "${pkg_name},${pkg_version},${pkg_source},${wget_status},${build_status},${install_status},${check_status},${artifact_status},${artifactcheck_status},${test_status}" >> "${status_csv}"
+    echo "${pkg_name},${pkg_version},${pkg_source},${wget_status},${build_status},${check_status},${install_status},${artifact_status},${artifactcheck_status},${test_status}" >> "${status_csv}"
 done < "${input_csv}"
 

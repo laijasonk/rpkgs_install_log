@@ -52,7 +52,7 @@ do
             <iframe class=\"log text-above\" src=\"../log/artifact_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_artifactcheck\" >Artifact check log</a></p>
-            <iframe class=\"log text-above bottom-space\" src=\"../log/artifactcheck_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above space-below\" src=\"../log/artifactcheck_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
             
             "
 done < "${input_csv}"

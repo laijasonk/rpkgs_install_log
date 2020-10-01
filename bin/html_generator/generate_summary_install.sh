@@ -44,20 +44,20 @@ html="
 
 function status_success() {
     html="${html}
-                <td class=\"summary-success\"><a href=\"${1}\">O</a></td>"
+                <td class=\"summary-success\"><a href=\"${1}\">pass</a></td>"
 }
 
 function status_ignore() {
     html="${html}
-                <td class=\"summary-ignore\"><a href=\"${1}\">--</a></td>"
+                <td class=\"summary-ignore\"><a href=\"${1}\">skip</a></td>"
 }
 
 function status_fail() {
     html="${html}
-                <td class=\"summary-fail\"><a href=\"${1}\">X</a></td>"
+                <td class=\"summary-fail\"><a href=\"${1}\">fail</a></td>"
 }
 
-while IFS=, read -r pkg_name pkg_version pkg_source download build install check artifact artifactcheck test
+while IFS=, read -r pkg_name pkg_version pkg_source download build check install artifact artifactcheck test
 do
     html="${html}
             <tr>

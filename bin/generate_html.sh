@@ -77,8 +77,15 @@ echo "Generating system information page"
 echo "Generating pre-installation packages page"
 ./bin/html_generator/generate_prepackages.sh -c "${config_file}"
 
-echo "Generating source download/build page"
-./bin/html_generator/generate_downloadbuild.sh -c "${config_file}"
+echo "Generating source download page"
+./bin/html_generator/generate_download.sh -c "${config_file}"
+./bin/html_generator/generate_downloadartifact.sh -c "${config_file}"
+
+echo "Generating specific package pages"
+./bin/html_generator/generate_package_full.sh -c "${config_file}"
+./bin/html_generator/generate_package_install.sh -c "${config_file}"
+./bin/html_generator/generate_package_download.sh -c "${config_file}"
+./bin/html_generator/generate_package_test.sh -c "${config_file}"
 
 echo "Generating package installation page"
 ./bin/html_generator/generate_install.sh -c "${config_file}"

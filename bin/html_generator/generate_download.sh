@@ -29,13 +29,13 @@ done
 . ./bin/read_config.sh -c "${config_file}"
 
 # Default paths
-output_html="${html_dir}/pages/downloadbuild.html"
+output_html="${html_dir}/pages/download.html"
 input_csv=$(readlink -f ${log_dir}/_input.csv)
 
 html=""
 log_html=""
 list_html=""
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
 do
     list_html="${list_html}
                 <!--li><a href=\"#${pkg_name}\">${pkg_name}</a-->
@@ -43,7 +43,6 @@ do
                     <ul>
                         <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_download\">Download log</a></li>
                         <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_extract\">Extract log</a></li>
-                        <li style=\"font-size: smaller;\"><a href=\"#${pkg_name}_build\">Build log</a></li>
                     </ul>
                 </li>"
         log_html="${log_html}
@@ -53,10 +52,7 @@ do
             <iframe class=\"log text-above\" src=\"../log/wget_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_extract\">Extract log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/extract_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
-
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_build\" >Build log</a></p>
-            <iframe class=\"log text-above bottom-space\" src=\"../log/build_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
+            <iframe class=\"log text-above space-below\" src=\"../log/extract_${pkg_name}.txt\" style=\"height: 200px;\"></iframe>
 
             "
 done < "${input_csv}"
@@ -69,9 +65,9 @@ ${list_html}
 ${log_html}"
 
 cat /dev/null > "${output_html}"
-cat "${html_template}/downloadbuild_top.html" >> "${output_html}"
+cat "${html_template}/download_top.html" >> "${output_html}"
 cat "${html_template}/sidebar.html" >> "${output_html}"
-cat "${html_template}/downloadbuild_content.html" >> "${output_html}"
+cat "${html_template}/download_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_template}/downloadbuild_bottom.html" >> "${output_html}"
+cat "${html_template}/download_bottom.html" >> "${output_html}"
 

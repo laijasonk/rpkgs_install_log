@@ -70,6 +70,7 @@ function header_msg() {
 header_msg "Initializing system"
 
 ./bin/reset_install.sh -c "${config_file}"
+. ./bin/read_config.sh -c "${config_file}"
 
 pkg_csv="${log_dir}/_input.csv"
 ./bin/strip_csv.sh -1 -i "${input_csv}" -o "${pkg_csv}"
