@@ -47,6 +47,7 @@ fi
 
 # Variables
 . ./bin/read_config.sh -c "${config_file}"
+stdout_log="${log_dir}/_stdout.txt"
 
 # Basic message display between each package
 function header_msg() {
@@ -67,45 +68,45 @@ function header_msg() {
 }
 
 # Prepare system (commend out if unneeded
-header_msg "Initializing system"
+header_msg "Initializing system" | tee ./stdout.txt
 
 pkg_csv="${log_dir}/_input.csv"
-./bin/strip_csv.sh -1 -i "${input_csv}" -o "${pkg_csv}"
+./bin/strip_csv.sh -1 -i "${input_csv}" -o "${pkg_csv}" | tee -a "${stdout_log}"
 
 ./bin/inspect_artifactory.sh \
     -i "${input_csv}" \
-    -c ${config_file}
+    -c ${config_file} | tee -a "${stdout_log}"
 
-./bin/export_installed_packages.sh -1 -c "${config_file}"
-echo "Saving start timestamp"
-echo "$(date)" > "${log_dir}/_start_timestamp.txt"
-echo
+./bin/export_installed_packages.sh -1 -c "${config_file}" | tee -a "${stdout_log}"
+echo "Saving start timestamp" | tee -a "${stdout_log}"
+echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
+echo | tee -a "${stdout_log}"
 
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
 do
 
-    header_msg "${pkg_name}-${pkg_version}"
+    header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
     ./bin/install_source_package.sh \
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
-        -c "${config_file}"
+        -c "${config_file}" | tee -a "${stdout_log}"
 
     ./bin/test_installed_package.sh \
         -i "${pkg_name}" \
-        -c "${config_file}"
+        -c "${config_file}" | tee -a "${stdout_log}"
 
-    echo
+    echo | tee -a "${stdout_log}"
 
 done < "${pkg_csv}"
 
-header_msg "Post-Installation"
-./bin/export_installed_packages.sh -2 -c "${config_file}"
-echo "Saving end timestamp"
-echo "$(date)" > "${log_dir}/_end_timestamp.txt"
-echo
+header_msg "Post-Installation" | tee -a "${stdout_log}"
+./bin/export_installed_packages.sh -2 -c "${config_file}" | tee -a "${stdout_log}"
+echo "Saving end timestamp" | tee -a "${stdout_log}"
+echo "$(date)" > "${log_dir}/_end_timestamp.txt" | tee -a "${stdout_log}"
+echo | tee -a "${stdout_log}"
 
-header_msg "Creating HTML log"
-./bin/summarize_logs.sh -i "${pkg_csv}" -c "${config_file}"
-./bin/generate_html.sh -3 -c "${config_file}"
+header_msg "Creating HTML log" | tee -a "${stdout_log}"
+./bin/summarize_logs.sh -i "${pkg_csv}" -c "${config_file}" &> /dev/null
+./bin/generate_html.sh -3 -c "${config_file}" | tee -a "${stdout_log}"
 

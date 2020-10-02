@@ -47,6 +47,7 @@ fi
 
 # Variables
 . ./bin/read_config.sh -c "${config_file}"
+stdout_log="${log_dir}/_stdout.txt"
 
 # Basic message display between each package
 function header_msg() {
@@ -67,24 +68,25 @@ function header_msg() {
 }
 
 # Prepare system (commend out if unneeded
-header_msg "Initializing system"
+header_msg "Initializing system" | tee ./stdout.txt
 
-./bin/reset_install.sh -c "${config_file}"
-. ./bin/read_config.sh -c "${config_file}"
+./bin/reset_install.sh -c "${config_file}" | tee -a ./stdout.txt
+mv ./stdout.txt "${stdout_log}"
+. ./bin/read_config.sh -c "${config_file}" | tee -a "${stdout_log}"
 
-pkg_csv="$(readlink -f ${log_dir}/_input.csv)"
-./bin/strip_csv.sh -1 -i "${input_csv}" -o "${pkg_csv}"
+pkg_csv="$(readlink -f ${log_dir}/_input.csv)" | tee -a "${stdout_log}"
+./bin/strip_csv.sh -1 -i "${input_csv}" -o "${pkg_csv}" | tee -a "${stdout_log}"
 
-./bin/export_installed_packages.sh -1 -c "${config_file}"
-echo "Saving start timestamp"
-echo "$(date)" > "${log_dir}/_start_timestamp.txt"
-echo
+./bin/export_installed_packages.sh -1 -c "${config_file}" | tee -a "${stdout_log}"
+echo "Saving start timestamp" | tee -a "${stdout_log}"
+echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
+echo | tee -a "${stdout_log}"
 
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
 do
 
-    header_msg "${pkg_name}-${pkg_version}"
+    header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
     ./bin/download_and_build.sh \
         -n "${pkg_name}" \
@@ -94,17 +96,17 @@ do
         -p "${pkg_repo}" \
         -b "${pkg_branch}" \
         -h "${pkg_hash}" \
-        -c "${config_file}"
+        -c "${config_file}" | tee -a "${stdout_log}"
 
     ./bin/install_source_package.sh \
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
-        -c "${config_file}"
+        -c "${config_file}" | tee -a "${stdout_log}"
 
     if [[ "${pkg_check}" == "TRUE" ]]
     then
         ./bin/check_source_package.sh \
             -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
-            -c "${config_file}"
+            -c "${config_file}" | tee -a "${stdout_log}"
     else
         echo "validnest_steps check = FALSE" > "${log_dir}/check_${pkg_name}.txt"
     fi
@@ -113,13 +115,13 @@ do
 
 done < "${pkg_csv}"
 
-header_msg "Post-build"
-./bin/export_installed_packages.sh -2 -c "${config_file}"
-echo "Saving end timestamp"
-echo "$(date)" > "${log_dir}/_end_timestamp.txt"
-echo
+header_msg "Post-build" | tee -a "${stdout_log}"
+./bin/export_installed_packages.sh -2 -c "${config_file}" | tee -a "${stdout_log}"
+echo "Saving end timestamp" | tee -a "${stdout_log}"
+echo "$(date)" > "${log_dir}/_end_timestamp.txt" | tee -a "${stdout_log}"
+echo | tee -a "${stdout_log}"
 
-header_msg "Creating HTML log"
+header_msg "Creating HTML log" | tee -a "${stdout_log}"
 ./bin/summarize_logs.sh -i "${pkg_csv}" -c "${config_file}" &> /dev/null
-./bin/generate_html.sh -2 -c "${config_file}"
+./bin/generate_html.sh -2 -c "${config_file}" | tee -a "${stdout_log}"
 
