@@ -43,7 +43,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/read_config.sh -c "${config_file}"
+. ./bin/global_config.sh #-c "${config_file}"
 
 # Define variables based on input
 pkg_tarball="$(readlink -f ${pkg_tarball})"

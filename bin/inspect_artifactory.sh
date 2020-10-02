@@ -33,7 +33,7 @@ do
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/read_config.sh -c "${config_file}"
+. ./bin/global_config.sh #-c "${config_file}"
 
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
 do

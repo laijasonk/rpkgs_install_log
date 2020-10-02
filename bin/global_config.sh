@@ -29,21 +29,33 @@ do
     esac
 done
 
-# Conditions to run script
-if [[ -z "${config_file}" ]]
-then
-    config_file="$(readlink -f ./config)"
-else
-    config_file="$(readlink -f ${config_file})"
-fi
-if [[ ! -f "${config_file}" ]]
-then
-    echo "ERROR: invalid config file '${config_file}'"
-    exit 1
-fi
+# Path to install libraries to (e.g. ./libs-r)
+lib_dir="./layer3/lib"
 
-# Load config variables and convert to absolute pathes
-. ${config_file}
+# Path to export for R_LIBS_USER (e.g. /home/user/libs:/home/user/libs2)
+r_libs_user="./layer3/lib:./layer2/lib:./layer1/lib"
+
+# Path to store source files (e.g. ./src)
+src_dir="./layer3/src"
+
+# Path to store build tarballs and check metadata (e.g. ./build, ./build/check)
+build_dir="./artifactory"
+build_check_dir="./artifactory/check"
+
+# Path to directories containing check info (e.g. ./check)
+check_dir="./artifactory/check"
+
+# Path to store raw logs (e.g. ./build/log)
+log_dir="./artifactory/log"
+
+# Path to html logs (e.g. ./layer1_log)
+html_dir="./log"
+
+# Path to HTML template for logs (e.g. ./bin/html_generator/template)
+html_template="./bin/html_generator/template"
+
+# External repo (e.g. http://cran.r-project.org)
+external_repo="http://cran.r-project.org"
 
 # Create directories if they do not exist
 mkdir -p \

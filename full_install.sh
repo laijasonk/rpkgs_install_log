@@ -9,16 +9,15 @@ wait_between_packages=false
 # Help message
 function usage {
     echo "Usage: $0 -i input.csv"
-    echo "       $0 -i input.csv [-w] [-c config]"
+    echo "       $0 -i input.csv [-w]"
     echo "Flags:"
     echo "       -i input csv containing release packages"
     echo "       -w OPTIONAL stop between each package and wait for user"
-    echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:wc:h" opt
+while getopts "i:w:h" opt
 do
     case $opt in
         i)
@@ -26,9 +25,6 @@ do
             ;;
         w)
             wait_between_commands=true
-            ;;
-        c)
-            config_file="${OPTARG}"
             ;;
         h)
             usage
@@ -39,14 +35,8 @@ do
     esac
 done
 
-# Input CSV must be provided
-if [[ -z "${input_csv}" ]] || [[ ! -f "${input_csv}" ]]
-then
-    usage
-fi
-
 # Variables
-. ./bin/read_config.sh -c "${config_file}"
+. ./bin/global_config.sh
 stdout_log="${log_dir}/_stdout.txt"
 
 # Basic message display between each package
@@ -72,7 +62,7 @@ header_msg "Initializing system" | tee ./stdout.txt
 
 ./bin/reset_install.sh -c "${config_file}" | tee -a ./stdout.txt
 mv ./stdout.txt "${stdout_log}"
-. ./bin/read_config.sh -c "${config_file}" | tee -a "${stdout_log}"
+. ./bin/global_config.sh | tee -a "${stdout_log}"
 
 pkg_csv="${log_dir}/_input.csv"
 ./bin/strip_csv.sh -1 -i "${input_csv}" -o "${pkg_csv}" | tee -a "${stdout_log}"

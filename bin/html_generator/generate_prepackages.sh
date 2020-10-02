@@ -26,7 +26,7 @@ do
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/read_config.sh -c "${config_file}"
+. ./bin/global_config.sh #-c "${config_file}"
 
 # Default paths
 input_csv="${log_dir}/_preinstallation_packages.txt"

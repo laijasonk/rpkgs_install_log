@@ -40,7 +40,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/read_config.sh -c "${config_file}"
+. ./bin/global_config.sh #-c "${config_file}"
 
 # Point to correct output file and reset
 if [[ -z "${status_csv}" ]]

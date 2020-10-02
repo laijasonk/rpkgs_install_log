@@ -29,7 +29,7 @@ do
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/read_config.sh -c "${config_file}"
+. ./bin/global_config.sh #-c "${config_file}"
 
 # Log files
 echo "Removing log files: ${log_dir}"

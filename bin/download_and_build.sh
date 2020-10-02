@@ -78,7 +78,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/read_config.sh -c "${config_file}"
+. ./bin/global_config.sh #-c "${config_file}"
 
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.txt"
