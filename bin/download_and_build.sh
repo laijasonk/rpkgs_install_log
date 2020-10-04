@@ -34,7 +34,7 @@ do
         p) pkg_project="${OPTARG}" ;;
         b) pkg_branch="${OPTARG}" ;;
         h) pkg_hash="${OPTARG}" ;;
-        t) target_dir="readlink -f ${OPTARG}" ;;
+        t) target_dir="${OPTARG}" ;;
         *) usage ;;
     esac
 done

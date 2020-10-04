@@ -29,7 +29,7 @@ do
         i) pkg_archive="$(readlink -f ${OPTARG})" ;;
         a) artifactory=true ;;
         m) download_from_cran=true ;;
-        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
     esac

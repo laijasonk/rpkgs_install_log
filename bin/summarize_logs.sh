@@ -18,7 +18,7 @@ do
     case $opt in
         i) input_csv="$(readlink -f ${OPTARG})" ;;
         o) summary_csv="$(readlink -f ${OPTARG})" ;;
-        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
     esac

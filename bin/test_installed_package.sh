@@ -18,7 +18,7 @@ while getopts "i:t:h" opt
 do
     case $opt in
         i) pkg_name="${OPTARG}" ;;
-        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
     esac

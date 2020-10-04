@@ -17,7 +17,7 @@ do
     case $opt in
         1) pkg_log="_preinstallation_packages.txt" ;;
         2) pkg_log="_postinstallation_packages.txt" ;;
-        t) target_dir="$(readlink -f $OPTARG)" ;;
+        t) target_dir="$OPTARG" ;;
         h) usage ;;
         *) usage ;;
     esac

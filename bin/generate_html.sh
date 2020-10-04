@@ -21,7 +21,7 @@ do
         1) log_type=1 ;;
         2) log_type=2 ;;
         3) log_type=3 ;;
-        t) target_dir=$(readlink -f ${OPTARG}) ;;
+        t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
     esac

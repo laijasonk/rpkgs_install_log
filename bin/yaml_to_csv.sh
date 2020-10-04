@@ -21,7 +21,7 @@ do
     case $opt in
         i) input_yaml="$(readlink -f ${OPTARG})" ;;
         o) input_csv="$(readlink -f ${OPTARG})" ;;
-        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
     esac

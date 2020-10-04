@@ -6,7 +6,7 @@
 # Help message
 function usage {
     echo "Usage: $0"
-    echo "       $0 [-t ${pwd}]"
+    echo "       $0 [-t $(pwd)]"
     echo "Flags:"
     echo "       -t OPTIONAL path to target directory"
     exit 1
@@ -16,15 +16,15 @@ function usage {
 while getopts "t:h" opt
 do
     case $opt in
-        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
     esac
 done
 
 function assign_arg_variables() {
-    varfile=${1}
-    vardefault=${2}
+    varfile="${1}"
+    vardefault="${2}"
 
     if [[ ! -f "${varfile}" ]]
     then
@@ -39,6 +39,7 @@ if [[ -z "${target_dir}" ]]
 then
     target_dir="$(pwd)"
 fi
+mkdir -p "${target_dir}"
 export target_dir="$(readlink -f ${target_dir})"
 
 # Path to install libraries to (e.g. ./libs-r)
@@ -91,6 +92,5 @@ export rbinary="$(assign_arg_variables ${log_dir}/_rbinary.txt \"$(which R)\")"
 export rscript="$(assign_arg_variables ${log_dir}/_rscript.txt \"$(which Rscript)\")"
 
 # Set lib paths for R
-export R_LIBS="${rlibs}"
-export R_LIBS_USER="${lib_dir}"
+export R_LIBS=${lib_dir}:${rlibs}
 

@@ -13,7 +13,7 @@ function usage {
 while getopts "t:h" opt
 do
     case $opt in
-        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
     esac
