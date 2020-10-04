@@ -35,6 +35,12 @@ do
     esac
 done
 
+# Input CSV must be provided
+if [[ -z "${input_csv}" ]] || [[ ! -f "${input_csv}" ]]
+then
+    usage
+fi
+
 # Variables
 . ./bin/global_config.sh
 stdout_log="${log_dir}/_stdout.txt"

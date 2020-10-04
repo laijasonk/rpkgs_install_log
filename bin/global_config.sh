@@ -30,20 +30,20 @@ do
 done
 
 # Path to install libraries to (e.g. ./libs-r)
-lib_dir="./layer3/lib"
+lib_dir="./libs"
 
 # Path to export for R_LIBS_USER (e.g. /home/user/libs:/home/user/libs2)
-r_libs_user="./layer3/lib:./layer2/lib:./layer1/lib"
+r_libs_user="./libs"
 
 # Path to store source files (e.g. ./src)
-src_dir="./layer3/src"
+src_dir="./buildfiles/src"
 
 # Path to store build tarballs and check metadata (e.g. ./build, ./build/check)
 build_dir="./artifactory"
-build_check_dir="./artifactory/check"
+build_check_dir="./artifactory"
 
 # Path to directories containing check info (e.g. ./check)
-check_dir="./artifactory/check"
+check_dir="./buildfiles/check"
 
 # Path to store raw logs (e.g. ./build/log)
 log_dir="./artifactory/log"
