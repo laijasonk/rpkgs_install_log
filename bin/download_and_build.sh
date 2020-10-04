@@ -19,37 +19,23 @@ function usage {
     echo "       -p github project repository name"
     echo "       -b github branch name"
     echo "       -h github SHA hash"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "n:v:s:o:p:b:h:" opt
+while getopts "n:v:s:o:p:b:h:t:" opt
 do
     case $opt in
-        n)
-            pkg_name="${OPTARG}"
-            ;;
-        v)
-            pkg_version="${OPTARG}"
-            ;;
-        s)
-            pkg_source="${OPTARG}"
-            ;;
-        o)
-            pkg_org="${OPTARG}"
-            ;;
-        p)
-            pkg_project="${OPTARG}"
-            ;;
-        b)
-            pkg_branch="${OPTARG}"
-            ;;
-        h)
-            pkg_hash="${OPTARG}"
-            ;;
-        *)
-            usage
-            ;;
+        n) pkg_name="${OPTARG}" ;;
+        v) pkg_version="${OPTARG}" ;;
+        s) pkg_source="${OPTARG}" ;;
+        o) pkg_org="${OPTARG}" ;;
+        p) pkg_project="${OPTARG}" ;;
+        b) pkg_branch="${OPTARG}" ;;
+        h) pkg_hash="${OPTARG}" ;;
+        t) target_dir="readlink -f ${OPTARG}" ;;
+        *) usage ;;
     esac
 done
 
@@ -74,7 +60,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.txt"

@@ -6,30 +6,26 @@
 # Help message
 function usage {
     echo "Usage: $0 -i input.csv"
-    echo
+    echo "       $0 -i input.csv [-t $(pwd)]"
     echo "Flags:"
     echo "       -i path to input csv"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:h" opt
+while getopts "i:t:h" opt
 do
     case $opt in
-        i)
-            input_csv="$(readlink -f ${OPTARG})"
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        i) input_csv="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
 do

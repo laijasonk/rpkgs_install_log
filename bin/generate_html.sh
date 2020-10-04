@@ -10,33 +10,25 @@ function usage {
     echo "       -1 full install log"
     echo "       -2 build artifactory log"
     echo "       -3 install artifactory log"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "123:h" opt
+while getopts "123t:h" opt
 do
     case $opt in
-        1)
-            log_type=1
-            ;;
-        2)
-            log_type=2
-            ;;
-        3)
-            log_type=3
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        1) log_type=1 ;;
+        2) log_type=2 ;;
+        3) log_type=3 ;;
+        t) target_dir=$(readlink -f ${OPTARG}) ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Sidebar depends on type of log
 if [[ "${log_type}" -eq 1 ]]

@@ -9,25 +9,21 @@ artifactory=false
 # Help message
 function usage {
     echo "Usage: $0 -i pkg_tarball"
-    echo
+    echo "       $0 -i pkg_tarball [-t $(pwd)]"
     echo "Flags:"
     echo "       -i path to the source tarball (after R CMD build)"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:h" opt
+while getopts "i:t:h" opt
 do
     case $opt in
-        i)
-            pkg_tarball="$(readlink -f ${OPTARG})"
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        i) pkg_tarball="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
@@ -38,7 +34,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Define variables based on input
 pkg_tarball="$(readlink -f ${pkg_tarball})"

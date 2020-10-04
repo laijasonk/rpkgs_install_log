@@ -3,27 +3,24 @@
 # Help message
 function usage {
     echo "Usage: $0"
-    echo
+    echo "       $0 [-t $(pwd)]"
     echo "Flags:"
-    echo "       -h Show this help message"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "h" opt
+while getopts "t:h" opt
 do
     case $opt in
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 
 
@@ -51,11 +48,11 @@ do
             <tr>
                 <td class=\"summary-left\">${pkg_name}-${pkg_version}</td>"
 
-    if [[ "${build}" -eq 0 ]]
+    if [[ "${test}" -eq 0 ]]
     then
         html="${html}
                 <td class=\"summary-success\"><a href=\"package_${pkg_name}_test.html#${pkg_name}_test\">pass</a></td>"
-    elif [[ "${build}" -eq 2 ]]
+    elif [[ "${test}" -eq 2 ]]
     then
         html="${html}
                 <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_test.html#${pkg_name}_test\">skip</a></td>"

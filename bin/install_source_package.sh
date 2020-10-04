@@ -13,32 +13,25 @@ function usage {
     echo "Usage: $0 -i pkg_archive"
     echo "       $0 -i pkg_archive [-a]"
     echo "       $0 -i pkg_archive [-m]"
+    echo "       $0 -i pkg_archive [-t $(pwd)]"
     echo "Flags:"
     echo "       -i path to source tarball"
     echo "       -a OPTIONAL artifactory install"
     echo "       -m OPTIONAL install missing dependencies from CRAN"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:amc:h" opt
+while getopts "i:amt:h" opt
 do
     case $opt in
-        i)
-            pkg_archive="$(readlink -f ${OPTARG})"
-            ;;
-        a)
-            artifactory=true
-            ;;
-        m)
-            download_from_cran=true
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        i) pkg_archive="$(readlink -f ${OPTARG})" ;;
+        a) artifactory=true ;;
+        m) download_from_cran=true ;;
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
@@ -49,7 +42,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.txt"

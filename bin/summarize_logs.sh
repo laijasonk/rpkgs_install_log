@@ -4,28 +4,23 @@
 function usage {
     echo "Usage: $0 -i input.csv"
     echo "       $0 -i input.csv [-o summary.csv]"
+    echo "       $0 -i input.csv [-t $(pwd)]"
     echo "Flags:"
     echo "       -i path to input csv file"
     echo "       -o OPTIONAL path to output summary csv"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:o:h" opt
+while getopts "i:o:t:h" opt
 do
     case $opt in
-        i)
-            input_csv="$(readlink -f ${OPTARG})"
-            ;;
-        o)
-            summary_csv="$(redlink -f ${OPTARG})"
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        i) input_csv="$(readlink -f ${OPTARG})" ;;
+        o) summary_csv="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
@@ -36,7 +31,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Point to correct output file and reset
 if [[ -z "${status_csv}" ]]

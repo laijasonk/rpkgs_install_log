@@ -3,27 +3,24 @@
 # Help message
 function usage {
     echo "Usage: $0"
-    echo
+    echo "       $0 [-t $(pwd)]"
     echo "Flags:"
-    echo "       -h Show this help message"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "h" opt
+while getopts "t:h" opt
 do
     case $opt in
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Default paths
 output_html="${html_dir}/pages/install.html"

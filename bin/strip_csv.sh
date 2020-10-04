@@ -6,8 +6,8 @@
 # Help message
 function usage {
     echo "Usage: $0 -i input.csv"
-    echo "       $0 -i input.csv -o output.csv"
-    echo "       $0 -i input.csv [-1] -o output.csv"
+    echo "       $0 -i input.csv [-o output.csv]"
+    echo "       $0 -i input.csv [-1] [-o output.csv]"
     echo "Flags:"
     echo "       -i path to input csv"
     echo "       -o OPTIONAL path to output csv (default: ./input.csv_stripped)"
@@ -19,21 +19,11 @@ function usage {
 while getopts "i:o:1h" opt
 do
     case $opt in
-        i)
-            input_csv="$(readlink -f ${OPTARG})"
-            ;;
-        o)
-            output_csv="${OPTARG}"
-            ;;
-        1)
-            header=1
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        i) input_csv="$(readlink -f ${OPTARG})" ;;
+        o) output_csv="${OPTARG}" ;;
+        1) header=1 ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 

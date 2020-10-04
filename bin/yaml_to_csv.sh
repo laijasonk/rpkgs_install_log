@@ -7,28 +7,23 @@
 function usage {
     echo "Usage: $0 -i input.yaml"
     echo "       $0 -i input.yaml [-o input.csv]"
+    echo "       $0 -i input.yaml [-t $(pwd)]"
     echo "Flags:"
     echo "       -i path and filename to input yaml file"
     echo "       -o OPTIONAL path to output csv file (default: ./input.csv)"
+    echo "       -o OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:o:h:" opt
+while getopts "i:o:t:h:" opt
 do
     case $opt in
-        i)
-            input_yaml="$(readlink -f ${OPTARG})"
-            ;;
-        o)
-            input_csv="$(readlink -f ${OPTARG})"
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        i) input_yaml="$(readlink -f ${OPTARG})" ;;
+        o) input_csv="$(readlink -f ${OPTARG})" ;;
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
@@ -39,7 +34,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Set input csv to default if not given
 if [[ -z "${input_csv}" ]]

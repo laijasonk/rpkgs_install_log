@@ -2,30 +2,24 @@
 
 # Help message
 function usage {
-    echo "Usage: $0 -1"
-    echo "       $0 -2"
+    echo "Usage: $0 -1 [-t $(pwd)]"
+    echo "       $0 -2 [-t $(pwd)]"
     echo "Flags:"
     echo "       -1 Save pre-installation packages"
     echo "       -2 Save post-installation packages"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Argument flag handling
-while getopts "12c:h" opt
+while getopts "12t:h" opt
 do
     case $opt in
-        1)
-            pkg_log="_preinstallation_packages.txt"
-            ;;
-        2)
-            pkg_log="_postinstallation_packages.txt"
-            ;;
-        h)
-            usage
-            ;;
-        *)
-            usage
-            ;;
+        1) pkg_log="_preinstallation_packages.txt" ;;
+        2) pkg_log="_postinstallation_packages.txt" ;;
+        t) target_dir="$(readlink -f $OPTARG)" ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
@@ -36,7 +30,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh
+. ./bin/global_config.sh -t "${target_dir}"
 
 # Place log in log directory
 pkg_log="${log_dir}/${pkg_log}"

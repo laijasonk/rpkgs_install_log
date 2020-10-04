@@ -1,9 +1,27 @@
-#!/usr/bin/env gash
+#!/usr/bin/env bash
 #
 # Read config file
 #
 
-# Functions
+# Help message
+function usage {
+    echo "Usage: $0"
+    echo "       $0 [-t ${pwd}]"
+    echo "Flags:"
+    echo "       -t OPTIONAL path to target directory"
+    exit 1
+}
+
+# Argument flag handling
+while getopts "t:h" opt
+do
+    case $opt in
+        t) target_dir="$(readlink -f ${OPTARG})" ;;
+        h) usage ;;
+        *) usage ;;
+    esac
+done
+
 function assign_arg_variables() {
     varfile=${1}
     vardefault=${2}
@@ -16,8 +34,12 @@ function assign_arg_variables() {
     fi
 }
 
-# Define where the install will be placed
-export target_dir="$(assign_arg_variables ./buildfiles/rawlog/_target_dir.txt $(pwd))"
+# Conditions to run script
+if [[ -z "${target_dir}" ]]
+then
+    target_dir="$(pwd)"
+fi
+export target_dir="$(readlink -f ${target_dir})"
 
 # Path to install libraries to (e.g. ./libs-r)
 lib_dir="${target_dir}/libs"
@@ -39,10 +61,11 @@ log_dir="${target_dir}/buildfiles/rawlog"
 html_dir="${target_dir}/log"
 
 # Path to HTML template for logs (e.g. ./bin/html_generator/template)
-html_template="${target_dir}/bin/html_generator/template"
+html_template="./bin/html_generator/template"
 
 # Create directories if they do not exist
 mkdir -p \
+    "${target_dir}" \
     "${lib_dir}" \
     "${src_dir}" \
     "${build_dir}" \
@@ -69,4 +92,5 @@ export rscript="$(assign_arg_variables ${log_dir}/_rscript.txt \"$(which Rscript
 
 # Set lib paths for R
 export R_LIBS="${rlibs}"
+export R_LIBS_USER="${lib_dir}"
 
