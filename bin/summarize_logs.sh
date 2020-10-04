@@ -3,16 +3,15 @@
 # Help message
 function usage {
     echo "Usage: $0 -i input.csv"
-    echo "       $0 -i input.csv [-o summary.csv] [-c config]"
+    echo "       $0 -i input.csv [-o summary.csv]"
     echo "Flags:"
     echo "       -i path to input csv file"
     echo "       -o OPTIONAL path to output summary csv"
-    echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:o:c:h" opt
+while getopts "i:o:h" opt
 do
     case $opt in
         i)
@@ -20,9 +19,6 @@ do
             ;;
         o)
             summary_csv="$(redlink -f ${OPTARG})"
-            ;;
-        c)
-            config_file="${OPTARG}"
             ;;
         h)
             usage
@@ -40,7 +36,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh #-c "${config_file}"
+. ./bin/global_config.sh
 
 # Point to correct output file and reset
 if [[ -z "${status_csv}" ]]

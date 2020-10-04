@@ -19,12 +19,11 @@ function usage {
     echo "       -p github project repository name"
     echo "       -b github branch name"
     echo "       -h github SHA hash"
-    echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
 # Argument flag handling
-while getopts "n:v:s:o:p:b:h:c:" opt
+while getopts "n:v:s:o:p:b:h:" opt
 do
     case $opt in
         n)
@@ -47,9 +46,6 @@ do
             ;;
         h)
             pkg_hash="${OPTARG}"
-            ;;
-        c)
-            config_file="${OPTARG}"
             ;;
         *)
             usage
@@ -78,7 +74,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh #-c "${config_file}"
+. ./bin/global_config.sh
 
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.txt"
@@ -146,7 +142,7 @@ fi
  
 echo "Building '${pkg_name}' from '${src_dir}'"
 cd "${src_dir}"
-R CMD build --no-build-vignettes "${pkg_build}" &> "${build_log}"
+eval -- "${rbinary} CMD build --no-build-vignettes \"${pkg_build}\"" &> "${build_log}"
 tarball="$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
 cd "${curr_dir}"
    

@@ -12,12 +12,11 @@ artifactory=false
 function usage {
     echo "Usage: $0 -i pkg_archive"
     echo "       $0 -i pkg_archive [-a]"
-    echo "       $0 -i pkg_archive [-m] [-c config]"
+    echo "       $0 -i pkg_archive [-m]"
     echo "Flags:"
     echo "       -i path to source tarball"
     echo "       -a OPTIONAL artifactory install"
     echo "       -m OPTIONAL install missing dependencies from CRAN"
-    echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
@@ -33,9 +32,6 @@ do
             ;;
         m)
             download_from_cran=true
-            ;;
-        c)
-            config_file="${OPTARG}"
             ;;
         h)
             usage
@@ -53,7 +49,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh #-c "${config_file}"
+. ./bin/global_config.sh
 
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.txt"

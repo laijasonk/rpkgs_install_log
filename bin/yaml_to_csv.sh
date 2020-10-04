@@ -6,16 +6,15 @@
 # Help message
 function usage {
     echo "Usage: $0 -i input.yaml"
-    echo "       $0 -i input.yaml [-o input.csv] [-c config]"
+    echo "       $0 -i input.yaml [-o input.csv]"
     echo "Flags:"
     echo "       -i path and filename to input yaml file"
     echo "       -o OPTIONAL path to output csv file (default: ./input.csv)"
-    echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:o:c:h:" opt
+while getopts "i:o:h:" opt
 do
     case $opt in
         i)
@@ -23,9 +22,6 @@ do
             ;;
         o)
             input_csv="$(readlink -f ${OPTARG})"
-            ;;
-        c)
-            config_file="${OPTARG}"
             ;;
         h)
             usage
@@ -43,7 +39,7 @@ then
 fi
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh #-c "${config_file}"
+. ./bin/global_config.sh
 
 # Set input csv to default if not given
 if [[ -z "${input_csv}" ]]
@@ -52,10 +48,10 @@ then
 fi
 
 echo "Converting '${input_yaml}' to '${input_csv}'"
-Rscript - <<EOF
+eval -- "${rscript} - <<EOF
 library(yaml)
 
-x <- read_yaml("${input_yaml}")[[1]]
+x <- read_yaml(\"${input_yaml}\")[[1]]
 out <- lapply(x, function(pkg) {
   pkg_name <- pkg\$package
   pkg_version <- pkg\$version
@@ -106,8 +102,8 @@ out <- lapply(x, function(pkg) {
 df <- do.call(rbind, out)
 
 row.names(df) <- NULL
-write.csv(df, "${input_csv}")
-EOF
+write.csv(df, \"${input_csv}\")
+EOF"
 
 echo "Cleaning '${input_csv}' for scripts"
 sed -i "s/[\"'‘’]//g" "${input_csv}"

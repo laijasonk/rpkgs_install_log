@@ -6,22 +6,18 @@
 # Help message
 function usage {
     echo "Usage: $0 -i input.csv"
-    echo "       $0 -i input.csv [-c config]"
+    echo
     echo "Flags:"
     echo "       -i path to input csv"
-    echo "       -c OPTIONAL path to config file"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:c:h" opt
+while getopts "i:h" opt
 do
     case $opt in
         i)
             input_csv="$(readlink -f ${OPTARG})"
-            ;;
-        c)
-            config_file="${OPTARG}"
             ;;
         h)
             usage
@@ -33,7 +29,7 @@ do
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh #-c "${config_file}"
+. ./bin/global_config.sh
 
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
 do

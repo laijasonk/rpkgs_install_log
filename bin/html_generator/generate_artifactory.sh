@@ -2,10 +2,10 @@
 
 # Help message
 function usage {
-    echo "Usage: $0 [-c config]"
+    echo "Usage: $0"
     echo
     echo "Flags:"
-    echo "       -c OPTIONAL path to config file"
+    echo "       -h Show this help message"
     exit 1
 }
 
@@ -13,9 +13,6 @@ function usage {
 while getopts "c:h" opt
 do
     case $opt in
-        c)
-            config_file="${OPTARG}"
-            ;;
         h)
             usage
             ;;
@@ -26,7 +23,7 @@ do
 done
 
 # Load config variables and convert to absolute pathes
-. ./bin/global_config.sh #-c "${config_file}"
+. ./bin/global_config.sh
 
 # Default paths
 output_html="${html_dir}/pages/artifactory.html"
