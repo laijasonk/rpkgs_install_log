@@ -81,17 +81,18 @@ then
     pkg_build="${src_dir}/${pkg_name}"
 
     echo "Searching for valid '${pkg_name}' URL to download"
-    if [[ $(wget -S --spider "${pkg_url_1}" 2>&1 | grep 'HTTP/1.1 200 OK') ]]
+    if [[ "$(curl --write-out '%{http_code}' --silent --output /dev/null ${pkg_url_1} | grep -c '200')" -ge 1 ]]
     then
         echo "Downloading '${pkg_name}' (latest) to '${src_dir}'"
-        wget --continue -O "${pkg_archive}" "${pkg_url_1}" &> "${pkg_download}"
-    elif [[ $(wget -S --spider "${pkg_url_2}" 2>&1 | grep 'HTTP/1.1 200 OK') ]]
+        curl -o "${pkg_archive}" "${pkg_url_1}" &> "${pkg_download}"
+    elif [[ "$(curl --write-out '%{http_code}' --silent --output /dev/null ${pkg_url_2} | grep -c '200')" -ge 1 ]]
     then
         echo "Downloading '${pkg_name}' (archive) to '${src_dir}'"
-        wget --continue -O "${pkg_archive}" "${pkg_url_2}" &> "${pkg_download}"
+        curl -o "${pkg_archive}" "${pkg_url_2}" &> "${pkg_download}"
     else
         echo "Could not download '${pkg_name}' (see log)"
         echo "Could not download from '${pkg_url_1}' or '${pkg_url_2}'" &> "${pkg_download}"
+        exit 1
     fi
 
     echo "Extracting '${pkg_name}' to '${src_dir}'"
@@ -109,26 +110,29 @@ then
 
     if [[ ! -z "${pkg_hash}" ]]
     then
-        pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_hash}.zip"
+        pkg_url="https://codeload.github.com/${pkg_org}/${pkg_project}/zip/${pkg_hash}"
         pkg_build="${src_dir}/${pkg_name}-${pkg_hash}"
-    elif [[ ! -z "{$pkg_branch}" ]]
+    elif [[ ! -z "${pkg_branch}" ]]
     then
-        pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_branch}.zip"
+        pkg_url="https://codeload.github.com/${pkg_org}/${pkg_project}/zip/${pkg_branch}"
         pkg_branch_clean="$(echo ${pkg_branch} | sed 's/\//-/g')"
         pkg_build="${src_dir}/${pkg_name}-${pkg_branch_clean}"
+    else
+        echo "Could not download '${pkg_name}'"
+        echo "Could not download because neither commit hash nor branch name have been specified" &> "${pkg_download}"
+        exit 1
     fi
 
     echo "Downloading '${pkg_name}' to '${src_dir}'"
-    wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_download}"
+    curl -o "${pkg_archive}" "${pkg_url}" &> "${pkg_download}"
 
     echo "Extracting '${pkg_name}' to '${src_dir}'"
     unzip -o "${pkg_archive}" -d "${src_dir}" &> "${pkg_extract}"
 
 elif [[ "${pkg_source}" == "nest" ]]
 then
-    
     # TODO
-
+    :
 fi
  
 echo "Building '${pkg_name}' from '${src_dir}'"
