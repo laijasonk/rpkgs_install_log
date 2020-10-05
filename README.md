@@ -17,7 +17,7 @@ Flags:
        -t OPTIONAL target directory (default: current directory)
 ```
 
-## Examples:
+## Examples
 
 ### Example: Full command to install one YAML
 
@@ -25,7 +25,9 @@ Convert the YAML into a CSV file, then run a full install with the CSV file. Thi
 
 ```
 
-./bin/yaml_to_csv.sh -1 -i examples/layer1.csv -o ./layer1.csv
+./bin/yaml_to_csv.sh \
+    -i examples/layer1.csv \
+    -o ./layer1.csv
 
 ./full_install.sh \
     -i ./layer1.csv \
@@ -52,7 +54,7 @@ mv ./log ./layer3_log
 
 ### Example: Install 3 layers into separate directories
 
-Install from three CSV files into three rlibs pathes. The target directory is different for every layer. Since layer2 depends on layer1 and layer3 depends on layer2, the libpaths must be specified accordingly.
+Install from three CSV files into three rlibs paths. The target directory is different for every layer. Since layer2 depends on layer1 and layer3 depends on layer2, the libpaths must be specified accordingly.
 
 ```
 ./full_install.sh \
@@ -70,53 +72,3 @@ Install from three CSV files into three rlibs pathes. The target directory is di
     -t layer3 
 ```
 
-### ~~Example: Full install~~
-
-~~Full installation for a three layers of R packages. For simplicity, every layer is installed in a separate directory; however, different layers may share directories when defined in the \*.config file~~
-
-```
-cd /path/to/parent/directory
-
-# Layer 1
-#./full_install.sh -i ./examples/layer1.csv -c ./examples/layer1.config
-
-# Layer 2
-#./full_install.sh -i ./examples/layer2.csv -c ./examples/layer2.config
-
-# Layer 3
-#./full_install.sh -i ./examples/layer3.csv -c ./examples/layer3.config
-```
-
-### ~~Example: Build artifactory~~
-
-~~Build three layers of R packages (each dependent on the last) into artifactories that can be later installed. The example input builds them into separate directories, but the artifactory directories could have been combined if specified that way in the \*.config file.~~
-
-```
-cd /path/to/parent/directory
-
-# Layer 1
-#./artifactory_build.sh -i ./examples/layer1.csv -c ./examples/layer1.config
-
-# Layer 2
-#./artifactory_build.sh -i ./examples/layer2.csv -c ./examples/layer2.config
-
-# Layer 3
-#./artifactory_build.sh -i ./examples/layer3.csv -c ./examples/layer3.config
-```
-
-### ~~Example: Install from artifactory~~
-
-~~Install three layers of R packages from existing artifactories. This example is dependent on the fact that artifactories has already been prior built. The \*.config file must point to the correct artifactory paths.~~
-
-```
-cd /path/to/parent/directory
-
-# Layer 1
-#./artifactory_install.sh -i ./examples/layer1.csv -c ./examples/layer1.config
-
-# Layer 2
-#./artifactory_install.sh -i ./examples/layer2.csv -c ./examples/layer2.config
-
-# Layer 3
-#./artifactory_install.sh -i ./examples/layer3.csv -c ./examples/layer3.config
-```

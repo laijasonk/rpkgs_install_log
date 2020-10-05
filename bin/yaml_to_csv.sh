@@ -11,7 +11,7 @@ function usage {
     echo "Flags:"
     echo "       -i path and filename to input yaml file"
     echo "       -o OPTIONAL path to output csv file (default: ./input.csv)"
-    echo "       -o OPTIONAL path to target directory"
+    echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
@@ -43,31 +43,31 @@ then
 fi
 
 echo "Converting '${input_yaml}' to '${input_csv}'"
-eval -- "${rscript} - <<EOF
+Rscript - <<EOF
 library(yaml)
 
-x <- read_yaml(\"${input_yaml}\")[[1]]
+x <- read_yaml('${input_yaml}')[[1]]
 out <- lapply(x, function(pkg) {
   pkg_name <- pkg\$package
   pkg_version <- pkg\$version
   pkg_source <- pkg\$source
-  if ("organization" %in% names(pkg\$source_info)) {
+  if ('organization' %in% names(pkg\$source_info)) {
     pkg_org <- pkg\$source_info\$organization
   } else {
     pkg_org <- ''
   }
-  if (pkg_source == "github") {
-    if ("repository" %in% names(pkg\$source_info)) {
+  if (pkg_source == 'github') {
+    if ('repository' %in% names(pkg\$source_info)) {
       pkg_repo <- pkg\$source_info\$repository
     } else {
       pkg_repo <- pkg_name
     }
-    if ("branch" %in% names(pkg\$source_info)) {
+    if ('branch' %in% names(pkg\$source_info)) {
       pkg_branch <- pkg\$source_info\$branch
     } else {
       pkg_branch <- ''
     }
-    if ("commit_sha" %in% names(pkg\$source_info)) {
+    if ('commit_sha' %in% names(pkg\$source_info)) {
       pkg_hash <- pkg\$source_info\$commit_sha
     } else {
       pkg_hash <- ''
@@ -77,7 +77,7 @@ out <- lapply(x, function(pkg) {
     pkg_branch <- ''
     pkg_hash <- ''
   }
-  if ("check" %in% names(pkg\$validnest_steps)) {
+  if ('check' %in% names(pkg\$validnest_steps)) {
     pkg_check <- pkg\$validnest_steps\$check
   } else {
     pkg_check <- TRUE
@@ -97,10 +97,11 @@ out <- lapply(x, function(pkg) {
 df <- do.call(rbind, out)
 
 row.names(df) <- NULL
-write.csv(df, \"${input_csv}\")
-EOF"
+write.csv(df, '${input_csv}')
+EOF
 
 echo "Cleaning '${input_csv}' for scripts"
-sed -i "s/[\"'‘’]//g" "${input_csv}"
-cat "${input_csv}" | tail +2 | sed 's/^[0-9]*,//g' > "${input_csv}.bak" && mv "${input_csv}.bak" "${input_csv}"
+#sed -i "s/[\"'‘’]//g" "${input_csv}"
+#cat "${input_csv}" | tail +2 | sed 's/^[0-9]*,//g' > "${input_csv}.bak" && mv "${input_csv}.bak" "${input_csv}"
+sed -i 's/^[0-9"]*,//g' "${input_csv}"
 
