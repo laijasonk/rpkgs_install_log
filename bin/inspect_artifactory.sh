@@ -27,7 +27,7 @@ done
 # Load config variables and convert to absolute pathes
 . ./bin/global_config.sh -t "${target_dir}"
 
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_test
 do
     # Status of the file
     artifact_file="${build_dir}/${pkg_name}_${pkg_version}.tar.gz"

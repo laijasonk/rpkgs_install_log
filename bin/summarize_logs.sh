@@ -41,7 +41,7 @@ fi
 cat /dev/null > "${status_csv}"
 
 # Loop through input csv file
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 do
     wget_log="${log_dir}/wget_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
@@ -135,7 +135,7 @@ do
     then
         test_status=1
     fi
-    if [[ ! -f "${test_log}" ]] || [[ "${status3}" -gt 0 ]]
+    if [[ ! -f "${test_log}" ]] || [[ "${status3}" -gt 0 ]] || [[ "${pkg_test}" == "FALSE" ]]
     then
         test_status=2
     fi

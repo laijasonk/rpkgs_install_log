@@ -45,7 +45,7 @@ do
         t) 
             mkdir -p "${OPTARG}"
             target_dir="$(readlink -f ${OPTARG})"
-            cmd="${cmd} -o ${OPTARG}" ;;
+            cmd="${cmd} -t ${OPTARG}" ;;
         h) 
             usage ;;
         *) 
@@ -112,7 +112,7 @@ echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
 echo | tee -a "${stdout_log}"
 
 # Build, install, check, and test every package
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 do
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
@@ -139,9 +139,14 @@ do
         echo "validnest_steps check = FALSE" > "${log_dir}/check_${pkg_name}.txt"
     fi
     
-    ./bin/test_installed_package.sh \
-        -i "${pkg_name}" \
-        -t "${target_dir}" | tee -a "${stdout_log}"
+    if [[ "${pkg_test}" == "TRUE" ]]
+    then
+        ./bin/test_installed_package.sh \
+            -i "${pkg_name}" \
+            -t "${target_dir}" | tee -a "${stdout_log}"
+    else
+        echo "validnest_steps test = FALSE" > "${log_dir}/test_${pkg_name}.txt"
+    fi
 
     echo
 

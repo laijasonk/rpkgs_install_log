@@ -29,7 +29,7 @@ input_csv=$(readlink -f ${log_dir}/_input.csv)
 html=""
 log_html=""
 list_html=""
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 do
     list_html="${list_html}
                 <!--li><a href=\"#${pkg_name}\">${pkg_name}</a-->

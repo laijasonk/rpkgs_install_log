@@ -84,7 +84,7 @@ cat "${html_template}/download_bottom.html" >> "${output_html}"
 # Default paths
 input_csv=$(readlink -f ${log_dir}/_input.csv)
 
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
+while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 do
 
     output_html="${html_dir}/pages/package_${pkg_name}_download.html"
