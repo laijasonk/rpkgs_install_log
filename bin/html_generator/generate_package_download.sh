@@ -95,7 +95,7 @@ do
             <p>Logs for download and extract for ${pkg_name} from ${pkg_source}.</p>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_download\" >Download log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/wget_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            <iframe class=\"log text-above\" src=\"../log/download_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
             
             <p class=\"above-caption left\"><a id=\"${pkg_name}_download\" >Extract log</a></p>
             <iframe class=\"log text-above\" src=\"../log/extract_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>

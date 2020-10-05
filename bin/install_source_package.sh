@@ -66,7 +66,7 @@ function install_package() {
     # Install package
     R CMD INSTALL \
         --install-tests \
-        -l "${lib_dir}" \
+        --library=${lib_dir} \
         "${pkg_archive}" &> "${install_log}"
 
     # Install dependencies if missing

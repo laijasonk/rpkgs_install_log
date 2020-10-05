@@ -167,6 +167,7 @@ iframe.log {
     font-family: "Courier New", Courier, monospace;
     font-size: smaller;
     padding: 0.5em;
+    word-wrap: break-word;
 }
 
 .pkg-table {

@@ -73,7 +73,7 @@ then
     # Define variables
     ext="tar.gz"
     pkg_archive="${src_dir}/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_wget="${log_dir}/wget_${pkg_name}.txt"
+    pkg_download="${log_dir}/download_${pkg_name}.txt"
     pkg_extract="${log_dir}/extract_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
     pkg_url_1="https://cran.r-project.org/src/contrib/${pkg_name}_${pkg_version}.tar.gz"
@@ -84,14 +84,14 @@ then
     if [[ $(wget -S --spider "${pkg_url_1}" 2>&1 | grep 'HTTP/1.1 200 OK') ]]
     then
         echo "Downloading '${pkg_name}' (latest) to '${src_dir}'"
-        wget --continue -O "${pkg_archive}" "${pkg_url_1}" &> "${pkg_wget}"
+        wget --continue -O "${pkg_archive}" "${pkg_url_1}" &> "${pkg_download}"
     elif [[ $(wget -S --spider "${pkg_url_2}" 2>&1 | grep 'HTTP/1.1 200 OK') ]]
     then
         echo "Downloading '${pkg_name}' (archive) to '${src_dir}'"
-        wget --continue -O "${pkg_archive}" "${pkg_url_2}" &> "${pkg_wget}"
+        wget --continue -O "${pkg_archive}" "${pkg_url_2}" &> "${pkg_download}"
     else
         echo "Could not download '${pkg_name}' (see log)"
-        echo "Could not download from '${pkg_url_1}' or '${pkg_url_2}'" &> "${pkg_wget}"
+        echo "Could not download from '${pkg_url_1}' or '${pkg_url_2}'" &> "${pkg_download}"
     fi
 
     echo "Extracting '${pkg_name}' to '${src_dir}'"
@@ -103,7 +103,7 @@ then
     # Define variables
     ext="zip"
     pkg_archive="${src_dir}/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_wget="${log_dir}/wget_${pkg_name}.txt"
+    pkg_download="${log_dir}/download_${pkg_name}.txt"
     pkg_extract="${log_dir}/extract_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
 
@@ -119,10 +119,15 @@ then
     fi
 
     echo "Downloading '${pkg_name}' to '${src_dir}'"
-    wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_wget}"
+    wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_download}"
 
     echo "Extracting '${pkg_name}' to '${src_dir}'"
     unzip -o "${pkg_archive}" -d "${src_dir}" &> "${pkg_extract}"
+
+elif [[ "${pkg_source}" == "nest" ]]
+then
+    
+    # TODO
 
 fi
  

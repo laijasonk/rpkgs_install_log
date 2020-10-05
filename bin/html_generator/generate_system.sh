@@ -27,14 +27,15 @@ output_html="${html_dir}/pages/system.html"
 
 # System information
 base_path=$(pwd)
+target_path=${target_dir}
 machine_host=$(hostname)
-rbinary=$(which R)
-rscriptbinary=$(which Rscript)
+rbinary=$(cat ${log_dir}/_rbinary.txt)
+rscriptbinary=$(cat ${log_dir}/_rscript.txt)
 rinfo=$(R --version)
 rversion=$(echo $rinfo | sed 's/-- .*//g')
 platform=$(echo $rinfo | sed -e 's/^.*Platform: //g' -e 's/R is free software.*$//')
 kernelrelease=$(uname -r)
-rlib=$(R_LIBS_USER=${R_LIBS_USER} Rscript -e ".libPaths()")
+rlib="$(echo ${lib_dir}:${rlibs} | sed 's/:/, /g')"
 
 start_timestamp="$(cat ${log_dir}/_start_timestamp.txt)"
 end_timestamp="$(cat ${log_dir}/_end_timestamp.txt)"
@@ -48,6 +49,10 @@ html="
                 <tr>
                     <td class=\"spec-left\">Base Path</td>
                     <td class=\"spec-right\">${base_path}</td>
+                </tr>
+                <tr>
+                    <td class=\"spec-left\">Target Path</td>
+                    <td class=\"spec-right\">${target_path}</td>
                 </tr>
                 <tr>
                     <td class=\"spec-left\">Platform</td>

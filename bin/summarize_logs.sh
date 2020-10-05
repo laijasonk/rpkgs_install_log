@@ -43,7 +43,7 @@ cat /dev/null > "${status_csv}"
 # Loop through input csv file
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 do
-    wget_log="${log_dir}/wget_${pkg_name}.txt"
+    download_log="${log_dir}/download_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
     check_log="${log_dir}/check_${pkg_name}.txt"
     install_log="${log_dir}/install_${pkg_name}.txt"
@@ -51,7 +51,7 @@ do
     artifactcheck_log="${log_dir}/artifactcheck_${pkg_name}.txt"
     test_log="${log_dir}/test_${pkg_name}.txt"
 
-    wget_status=0
+    download_status=0
     build_status=0
     check_status=0
     install_status=0
@@ -60,14 +60,14 @@ do
     test_status=0
 
     # Download log
-    status1="$(cat ${wget_log} | grep -c 'ERROR 404')"
+    status1="$(cat ${download_log} | grep -c 'ERROR 404')"
     if [[ "${status1}" -gt 0 ]]
     then
-        wget_status=1
+        download_status=1
     fi
-    if [[ ! -f "${wget_log}" ]]
+    if [[ ! -f "${download_log}" ]]
     then
-        wget_status=2
+        download_status=2
     fi
 
     # Build log
@@ -139,7 +139,11 @@ do
     then
         test_status=2
     fi
+    if [[ "${pkg_test}" == "FALSE" ]]
+    then
+        echo "${pkg_test} ${pkg_name} ${test_status}"
+    fi
 
-    echo "${pkg_name},${pkg_version},${pkg_source},${wget_status},${build_status},${check_status},${install_status},${artifact_status},${artifactcheck_status},${test_status}" >> "${status_csv}"
+    echo "${pkg_name},${pkg_version},${pkg_source},${download_status},${build_status},${check_status},${install_status},${artifact_status},${artifactcheck_status},${test_status}" >> "${status_csv}"
 done < "${input_csv}"
 

@@ -42,6 +42,7 @@ cat "${input_csv}" \
     | sed -e "s/[\"'‘] *, *[\"'’]/,/g" \
         -e "s/[\"'‘’]//g" \
         -e "s/^[0-9]*,//g" \
+        -e "s/ *$//g" \
     > "${input_csv}.tmp"
 
 # Remove header if specified
