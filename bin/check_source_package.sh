@@ -47,7 +47,7 @@ build_check_log="${build_check_dir}/${pkg_name}.txt"
 # Check and log check of input package tarball
 cd ${check_dir}
 echo "Checking package '${pkg_name}'"
-eval -- "${rbinary} CMD check --library=${lib_dir} \"${pkg_tarball}\"" &> "${check_log}"
+eval -- "${rbinary} CMD check \"${pkg_tarball}\"" &> "${check_log}"
 echo "Results saved to '${check_log}'"
 
 # Copying files to artifactory

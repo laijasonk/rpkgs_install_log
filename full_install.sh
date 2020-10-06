@@ -136,7 +136,7 @@ do
             -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
             -t "${target_dir}" | tee -a "${stdout_log}"
     else
-        echo "validnest_steps check = FALSE" > "${log_dir}/check_${pkg_name}.txt"
+        echo "Check skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/check_${pkg_name}.txt"
     fi
     
     if [[ "${pkg_test}" == "TRUE" ]]
@@ -145,7 +145,7 @@ do
             -i "${pkg_name}" \
             -t "${target_dir}" | tee -a "${stdout_log}"
     else
-        echo "validnest_steps test = FALSE" > "${log_dir}/test_${pkg_name}.txt"
+        echo "Test skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/test_${pkg_name}.txt"
     fi
 
     echo

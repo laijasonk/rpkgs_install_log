@@ -45,7 +45,8 @@ do
     new_artifact_check_log="${log_dir}/artifactcheck_${pkg_name}.txt"
     if [[ "${pkg_check}" == "FALSE" ]]
     then
-        echo "validnest_steps check = FALSE" > "${new_artifact_check_log}"
+        echo "Check skipped due to input CSV specification for '${pkg_name}'" > "${new_artifact_check_log}"
+
     else
         if [[ ! -f "${artifact_check_log}" ]]
         then
