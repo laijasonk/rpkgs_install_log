@@ -20,7 +20,6 @@ function usage {
     echo "       -b github branch name"
     echo "       -h github SHA hash"
     echo "       -t OPTIONAL path to target directory"
-    exit 1
 }
 
 # Argument flag handling
@@ -65,6 +64,12 @@ fi
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.txt"
 cat /dev/null > "${missing_dep_log}"
+build_cmd="${log_dir}/build_${pkg_name}_cmd.txt"
+build_stdout="${log_dir}/build_${pkg_name}_stdout.txt"
+build_stderr="${log_dir}/build_${pkg_name}_stderr.txt"
+build_exit="${log_dir}/build_${pkg_name}_exit.txt"
+pkg_download="${log_dir}/download_${pkg_name}.txt"
+pkg_extract="${log_dir}/extract_${pkg_name}.txt"
 
 # Download instructions for different sources
 if [[ "${pkg_source}" == "cran" ]]
@@ -73,9 +78,6 @@ then
     # Define variables
     ext="tar.gz"
     pkg_archive="${src_dir}/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_download="${log_dir}/download_${pkg_name}.txt"
-    pkg_extract="${log_dir}/extract_${pkg_name}.txt"
-    build_log="${log_dir}/build_${pkg_name}.txt"
     pkg_url_1="https://cran.r-project.org/src/contrib/${pkg_name}_${pkg_version}.tar.gz"
     pkg_url_2="https://cran.r-project.org/src/contrib/Archive/${pkg_name}/${pkg_name}_${pkg_version}.tar.gz"
     pkg_build="${src_dir}/${pkg_name}"
@@ -92,7 +94,6 @@ then
     else
         echo "Could not download '${pkg_name}' (see log)"
         echo "Could not download from '${pkg_url_1}' or '${pkg_url_2}'" &> "${pkg_download}"
-        exit 1
     fi
 
     echo "Extracting '${pkg_name}' to '${src_dir}'"
@@ -104,9 +105,6 @@ then
     # Define variables
     ext="zip"
     pkg_archive="${src_dir}/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_download="${log_dir}/download_${pkg_name}.txt"
-    pkg_extract="${log_dir}/extract_${pkg_name}.txt"
-    build_log="${log_dir}/build_${pkg_name}.txt"
 
     if [[ ! -z "${pkg_hash}" ]]
     then
@@ -120,7 +118,6 @@ then
     else
         echo "Could not download '${pkg_name}'"
         echo "Could not download because neither commit hash nor branch name have been specified" &> "${pkg_download}"
-        exit 1
     fi
 
     echo "Downloading '${pkg_name}' to '${src_dir}'"
@@ -137,7 +134,10 @@ fi
  
 echo "Building '${pkg_name}' from '${src_dir}'"
 cd "${src_dir}"
-eval -- "${rbinary} CMD build --no-build-vignettes \"${pkg_build}\"" &> "${build_log}"
+cmd="${rbinary} CMD build --no-build-vignettes \"${pkg_build}\""
+echo "${cmd}" > "${build_cmd}"
+eval -- "${cmd}" 2> "${build_stderr}" 1> "${build_stdout}"
+echo $? > "${build_exit}"
 tarball="$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
 cd "${curr_dir}"
    

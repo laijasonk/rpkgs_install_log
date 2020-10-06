@@ -114,6 +114,7 @@ echo | tee -a "${stdout_log}"
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 do
+
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
     ./bin/download_and_build.sh \
@@ -136,7 +137,7 @@ do
             -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
             -t "${target_dir}" | tee -a "${stdout_log}"
     else
-        echo "validnest_steps check = FALSE" > "${log_dir}/check_${pkg_name}.txt"
+        echo "Check skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/check_${pkg_name}.txt"
     fi
     
     if [[ "${pkg_test}" == "TRUE" ]]
@@ -145,7 +146,7 @@ do
             -i "${pkg_name}" \
             -t "${target_dir}" | tee -a "${stdout_log}"
     else
-        echo "validnest_steps test = FALSE" > "${log_dir}/test_${pkg_name}.txt"
+        echo "Test skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/test_${pkg_name}.txt"
     fi
 
     echo

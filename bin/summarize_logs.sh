@@ -44,12 +44,21 @@ cat /dev/null > "${status_csv}"
 while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 do
     download_log="${log_dir}/download_${pkg_name}.txt"
-    build_log="${log_dir}/build_${pkg_name}.txt"
-    check_log="${log_dir}/check_${pkg_name}.txt"
-    install_log="${log_dir}/install_${pkg_name}.txt"
     artifact_log="${log_dir}/artifact_${pkg_name}.txt"
-    artifactcheck_log="${log_dir}/artifactcheck_${pkg_name}.txt"
     test_log="${log_dir}/test_${pkg_name}.txt"
+    
+    build_stdout="${log_dir}/build_${pkg_name}_stdout.txt"
+    build_stderr="${log_dir}/build_${pkg_name}_stderr.txt"
+    build_exit="${log_dir}/build_${pkg_name}_exit.txt"
+    check_stdout="${log_dir}/check_${pkg_name}_stdout.txt"
+    check_stderr="${log_dir}/check_${pkg_name}_stderr.txt"
+    check_exit="${log_dir}/check_${pkg_name}_exit.txt"
+    install_stdout="${log_dir}/install_${pkg_name}_stdout.txt"
+    install_stderr="${log_dir}/install_${pkg_name}_stderr.txt"
+    install_exit="${log_dir}/install_${pkg_name}_exit.txt"
+    artifactcheck_stdout="${log_dir}/artifactcheck_${pkg_name}_stdout.txt"
+    artifactcheck_stderr="${log_dir}/artifactcheck_${pkg_name}_stderr.txt"
+    artifactcheck_exit="${log_dir}/artifactcheck_${pkg_name}_exit.txt"
 
     download_status=0
     build_status=0
@@ -71,35 +80,38 @@ do
     fi
 
     # Build log
-    status1="$(cat ${build_log} | grep -c 'ERROR')"
-    if [[ "${status1}" -gt 0 ]]
+    status1="$(cat ${build_stdout} | grep -c 'ERROR')"
+    exit_status="$(cat ${build_exit})"
+    if [[ "${status1}" -gt 0 ]] || [[ "${exit_status}" -ne 0 ]]
     then
         build_status=1
     fi
-    if [[ ! -f "${build_log}" ]]
+    if [[ ! -f "${build_cmd}" ]]
     then
         build_status=2
     fi
      
     # Check log
-    status1="$(cat ${check_log} | grep -c 'neither a file nor directory')"
-    status2="$(cat ${check_log} | grep -c 'ERROR')"
-    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]]
+    status1="$(cat ${check_stderr} | grep -c 'neither a file nor directory')"
+    status2="$(cat ${check_stderr} | grep -c 'ERROR')"
+    exit_status="$(cat ${check_exit})"
+    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]] || [[ "${exit_status}" -ne 0 ]]
     then
         check_status=1
     fi
-    if [[ ! -f "${check_log}" ]] || [[ "${pkg_check}" == "FALSE" ]]
+    if [[ ! -f "${check_cmd}" ]] || [[ "${pkg_check}" == "FALSE" ]]
     then
         check_status=2
     fi
 
     # Install log
-    status1="$(cat ${install_log} | grep -c 'ERROR')"
-    if [[ "${status1}" -gt 0 ]]
+    status1="$(cat ${install_stderr} | grep -c 'ERROR')"
+    exit_status="$(cat ${install_exit})"
+    if [[ "${status1}" -gt 0 ]] || [[ "${exit_status}" -ne 0 ]]
     then
         install_status=1
     fi
-    if [[ ! -f "${install_log}" ]]
+    if [[ ! -f "${install_cmd}" ]]
     then
         install_status=2
     fi
@@ -116,13 +128,14 @@ do
     fi
 
     # Artifact check log
-    status1="$(cat ${artifactcheck_log} | grep -c 'neither a file nor directory')"
-    status2="$(cat ${artifactcheck_log} | grep -c 'ERROR')"
-    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]]
+    status1="$(cat ${artifactcheck_stderr} | grep -c 'neither a file nor directory')"
+    status2="$(cat ${artifactcheck_stderr} | grep -c 'ERROR')"
+    exit_status="$(cat ${artifactcheck_exit})"
+    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]] || [[ "${exit_status}" -ne 0 ]]
     then
         artifactcheck_status=1
     fi
-    if [[ ! -f "${artifactcheck_log}" ]] || [[ "${pkg_check}" == "FALSE" ]]
+    if [[ ! -f "${artifactcheck_cmd}" ]] || [[ "${pkg_check}" == "FALSE" ]]
     then
         artifactcheck_status=2
     fi

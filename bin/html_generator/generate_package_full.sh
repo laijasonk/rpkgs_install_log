@@ -122,14 +122,38 @@ do
 
             <p>Logs from build, check, and install for ${pkg_name} from ${pkg_source}.</p>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_build\" >Build log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/build_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            <!--p class=\"above-caption left\"><a id=\"${pkg_name}_build\" >Build log</a></p-->
+            <h2><a id=\"${pkg_name}_build\" >Build log</a></h2>
+            <p class=\"above-caption left\">command</p>
+            <iframe class=\"log text-above\" src=\"../log/build_${pkg_name}_cmd.txt\" style=\"height: 4em;\"></iframe>
+            <p class=\"above-caption left\">exit status</p>
+            <iframe class=\"log text-above\" src=\"../log/build_${pkg_name}_exit.txt\" style=\"height: 4em;\"></iframe>
+            <p class=\"above-caption left\">stdout</p>
+            <iframe class=\"log text-above\" src=\"../log/build_${pkg_name}_stdout.txt\" style=\"height: 300px;\"></iframe>
+            <p class=\"above-caption left\">stderr</p>
+            <iframe class=\"log text-above space-below\" src=\"../log/build_${pkg_name}_stderr.txt\" style=\"height: 300px;\"></iframe>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_check\" >Check log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/check_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            <!--p class=\"above-caption left\"><a id=\"${pkg_name}_check\" >Check log</a></p-->
+            <h2><a id=\"${pkg_name}_check\" >Check log</a></h2>
+            <p class=\"above-caption left\">command</p>
+            <iframe class=\"log text-above\" src=\"../log/check_${pkg_name}_cmd.txt\" style=\"height: 4em;\"></iframe>
+            <p class=\"above-caption left\">exit status</p>
+            <iframe class=\"log text-above\" src=\"../log/check_${pkg_name}_exit.txt\" style=\"height: 4em;\"></iframe>
+            <p class=\"above-caption left\">stdout</p>
+            <iframe class=\"log text-above\" src=\"../log/check_${pkg_name}_stdout.txt\" style=\"height: 150px;\"></iframe>
+            <p class=\"above-caption left\">stderr</p>
+            <iframe class=\"log text-above space-below\" src=\"../log/check_${pkg_name}_stderr.txt\" style=\"height: 150px;\"></iframe>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_install\" >Install log</a></p>
-            <iframe class=\"log text-above space-below\" src=\"../log/install_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            <!--p class=\"above-caption left\"><a id=\"${pkg_name}_install\" >Install log</a></p-->
+            <h2><a id=\"${pkg_name}_install\" >Install log</a></h2>
+            <p class=\"above-caption left\">command</p>
+            <iframe class=\"log text-above\" src=\"../log/install_${pkg_name}_cmd.txt\" style=\"height: 4em;\"></iframe>
+            <p class=\"above-caption left\">exit status</p>
+            <iframe class=\"log text-above\" src=\"../log/install_${pkg_name}_exit.txt\" style=\"height: 4em;\"></iframe>
+            <p class=\"above-caption left\">stdout</p>
+            <iframe class=\"log text-above\" src=\"../log/install_${pkg_name}_stdout.txt\" style=\"height: 150px;\"></iframe>
+            <p class=\"above-caption left\">stderr</p>
+            <iframe class=\"log text-above space-below\" src=\"../log/install_${pkg_name}_stderr.txt\" style=\"height: 150px;\"></iframe>
             "
 
     cat /dev/null > "${output_html}"
