@@ -5,7 +5,7 @@
 
 # Default values
 wait_between_packages=false
-in_rlibs=/opt/bee_tools/R/3.6.1/lib64/R/library_sec:/opt/bee_tools/R/3.6.1/lib64/R/library
+in_rlibs=$(Rscript -e "cat(paste(.libPaths(), collapse=':'))")
 in_rbinary="$(which R)"
 in_rscript="$(which Rscript)"
 target_dir="$(pwd)"
