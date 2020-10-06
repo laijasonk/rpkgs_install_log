@@ -94,8 +94,15 @@ then
         echo "Could not download from '${pkg_url_1}' or '${pkg_url_2}'" &> "${pkg_download}"
     fi
 
-    echo "Extracting '${pkg_name}' to '${src_dir}'"
-    tar xvf "${pkg_archive}" --directory "${src_dir}" &> "${pkg_extract}"
+    echo "Moving build tarball to '${build_dir}'"
+    src_tarball="${src_dir}/${tarball}"
+    build_tarball="${build_dir}/${tarball}"
+    if [[ -f "${pkg_archive}" ]]
+    then
+        mv "${pkg_archive}" "${build_tarball}"
+    else
+        echo "WARNING: Build tarball does not exist; build probably failed"
+    fi
 
 elif [[ "${pkg_source}" == "github" ]]
 then
@@ -123,6 +130,22 @@ then
 
     echo "Extracting '${pkg_name}' to '${src_dir}'"
     unzip -o "${pkg_archive}" -d "${src_dir}" &> "${pkg_extract}"
+ 
+    echo "Building '${pkg_name}' from '${src_dir}'"
+    cd "${src_dir}"
+    eval -- "${rbinary} CMD build --no-build-vignettes \"${pkg_build}\"" &> "${build_log}"
+    tarball="$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
+    cd "${curr_dir}"
+      
+    echo "Moving build tarball to '${build_dir}'"
+    src_tarball="${src_dir}/${tarball}"
+    build_tarball="${build_dir}/${tarball}"
+    if [[ -f "${src_tarball}" ]]
+    then
+        mv "${src_tarball}" "${build_tarball}"
+    else
+        echo "WARNING: Build tarball does not exist; build probably failed"
+    fi
 
 elif [[ "${pkg_source}" == "nest" ]]
 then
@@ -131,20 +154,3 @@ then
     :
 
 fi
- 
-echo "Building '${pkg_name}' from '${src_dir}'"
-cd "${src_dir}"
-eval -- "${rbinary} CMD build --no-build-vignettes \"${pkg_build}\"" &> "${build_log}"
-tarball="$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
-cd "${curr_dir}"
-   
-echo "Moving build tarball to '${build_dir}'"
-src_tarball="${src_dir}/${tarball}"
-build_tarball="${build_dir}/${tarball}"
-if [[ -f "${src_tarball}" ]]
-then
-    mv "${src_tarball}" "${build_tarball}"
-else
-    echo "WARNING: Build tarball does not exist; build probably failed"
-fi
-
