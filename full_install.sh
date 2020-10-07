@@ -145,7 +145,7 @@ do
             -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
             -t "${target_dir}" | tee -a "${stdout_log}"
     else
-        echo "Check skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/check_${pkg_name}.txt"
+        echo "Check skipped due to missing -c flag" > "${log_dir}/check_${pkg_name}.txt"
     fi
     
     if [ ${disable_tests} = false ]
@@ -154,7 +154,7 @@ do
             -i "${pkg_name}" \
             -t "${target_dir}" | tee -a "${stdout_log}"
     else
-        echo "Test skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/test_${pkg_name}.txt"
+        echo "Test skipped due to missing -t flag" > "${log_dir}/test_${pkg_name}.txt"
     fi
 
     echo
