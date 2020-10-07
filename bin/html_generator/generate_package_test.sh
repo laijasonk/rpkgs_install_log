@@ -84,7 +84,6 @@ cat "${html_template}/test_bottom.html" >> "${output_html}"
 # Default paths
 input_csv=$(readlink -f ${log_dir}/_input.csv)
 
-#while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 

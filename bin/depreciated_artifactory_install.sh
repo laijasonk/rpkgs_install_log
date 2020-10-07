@@ -83,7 +83,7 @@ echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
 echo | tee -a "${stdout_log}"
 
 # Build, install, check, and test every package
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr
+while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"

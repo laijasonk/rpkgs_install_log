@@ -18,21 +18,21 @@ function usage {
     echo "Usage: $0 -i input.csv"
     echo "       $0 -i input.csv [-l ${in_rlibs}]"
     echo "       $0 -i input.csv [-b ${in_rbinary}] [-s ${in_rscript}]"
-    echo "       $0 -i input.csv [-c] [-u]"
-    echo "       $0 -i input.csv [-t ${target_dir}]"
+    echo "       $0 -i input.csv [-c] [-t]"
+    echo "       $0 -i input.csv [-o ${target_dir}]"
     echo "Flags:"
     echo "       -i input csv containing release packages"
     echo "       -l OPTIONAL libpaths to build on (separated by colon on GNU/Linux)"
     echo "       -b OPTIONAL path to R binary"
     echo "       -s OPTIONAL path to Rscript executable"
     echo "       -c OPTIONAL enable and run checks (disabled by default)"
-    echo "       -u OPTIONAL enable and run unit tests (disabled by default)"
-    echo "       -t OPTIONAL target directory (default: current directory)"
+    echo "       -t OPTIONAL enable and run unit tests (disabled by default)"
+    echo "       -o OPTIONAL target directory (default: current directory)"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:l:b:s:cut:h" opt
+while getopts "i:l:b:s:cto:h" opt
 do
     case $opt in
         i) 
@@ -50,10 +50,10 @@ do
         c)
             disable_checks=false
             cmd="${cmd} -c" ;;
-        u)
+        t)
             disable_tests=false
-            cmd="${cmd} -u" ;;
-        t) 
+            cmd="${cmd} -t" ;;
+        o) 
             mkdir -p "${OPTARG}"
             target_dir="$(readlink -f ${OPTARG})"
             cmd="${cmd} -t ${OPTARG}" ;;
@@ -139,7 +139,6 @@ do
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -t "${target_dir}" | tee -a "${stdout_log}"
 
-    #if [[ "${pkg_check}" == "TRUE" ]]
     if [ ${disable_checks} = false ]
     then
         ./bin/check_source_package.sh \
@@ -149,7 +148,6 @@ do
         echo "Check skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/check_${pkg_name}.txt"
     fi
     
-    #if [[ "${pkg_test}" == "TRUE" ]]
     if [ ${disable_tests} = false ]
     then
         ./bin/test_installed_package.sh \
