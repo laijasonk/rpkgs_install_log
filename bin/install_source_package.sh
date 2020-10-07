@@ -58,15 +58,9 @@ function install_package() {
     # Define log file
     if [ ${artifactory} = true ]
     then
-        install_cmd="${log_dir}/artifactinstall_${pkg_name}_cmd.txt"
-        install_stdout="${log_dir}/artifactinstall_${pkg_name}_stdout.txt"
-        install_stderr="${log_dir}/artifactinstall_${pkg_name}_stderr.txt"
-        install_exit="${log_dir}/artifactinstall_${pkg_name}_exit.txt"
+        install_log="${log_dir}/artifactinstall_${pkg_name}.txt"
     else
-        install_cmd="${log_dir}/install_${pkg_name}_cmd.txt"
-        install_stdout="${log_dir}/install_${pkg_name}_stdout.txt"
-        install_stderr="${log_dir}/install_${pkg_name}_stderr.txt"
-        install_exit="${log_dir}/install_${pkg_name}_exit.txt"
+        install_log="${log_dir}/install_${pkg_name}.txt"
     fi
 
     # Install package
@@ -76,7 +70,7 @@ function install_package() {
     echo -e "\n\n----------\nExit status: $?">> "${install_log}"
 
     # Install dependencies if missing
-    missing_dependency=$(grep 'ERROR: dependenc' "${install_stderr}")
+    missing_dependency=$(grep 'ERROR: dependenc' "${install_log}")
     if [[ "${missing_dependency}" ]]
     then
         # Text manipulation to extract substring dependency from error line
