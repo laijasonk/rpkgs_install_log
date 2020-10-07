@@ -41,7 +41,8 @@ fi
 cat /dev/null > "${status_csv}"
 
 # Loop through input csv file
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
+#while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
+while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
     download_log="${log_dir}/download_${pkg_name}.txt"
     build_log="${log_dir}/build_${pkg_name}.txt"
@@ -71,7 +72,7 @@ do
     fi
 
     # Build log
-    status1="$(cat ${build_log} | grep -c 'ERROR')"
+    status1="$(cat ${build_log} | grep -c 'ERROR:')"
     if [[ "${status1}" -gt 0 ]]
     then
         build_status=1
@@ -83,18 +84,18 @@ do
      
     # Check log
     status1="$(cat ${check_log} | grep -c 'neither a file nor directory')"
-    status2="$(cat ${check_log} | grep -c 'ERROR')"
+    status2="$(cat ${check_log} | grep -c 'ERROR:')"
     if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]]
     then
         check_status=1
     fi
-    if [[ ! -f "${check_log}" ]] || [[ "${pkg_check}" == "FALSE" ]]
+    if [[ ! -f "${check_log}" ]] #|| [[ "${pkg_check}" == "FALSE" ]]
     then
         check_status=2
     fi
 
     # Install log
-    status1="$(cat ${install_log} | grep -c 'ERROR')"
+    status1="$(cat ${install_log} | grep -c 'ERROR:')"
     if [[ "${status1}" -gt 0 ]]
     then
         install_status=1
@@ -117,12 +118,12 @@ do
 
     # Artifact check log
     status1="$(cat ${artifactcheck_log} | grep -c 'neither a file nor directory')"
-    status2="$(cat ${artifactcheck_log} | grep -c 'ERROR')"
+    status2="$(cat ${artifactcheck_log} | grep -c 'ERROR:')"
     if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]]
     then
         artifactcheck_status=1
     fi
-    if [[ ! -f "${artifactcheck_log}" ]] || [[ "${pkg_check}" == "FALSE" ]]
+    if [[ ! -f "${artifactcheck_log}" ]] #|| [[ "${pkg_check}" == "FALSE" ]]
     then
         artifactcheck_status=2
     fi
@@ -130,18 +131,15 @@ do
     # Test log
     status1="$(cat ${test_log} | grep -c 'Error: Test failures')"
     status2="$(cat ${test_log} | grep -c 'Execution halted')"
-    status3="$(cat ${test_log} | grep -c 'Error: No tests found')"
-    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]]
+    status3="$(cat ${test_log} | grep -c 'ERROR:')"
+    status4="$(cat ${test_log} | grep -c 'Error: No tests found')"
+    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]] || [[ "${status3}" -gt 0 ]]
     then
         test_status=1
     fi
-    if [[ ! -f "${test_log}" ]] || [[ "${status3}" -gt 0 ]] || [[ "${pkg_test}" == "FALSE" ]]
+    if [[ ! -f "${test_log}" ]] || [[ "${status4}" -gt 0 ]] #|| [[ "${pkg_test}" == "FALSE" ]]
     then
         test_status=2
-    fi
-    if [[ "${pkg_test}" == "FALSE" ]]
-    then
-        echo "${pkg_test} ${pkg_name} ${test_status}"
     fi
 
     echo "${pkg_name},${pkg_version},${pkg_source},${download_status},${build_status},${check_status},${install_status},${artifact_status},${artifactcheck_status},${test_status}" >> "${status_csv}"

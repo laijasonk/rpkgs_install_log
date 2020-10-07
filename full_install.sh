@@ -5,6 +5,8 @@
 
 # Default values
 wait_between_packages=false
+disable_checks=true
+disable_tests=true
 in_rlibs=$(Rscript -e "cat(paste(.libPaths(), collapse=':'))")
 in_rbinary="$(which R)"
 in_rscript="$(which Rscript)"
@@ -16,18 +18,21 @@ function usage {
     echo "Usage: $0 -i input.csv"
     echo "       $0 -i input.csv [-l ${in_rlibs}]"
     echo "       $0 -i input.csv [-b ${in_rbinary}] [-s ${in_rscript}]"
+    echo "       $0 -i input.csv [-c] [-u]"
     echo "       $0 -i input.csv [-t ${target_dir}]"
     echo "Flags:"
     echo "       -i input csv containing release packages"
     echo "       -l OPTIONAL libpaths to build on (separated by colon on GNU/Linux)"
     echo "       -b OPTIONAL path to R binary"
     echo "       -s OPTIONAL path to Rscript executable"
+    echo "       -c OPTIONAL enable and run checks (disabled by default)"
+    echo "       -u OPTIONAL enable and run unit tests (disabled by default)"
     echo "       -t OPTIONAL target directory (default: current directory)"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:l:b:s:t:h" opt
+while getopts "i:l:b:s:cut:h" opt
 do
     case $opt in
         i) 
@@ -42,6 +47,12 @@ do
         s) 
             in_rscript="$(readlink -f ${OPTARG})"
             cmd="${cmd} -s ${OPTARG}" ;;
+        c)
+            disable_checks=false
+            cmd="${cmd} -c" ;;
+        u)
+            disable_tests=false
+            cmd="${cmd} -u" ;;
         t) 
             mkdir -p "${OPTARG}"
             target_dir="$(readlink -f ${OPTARG})"
@@ -112,7 +123,7 @@ echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
 echo | tee -a "${stdout_log}"
 
 # Build, install, check, and test every package
-while IFS=, read -r pkg_name pkg_version pkg_source pkg_org pkg_repo pkg_branch pkg_hash pkg_check pkg_covr pkg_test
+while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
@@ -120,17 +131,16 @@ do
         -n "${pkg_name}" \
         -v "${pkg_version}" \
         -s "${pkg_source}" \
-        -o "${pkg_org}" \
-        -p "${pkg_repo}" \
-        -b "${pkg_branch}" \
-        -h "${pkg_hash}" \
+        -u "${pkg_url}" \
+        -c "${git_commit}" \
         -t "${target_dir}" | tee -a "${stdout_log}"
 
     ./bin/install_source_package.sh \
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -t "${target_dir}" | tee -a "${stdout_log}"
 
-    if [[ "${pkg_check}" == "TRUE" ]]
+    #if [[ "${pkg_check}" == "TRUE" ]]
+    if [ ${disable_checks} = false ]
     then
         ./bin/check_source_package.sh \
             -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
@@ -139,7 +149,8 @@ do
         echo "Check skipped due to input CSV specification for '${pkg_name}'" > "${log_dir}/check_${pkg_name}.txt"
     fi
     
-    if [[ "${pkg_test}" == "TRUE" ]]
+    #if [[ "${pkg_test}" == "TRUE" ]]
+    if [ ${disable_tests} = false ]
     then
         ./bin/test_installed_package.sh \
             -i "${pkg_name}" \
