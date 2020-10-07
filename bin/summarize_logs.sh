@@ -61,42 +61,45 @@ do
     test_status=0
 
     # Download log
-    status1="$(cat ${download_log} | grep -c 'ERROR 404')"
-    if [[ "${status1}" -gt 0 ]]
+    error1="$(cat ${download_log} | grep -c 'ERROR 404')"
+    skip1="$(cat ${check_log} | grep -c ' skipped because ')"
+    if [[ "${error1}" -gt 0 ]]
     then
         download_status=1
     fi
-    if [[ ! -f "${download_log}" ]]
+    if [[ ! -f "${download_log}" ]] || [[ "${skip1}" -gt 0 ]]
     then
         download_status=2
     fi
 
     # Build log
-    status1="$(cat ${build_log} | grep -c 'ERROR:')"
-    if [[ "${status1}" -gt 0 ]]
+    error1="$(cat ${build_log} | grep -c 'ERROR:')"
+    skip1="$(cat ${build_log} | grep -c ' skipped because ')"
+    if [[ "${error1}" -gt 0 ]]
     then
         build_status=1
     fi
-    if [[ ! -f "${build_log}" ]]
+    if [[ ! -f "${build_log}" ]] || [[ "${skip1}" -gt 0 ]]
     then
         build_status=2
     fi
      
     # Check log
-    status1="$(cat ${check_log} | grep -c 'neither a file nor directory')"
-    status2="$(cat ${check_log} | grep -c 'ERROR:')"
-    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]]
+    error1="$(cat ${check_log} | grep -c 'neither a file nor directory')"
+    error2="$(cat ${check_log} | grep -c 'ERROR:')"
+    skip1="$(cat ${check_log} | grep -c ' skipped due to input ')"
+    if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]]
     then
         check_status=1
     fi
-    if [[ ! -f "${check_log}" ]] #|| [[ "${pkg_check}" == "FALSE" ]]
+    if [[ ! -f "${check_log}" ]] || [[ "${skip1}" -gt 0 ]]
     then
         check_status=2
     fi
 
     # Install log
-    status1="$(cat ${install_log} | grep -c 'ERROR:')"
-    if [[ "${status1}" -gt 0 ]]
+    error1="$(cat ${install_log} | grep -c 'ERROR:')"
+    if [[ "${error1}" -gt 0 ]]
     then
         install_status=1
     fi
@@ -106,8 +109,8 @@ do
     fi
        
     # Artifact status log
-    status1="$(cat ${artifact_log} | grep -c 'Missing file')"
-    if [[ "${status1}" -gt 0 ]]
+    error1="$(cat ${artifact_log} | grep -c 'Missing file')"
+    if [[ "${error1}" -gt 0 ]]
     then
         artifact_status=1
     fi
@@ -117,27 +120,29 @@ do
     fi
 
     # Artifact check log
-    status1="$(cat ${artifactcheck_log} | grep -c 'neither a file nor directory')"
-    status2="$(cat ${artifactcheck_log} | grep -c 'ERROR:')"
-    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]]
+    error1="$(cat ${artifactcheck_log} | grep -c 'neither a file nor directory')"
+    error2="$(cat ${artifactcheck_log} | grep -c 'ERROR:')"
+    skip1="$(cat ${artifactcheck_log} | grep -c ' skipped due to input ')"
+    if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]]
     then
         artifactcheck_status=1
     fi
-    if [[ ! -f "${artifactcheck_log}" ]] #|| [[ "${pkg_check}" == "FALSE" ]]
+    if [[ ! -f "${artifactcheck_log}" ]] || [[ "${skip1}" -gt 0 ]]
     then
         artifactcheck_status=2
     fi
 
     # Test log
-    status1="$(cat ${test_log} | grep -c 'Error: Test failures')"
-    status2="$(cat ${test_log} | grep -c 'Execution halted')"
-    status3="$(cat ${test_log} | grep -c 'ERROR:')"
-    status4="$(cat ${test_log} | grep -c 'Error: No tests found')"
-    if [[ "${status1}" -gt 0 ]] || [[ "${status2}" -gt 0 ]] || [[ "${status3}" -gt 0 ]]
+    error1="$(cat ${test_log} | grep -c 'Error: Test failures')"
+    error2="$(cat ${test_log} | grep -c 'Execution halted')"
+    error3="$(cat ${test_log} | grep -c 'ERROR:')"
+    skip1="$(cat ${test_log} | grep -c 'Error: No tests found')"
+    skip2="$(cat ${test_log} | grep -c ' skipped due to input ')"
+    if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]] || [[ "${error3}" -gt 0 ]]
     then
         test_status=1
     fi
-    if [[ ! -f "${test_log}" ]] || [[ "${status4}" -gt 0 ]] #|| [[ "${pkg_test}" == "FALSE" ]]
+    if [[ ! -f "${test_log}" ]] || [[ "${skip1}" -gt 0 ]] || [[ "${skip2}" -gt 0 ]]
     then
         test_status=2
     fi

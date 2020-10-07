@@ -44,15 +44,6 @@ else
     sidebar_template="${html_template}/sidebar_full.html"
 fi
 
-echo "Copying static files"
-cp -R "${html_template}"/index.html "${html_dir}"
-cp -R "${html_template}"/static/ "${html_dir}"
-cp "${sidebar_template}" "${html_template}"/sidebar.html
-
-echo "Copying log files"
-mkdir -p "${html_dir}/log"
-cp "${log_dir}"/*.* "${html_dir}"/log/
-
 echo "Creating directory for HTML pages"
 mkdir -p "${html_dir}/pages"
 
@@ -94,4 +85,13 @@ echo "Generating summary page"
 ./bin/html_generator/generate_summary_full.sh
 ./bin/html_generator/generate_summary_build.sh
 ./bin/html_generator/generate_summary_install.sh
+
+echo "Copying static files"
+cp -R "${html_template}"/index.html "${html_dir}"
+cp -R "${html_template}"/static/ "${html_dir}"
+cp "${sidebar_template}" "${html_template}"/sidebar.html
+
+echo "Copying log files"
+mkdir -p "${html_dir}/log"
+cp "${log_dir}"/*.* "${html_dir}"/log/
 

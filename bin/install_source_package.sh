@@ -64,10 +64,10 @@ function install_package() {
     fi
 
     # Install package
-    R CMD INSTALL \
-        --install-tests \
-        --library=${lib_dir} \
-        "${pkg_archive}" &> "${install_log}"
+    cmd="${rbinary} CMD INSTALL --install-tests --library=${lib_dir} \"${pkg_archive}\"" 
+    echo -e "CMD: ${cmd}\n----------\n\n" > "${install_log}"
+    eval -- "${cmd}" >> "${install_log}" 2>&1
+    echo -e "\n\n----------\nExit status: $?">> "${install_log}"
 
     # Install dependencies if missing
     missing_dependency=$(grep 'ERROR: dependenc' "${install_log}")

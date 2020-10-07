@@ -8,12 +8,12 @@ curr_dir=$(pwd)
 # Help message
 function usage {
     echo "Usage: $0 -n name -v version -u http://buildurl -s 'buildfile'"
-    echo "       $0 -n name -v version -u http://giturl -s 'git' -c commit_hash"
+    echo "       $0 -n name -v version -u http://giturl -s 'github' -c commit_hash"
     echo "       $0 -n name -v version -u /path/to/url -s 'local'"
     echo "Flags:"
     echo "       -n package name"
     echo "       -v package version number"
-    echo "       -u file url (if source=buildfile or git) or path to tarball (if source=local)"
+    echo "       -u file url (if source=buildfile or github) or path to tarball (if source=local)"
     echo "       -s source (currently supported: 'buildfile' or 'git' or 'local')"
     echo "       -h github commit SHA hash"
     echo "       -t OPTIONAL path to target directory"
@@ -60,6 +60,9 @@ fi
 # Define log files
 missing_dep_log="${log_dir}/_missing_dependencies.txt"
 cat /dev/null > "${missing_dep_log}"
+download_log="${log_dir}/download_${pkg_name}.txt"
+extract_log="${log_dir}/extract_${pkg_name}.txt"
+build_log="${log_dir}/build_${pkg_name}.txt"
 
 # Download instructions for different sources
 if [[ "${pkg_source}" == "buildfile" ]]
@@ -68,43 +71,45 @@ then
     # Define variables
     ext="tar.gz"
     pkg_archive="${build_dir}/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_download="${log_dir}/download_${pkg_name}.txt"
     pkg_build="${src_dir}/${pkg_name}"
 
     echo "Downloading '${pkg_name}' to '${src_dir}'"
-    wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_download}"
+    cmd="wget --continue -O \"${pkg_archive}\" \"${pkg_url}\""
+    echo -e "CMD: ${cmd}\n----------\n\n" > "${download_log}"
+    eval -- "${cmd}" >> "${download_log}" 2>&1
+    echo -e "\n\n----------\nExit status: $?">> "${download_log}"
 
-elif [[ "${pkg_source}" == "git" ]]
+    echo "Extract step skipped because the build file was already provided for '${pkg_name}'" > "${extract_log}"
+    echo "Build step skipped because the build file was already provided for '${pkg_name}'" > "${build_log}"
+
+elif [[ "${pkg_source}" == "github" ]]
 then
 
     # Define variables
     ext="zip"
     pkg_archive="${src_dir}/${pkg_name}_${pkg_version}.${ext}" 
-    pkg_download="${log_dir}/download_${pkg_name}.txt"
-    pkg_extract="${log_dir}/extract_${pkg_name}.txt"
-    build_log="${log_dir}/build_${pkg_name}.txt"
-
-    if [[ ! -z "${git_commit}" ]]
-    then
-        pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${git_commit}.zip"
-        pkg_build="${src_dir}/${pkg_name}-${git_commit}"
-    elif [[ ! -z "{$pkg_branch}" ]]
-    then
-        pkg_url="https://github.com/${pkg_org}/${pkg_project}/archive/${pkg_branch}.zip"
-        pkg_branch_clean="$(echo ${pkg_branch} | sed 's/\//-/g')"
-        pkg_build="${src_dir}/${pkg_name}-${pkg_branch_clean}"
-    fi
+    download_url="${pkg_url}/${git_commit}.zip"
+    pkg_build="${src_dir}/${pkg_name}-${git_commit}"
 
     echo "Downloading '${pkg_name}' to '${src_dir}'"
-    wget --continue -O "${pkg_archive}" "${pkg_url}" &> "${pkg_download}"
+    cmd="wget --continue -O \"${pkg_archive}\" \"${download_url}\""
+    echo -e "CMD: ${cmd}\n----------\n\n" > "${download_log}"
+    eval -- "${cmd}" >> "${download_log}" 2>&1
+    echo -e "\n\n----------\nExit status: $?">> "${download_log}"
 
     echo "Extracting '${pkg_name}' to '${src_dir}'"
-    unzip -o "${pkg_archive}" -d "${src_dir}" &> "${pkg_extract}"
+    cmd="unzip -o \"${pkg_archive}\" -d \"${src_dir}\""
+    echo -e "CMD: ${cmd}\n----------\n\n" > "${extract_log}"
+    eval -- "${cmd}" >> "${extract_log}" 2>&1
+    echo -e "\n\n----------\nExit status: $?">> "${extract_log}"
  
     echo "Building '${pkg_name}' from '${src_dir}'"
     cd "${src_dir}"
-    eval -- "${rbinary} CMD build --no-build-vignettes \"${pkg_build}\"" &> "${build_log}"
+    cmd="${rbinary} CMD build --no-build-vignettes \"${pkg_build}\""
+    echo -e "CMD: ${cmd}\n----------\n\n" > "${build_log}"
+    eval -- "${cmd}" >> "${build_log}" 2>&1
     tarball="$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
+    echo -e "\n\n----------\nExit status: $?">> "${build_log}"
     cd "${curr_dir}"
       
     echo "Moving build tarball to '${build_dir}'"
@@ -114,7 +119,8 @@ then
     then
         mv "${src_tarball}" "${build_tarball}"
     else
-        echo "WARNING: Build tarball does not exist; build probably failed"
+        echo "ERROR: Build tarball does not exist; build probably failed"
+        exit 1
     fi
 
 elif [[ "${pkg_source}" == "local" ]]
@@ -124,8 +130,14 @@ then
     pkg_archive="${build_dir}/${pkg_name}_${pkg_version}.${ext}" 
     echo "Copying local file to '${pkg_archive}'"
     cp "${pkg_url}" "${pkg_archive}"
+    
+    echo "Download step skipped because input file is local for '${pkg_name}'" > "${download_log}"
+    echo "Extract step skipped because input file is local for '${pkg_name}'" > "${extract_log}"
+    echo "Build step skipped because input file is local for '${pkg_name}'" > "${build_log}"
 
 else
-    echo "ERROR: Source must be 'buildfile', 'git', or 'local'"
+
+    echo "ERROR: Source must be 'buildfile', 'github', or 'local'"
     exit 1
+
 fi
