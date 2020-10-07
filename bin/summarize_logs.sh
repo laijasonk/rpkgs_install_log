@@ -45,12 +45,21 @@ while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 
     download_log="${log_dir}/download_${pkg_name}.txt"
-    build_log="${log_dir}/build_${pkg_name}.txt"
-    check_log="${log_dir}/check_${pkg_name}.txt"
-    install_log="${log_dir}/install_${pkg_name}.txt"
     artifact_log="${log_dir}/artifact_${pkg_name}.txt"
-    artifactcheck_log="${log_dir}/artifactcheck_${pkg_name}.txt"
     test_log="${log_dir}/test_${pkg_name}.txt"
+    
+    build_stdout="${log_dir}/build_${pkg_name}_stdout.txt"
+    build_stderr="${log_dir}/build_${pkg_name}_stderr.txt"
+    build_exit="${log_dir}/build_${pkg_name}_exit.txt"
+    check_stdout="${log_dir}/check_${pkg_name}_stdout.txt"
+    check_stderr="${log_dir}/check_${pkg_name}_stderr.txt"
+    check_exit="${log_dir}/check_${pkg_name}_exit.txt"
+    install_stdout="${log_dir}/install_${pkg_name}_stdout.txt"
+    install_stderr="${log_dir}/install_${pkg_name}_stderr.txt"
+    install_exit="${log_dir}/install_${pkg_name}_exit.txt"
+    artifactcheck_stdout="${log_dir}/artifactcheck_${pkg_name}_stdout.txt"
+    artifactcheck_stderr="${log_dir}/artifactcheck_${pkg_name}_stderr.txt"
+    artifactcheck_exit="${log_dir}/artifactcheck_${pkg_name}_exit.txt"
 
     download_status=0
     build_status=0
@@ -107,7 +116,7 @@ do
     then
         install_status=1
     fi
-    if [[ ! -f "${install_log}" ]]
+    if [[ ! -f "${install_cmd}" ]]
     then
         install_status=2
     fi

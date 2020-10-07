@@ -123,10 +123,10 @@ do
             <p>Logs from build, check, and install for ${pkg_name} from ${pkg_source}.</p>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_build\" >Build log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/build_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            <iframe class=\"log text-above space-below\" src=\"../log/build_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_check\" >Check log</a></p>
-            <iframe class=\"log text-above\" src=\"../log/check_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            <!p class=\"above-caption left\"><a id=\"${pkg_name}_check\" >Check log</a></p>
+            <iframe class=\"log text-above space-below\" src=\"../log/check_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
 
             <p class=\"above-caption left\"><a id=\"${pkg_name}_install\" >Install log</a></p>
             <iframe class=\"log text-above space-below\" src=\"../log/install_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>

@@ -58,9 +58,15 @@ function install_package() {
     # Define log file
     if [ ${artifactory} = true ]
     then
-        install_log="${log_dir}/artifactinstall_${pkg_name}.txt"
+        install_cmd="${log_dir}/artifactinstall_${pkg_name}_cmd.txt"
+        install_stdout="${log_dir}/artifactinstall_${pkg_name}_stdout.txt"
+        install_stderr="${log_dir}/artifactinstall_${pkg_name}_stderr.txt"
+        install_exit="${log_dir}/artifactinstall_${pkg_name}_exit.txt"
     else
-        install_log="${log_dir}/install_${pkg_name}.txt"
+        install_cmd="${log_dir}/install_${pkg_name}_cmd.txt"
+        install_stdout="${log_dir}/install_${pkg_name}_stdout.txt"
+        install_stderr="${log_dir}/install_${pkg_name}_stderr.txt"
+        install_exit="${log_dir}/install_${pkg_name}_exit.txt"
     fi
 
     # Install package
@@ -70,7 +76,7 @@ function install_package() {
     echo -e "\n\n----------\nExit status: $?">> "${install_log}"
 
     # Install dependencies if missing
-    missing_dependency=$(grep 'ERROR: dependenc' "${install_log}")
+    missing_dependency=$(grep 'ERROR: dependenc' "${install_stderr}")
     if [[ "${missing_dependency}" ]]
     then
         # Text manipulation to extract substring dependency from error line
@@ -86,7 +92,8 @@ function install_package() {
             depinstall_log="${log_dir}/depinstall_${dependency}.txt"
 
             echo "Installing missing dependency '${dependency}' to '${lib_dir}'"
-            Rscript -e "install.packages(\"${dependency}\", repos=\"${external_repo}\", lib=\"${lib_dir}\")" &> "${depinstall_log}"
+            cmd="${rscript} -e \"install.packages('${dependency}', repos='${external_repo}', lib='${lib_dir}')\""
+            eval -- "${cmd}" &> "${depinstall_log}"
         else
             # Reset and ignore after logging the issue above
             missing_dependency=''

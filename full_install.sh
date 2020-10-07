@@ -125,6 +125,7 @@ echo | tee -a "${stdout_log}"
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
+
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
     ./bin/download_and_build.sh \

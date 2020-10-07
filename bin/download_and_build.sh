@@ -18,7 +18,6 @@ function usage {
     echo "       -s source type (currently supported: 'build', 'sourcecode', or 'git')"
     echo "       -c OPTIONAL git commit SHA (required if sourcetype='git')"
     echo "       -t OPTIONAL path to target directory"
-    exit 1
 }
 
 # Argument flag handling
@@ -225,3 +224,4 @@ else
     exit 1
 
 fi
+
