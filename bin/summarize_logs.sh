@@ -108,7 +108,7 @@ do
     then
         install_status=1
     fi
-    if [[ ! -f "${install_cmd}" ]]
+    if [[ ! -f "${install_log}" ]]
     then
         install_status=2
     fi
