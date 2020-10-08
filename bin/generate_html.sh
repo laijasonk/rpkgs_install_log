@@ -56,6 +56,9 @@ echo "Generating system information page"
 echo "Generating pre-installation packages page"
 ./bin/html_generator/generate_prepackages.sh
 
+echo "Generating input specifications page"
+./bin/html_generator/generate_input.sh
+
 #echo "Generating source download page"
 #./bin/html_generator/generate_download.sh
 #./bin/html_generator/generate_downloadartifact.sh

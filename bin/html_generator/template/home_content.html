@@ -13,15 +13,15 @@
                             <li>Source type can be URLs to bundled build archives (tar.gz)</li>
                             <li>Source type can be URLs to source code in archives (zip, tar.gz, tar.bz2, or rar)
                                 <ul>
-                                    <li>Archive source file are extracted</li>
-                                    <li>Extracted source directory are bundled into build tar.gz</li>
+                                    <li>Archive source files are extracted</li>
+                                    <li>Extracted source directories are bundled into build tar.gz files</li>
                                 </ul>
                             </li>
                             <li>Source type can be git repo URLs with commit SHA
                                 <ul>
-                                    <li>Git repo are cloned</li>
-                                    <li>Commit SHA are checked out</li>
-                                    <li>Source code are bundled into build tar.gz</li>
+                                    <li>Git repos are cloned</li>
+                                    <li>Commits are checked out according to the SHA hash</li>
+                                    <li>Source code are bundled into build tar.gz files</li>
                                 </ul>
                             </li>
                         </ul>
@@ -29,8 +29,8 @@
                     <li><strong>Build</strong>, <strong>check</strong>, and <strong>install</strong> every specified package build
                         <ul style="font-size: smaller;">
                             <li>Build: converts a package source directory into a single bundled tar.gz</li>
-                            <li>Check: perform checks on a source package using all known best practices</li>
-                            <li>Install: installs the packages to the target libs directory</li>
+                            <li>Check: performs checks on source packages using all known best practices</li>
+                            <li>Install: installs the packages to the target rlibs directory</li>
                         </ul>
                     </li>
                     <li><strong>Test</strong> every installed package with unit testing (requires testthat)</li>
@@ -42,7 +42,7 @@
 
             <h2>Example</h2>
 
-            <p>To run the full pipeline for downloading, building, checking, installing, and testing all packages, use the provided "full_install.sh" script. This script takes an input CSV file that contains all the package specifications/instructions and installs it into a target directory. With the exception of the input CSV, all option flags are option.</p>
+            <p>To run the full pipeline for downloading, building, checking, installing, and testing all packages, use the provided "full_install.sh" script. This script takes an input CSV file that contains all the package specifications/instructions and installs it into a target rlibs directory. With the exception of the input CSV, all option flags are option.</p>
 
             <p>A full list of the options plus descriptions are shown when running "full_install.sh" with the "-h" flag. The default help message is shown below.</p>
  

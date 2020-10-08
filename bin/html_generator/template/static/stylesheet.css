@@ -215,6 +215,40 @@ iframe.log {
 .pkg-column3 { width: 15%; }
 .pkg-column4 { width: 15%; }
 
+.input-table {
+    table-layout: fixed;
+    padding: 1em;
+    background-color: #e9e9e9;
+    border: 1px solid #c9c9c9;
+    width: 100%;
+    text-align: center;
+    font-size: smaller;
+}
+
+.input-header {
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+    padding-top: 0em;
+    padding-bottom: 0.5em;
+}
+
+.input-column1 { width: 12%; }
+.input-column2 { width: 12%; }
+.input-column3 { width: 40%; }
+.input-column4 { width: 12%; }
+.input-column5 { width: 24%; }
+
+.input-column1,
+.input-column2,
+.input-column3,
+.input-column4,
+.input-column5 {
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: auto;
+    overflow: auto;
+}
+
 .summary-table {
     padding: 1em;
     background-color: #e9e9e9;
