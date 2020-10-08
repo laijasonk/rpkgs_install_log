@@ -41,7 +41,7 @@ html="
                 <td class=\"summary-header summary-1col center\">Download</td>
             </tr>"
 
-while IFS=, read -r pkg_name pkg_version pkg_source download build check install artifact artifactcheck test
+while IFS=, read -r pkg_name pkg_version pkg_source download build check install test
 do
 
     html="${html}

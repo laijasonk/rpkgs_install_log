@@ -170,5 +170,7 @@ echo | tee -a "${stdout_log}"
 
 header_msg "Creating HTML log" | tee -a "${stdout_log}"
 ./bin/summarize_logs.sh -i "${pkg_csv}" -t "${target_dir}" &> /dev/null
+echo "pkg_name,pkg_version,pkg_source,download_status,build_status,check_status,install_status,test_status" > ./summary.csv
+cat "${log_dir}"/_summary.csv >> ./summary.csv
 ./bin/generate_html.sh -t "${target_dir}" | tee -a "${stdout_log}"
 

@@ -45,21 +45,20 @@ while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 
     download_log="${log_dir}/download_${pkg_name}.txt"
-    artifact_log="${log_dir}/artifact_${pkg_name}.txt"
-    test_log="${log_dir}/test_${pkg_name}.txt"
-    
     build_log="${log_dir}/build_${pkg_name}.txt"
     check_log="${log_dir}/check_${pkg_name}.txt"
     install_log="${log_dir}/install_${pkg_name}.txt"
-    artifactcheck_log="${log_dir}/artifactcheck_${pkg_name}.txt"
+    test_log="${log_dir}/test_${pkg_name}.txt"
+    #artifact_log="${log_dir}/artifact_${pkg_name}.txt"
+    #artifactcheck_log="${log_dir}/artifactcheck_${pkg_name}.txt"
 
     download_status=0
     build_status=0
     check_status=0
     install_status=0
-    artifact_status=0
-    artifactcheck_status=0
     test_status=0
+    #artifact_status=0
+    #artifactcheck_status=0
 
     # Download log
     error1="$(cat ${download_log} | grep -c 'ERROR 404')"
@@ -113,31 +112,31 @@ do
         install_status=2
     fi
        
-    # Artifact status log
-    error1="$(cat ${artifact_log} | grep -c 'Missing file')"
-    error2="$(cat ${artifact_log} | grep -c 'Exit status: 1')"
-    if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]]
-    then
-        artifact_status=1
-    fi
-    if [[ ! -f "${artifact_log}" ]]
-    then
-        artifact_status=2
-    fi
-
-    # Artifact check log
-    error1="$(cat ${artifactcheck_log} | grep -c 'neither a file nor directory')"
-    error2="$(cat ${artifactcheck_log} | grep -c 'ERROR:')"
-    error3="$(cat ${artifactcheck_log} | grep -c 'Exit status: 1')"
-    skip1="$(cat ${artifactcheck_log} | grep -c ' skipped due to ')"
-    if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]] || [[ "${error3}" -gt 0 ]]
-    then
-        artifactcheck_status=1
-    fi
-    if [[ ! -f "${artifactcheck_log}" ]] || [[ "${skip1}" -gt 0 ]]
-    then
-        artifactcheck_status=2
-    fi
+    ## Artifact status log
+    #error1="$(cat ${artifact_log} | grep -c 'Missing file')"
+    #error2="$(cat ${artifact_log} | grep -c 'Exit status: 1')"
+    #if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]]
+    #then
+    #    artifact_status=1
+    #fi
+    #if [[ ! -f "${artifact_log}" ]]
+    #then
+    #    artifact_status=2
+    #fi
+    #
+    ## Artifact check log
+    #error1="$(cat ${artifactcheck_log} | grep -c 'neither a file nor directory')"
+    #error2="$(cat ${artifactcheck_log} | grep -c 'ERROR:')"
+    #error3="$(cat ${artifactcheck_log} | grep -c 'Exit status: 1')"
+    #skip1="$(cat ${artifactcheck_log} | grep -c ' skipped due to ')"
+    #if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]] || [[ "${error3}" -gt 0 ]]
+    #then
+    #    artifactcheck_status=1
+    #fi
+    #if [[ ! -f "${artifactcheck_log}" ]] || [[ "${skip1}" -gt 0 ]]
+    #then
+    #    artifactcheck_status=2
+    #fi
 
     # Test log
     error1="$(cat ${test_log} | grep -c 'Error: Test failures')"
@@ -155,7 +154,7 @@ do
         test_status=2
     fi
 
-    echo "${pkg_name},${pkg_version},${pkg_source},${download_status},${build_status},${check_status},${install_status},${artifact_status},${artifactcheck_status},${test_status}" >> "${status_csv}"
+    echo "${pkg_name},${pkg_version},${pkg_source},${download_status},${build_status},${check_status},${install_status},${test_status}" >> "${status_csv}"
 
 done < "${input_csv}"
 
