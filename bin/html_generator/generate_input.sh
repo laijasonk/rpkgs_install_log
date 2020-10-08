@@ -43,9 +43,9 @@ do
                 <tr>
                     <td class=\"input-column1\">${pkg_name}</td>
                     <td class=\"input-column2\">${pkg_version}</td>
-                    <td class=\"input-column3\">${pkg_url}</td>
+                    <td class=\"input-column3\"><div class="oneline-overflow">${pkg_url}</div></td>
                     <td class=\"input-column4\">${pkg_source}</td>
-                    <td class=\"input-column5\">${pkg_hash}</td>
+                    <td class=\"input-column5\"><div class="oneline-overflow">${pkg_hash}</div></td>
                 </tr>"
 
 done < "${input_csv}"

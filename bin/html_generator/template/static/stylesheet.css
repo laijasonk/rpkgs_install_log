@@ -238,14 +238,9 @@ iframe.log {
 .input-column4 { width: 12%; }
 .input-column5 { width: 24%; }
 
-.input-column1,
-.input-column2,
-.input-column3,
-.input-column4,
-.input-column5 {
+.oneline-overflow {
     white-space: nowrap;
     overflow-x: auto;
-    overflow-y: auto;
     overflow: auto;
 }
 
