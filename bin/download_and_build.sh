@@ -120,17 +120,17 @@ then
     echo "Extracting '${pkg_name}' to '${src_dir}'"
     if [[ "${ext}" == "zip" ]]
     then
-        cmd="unzip -o \"${pkg_archive}\" -d \"${src_dir}\""
+        cmd="unzip -o \"${pkg_archive}\" -d \"${src_dir}/\""
         out_dir="$(dirname $(unzip -Z1 ${pkg_archive} | head -1).tmp)"
         sourcecode_dir="${src_dir}/${out_dir}"
     elif [[ "${ext}" == "tar.gz" ]] || [[ "${ext}" == "tar.bz2" ]]
     then
-        cmd="tar xvf \"${pkg_archive}\" \"${src_dir}\""
+        cmd="tar xvf \"${pkg_archive}\" --directory \"${src_dir}/\""
         out_dir=$(dirname $(tar -tf ${pkg_archive} | head -1).tmp)
         sourcecode_dir="${src_dir}/${out_dir}"
     elif [[ "${ext}" == "rar" ]]
     then
-        cmd="unrar x \"${pkg_archive}\" \"${src_dir}\""
+        cmd="unrar x \"${pkg_archive}\" \"${src_dir}/\""
         out_dir=$(dirname $(unrar tb ${pkg_archive} | head -1).tmp)
         sourcecode_dir="${src_dir}/${out_dir}"
     else
