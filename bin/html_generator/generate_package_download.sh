@@ -92,12 +92,12 @@ do
     html="
             <h1>Download: ${pkg_name}-${pkg_version}</h1>
 
-            <p>Logs for download and extract for ${pkg_name} from ${pkg_source}.</p>
+            <p class=\"space-below\">Logs for download and extract for ${pkg_name} from ${pkg_source}.</p>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_download\" >Download log</a></p>
+            <h2><a id=\"${pkg_name}_download\" >Download log</a></h2>
             <iframe class=\"log text-above\" src=\"../log/download_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
             
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_download\" >Extract log</a></p>
+            <h2><a id=\"${pkg_name}_download\" >Extract log</a></h2>
             <iframe class=\"log text-above\" src=\"../log/extract_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
             "
 

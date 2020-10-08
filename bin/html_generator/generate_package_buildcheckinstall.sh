@@ -32,7 +32,7 @@ done
 
 # Default paths
 input_csv="${log_dir}/_summary.csv"
-output_html="${html_dir}/pages/package_full.html"
+output_html="${html_dir}/pages/package_buildcheckinstall.html"
 
 html="
         <table class=\"summary-table\">
@@ -53,40 +53,40 @@ do
     if [[ "${build}" -eq 0 ]]
     then
         html="${html}
-                <td class=\"summary-success\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_build\">pass</a></td>"
+                <td class=\"summary-success\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">pass</a></td>"
     elif [[ "${build}" -eq 2 ]]
     then
         html="${html}
-                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_build\">skip</a></td>"
+                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">skip</a></td>"
     else
         html="${html}
-                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_build\">fail</a></td>"
+                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">fail</a></td>"
     fi
 
     if [[ "${check}" -eq 0 ]]
     then
         html="${html}
-                <td class=\"summary-success\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_check\">pass</a></td>"
+                <td class=\"summary-success\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">pass</a></td>"
     elif [[ "${check}" -eq 2 ]]
     then
         html="${html}
-                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_check\">skip</a></td>"
+                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">skip</a></td>"
     else
         html="${html}
-                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_check\">fail</a></td>"
+                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">fail</a></td>"
     fi
 
     if [[ "${install}" -eq 0 ]]
     then
         html="${html}
-                <td class=\"summary-success\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_install\">pass</a></td>"
+                <td class=\"summary-success\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">pass</a></td>"
     elif [[ "${install}" -eq 2 ]]
     then
         html="${html}
-                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_install\">skip</a></td>"
+                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">skip</a></td>"
     else
         html="${html}
-                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_full.html#${pkg_name}_install\">fail</a></td>"
+                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">fail</a></td>"
     fi
 
     html="${html}
@@ -115,20 +115,20 @@ input_csv=$(readlink -f ${log_dir}/_input.csv)
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 
-    output_html="${html_dir}/pages/package_${pkg_name}_full.html"
+    output_html="${html_dir}/pages/package_${pkg_name}_buildcheckinstall.html"
 
     html="
             <h1>Status: ${pkg_name}-${pkg_version}</h1>
 
-            <p>Logs from build, check, and install for ${pkg_name} from ${pkg_source}.</p>
+            <p class=\"space-below\">Logs from build, check, and install for ${pkg_name} from ${pkg_source}.</p>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_build\" >Build log</a></p>
+            <h2><a id=\"${pkg_name}_build\" >Build log</a></h2>
             <iframe class=\"log text-above space-below\" src=\"../log/build_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
 
-            <!p class=\"above-caption left\"><a id=\"${pkg_name}_check\" >Check log</a></p>
+            <h2><a id=\"${pkg_name}_check\" >Check log</a></h2>
             <iframe class=\"log text-above space-below\" src=\"../log/check_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_install\" >Install log</a></p>
+            <h2><a id=\"${pkg_name}_install\" >Install log</a></h2>
             <iframe class=\"log text-above space-below\" src=\"../log/install_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
             "
 

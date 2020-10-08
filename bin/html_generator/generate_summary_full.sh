@@ -32,8 +32,8 @@ html="
                     <td class=\"summary-header\">Package</td>
                     <td class=\"summary-header summary-5col center\">Download</td>
                     <td class=\"summary-header summary-5col center\">Build</td>
-                    <td class=\"summary-header summary-5col center\">Install</td>
                     <td class=\"summary-header summary-5col center\">Check</td>
+                    <td class=\"summary-header summary-5col center\">Install</td>
                     <td class=\"summary-header summary-5col center\">Test</td>
                 </tr>"
 
@@ -56,7 +56,7 @@ while IFS=, read -r pkg_name pkg_version pkg_source download build check install
 do
     html="${html}
                 <tr>
-                    <td class=\"summary-left\">${pkg_name}</td>"
+                    <td class=\"summary-left\">${pkg_name}-${pkg_version}</td>"
 
     if [[ "${download}" -eq 0 ]]
     then
@@ -70,34 +70,34 @@ do
 
     if [[ "${build}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_full.html#${pkg_name}_build"
+        status_success "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
     elif [[ "${build}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_full.html#${pkg_name}_build"
+        status_ignore "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
     else
-        status_fail "package_${pkg_name}_full.html#${pkg_name}_build"
+        status_fail "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
+    fi
+ 
+    if [[ "${check}" -eq 0 ]]
+    then
+        status_success "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
+    elif [[ "${check}" -eq 2 ]]
+    then
+        status_ignore "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
+    else
+        status_fail "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
     fi
 
     if [[ "${install}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_full.html#${pkg_name}_install"
+        status_success "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
     elif [[ "${install}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_full.html#${pkg_name}_install"
+        status_ignore "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
     else
-        status_fail "package_${pkg_name}_full.html#${pkg_name}_install"
+        status_fail "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
     fi
-   
-    if [[ "${check}" -eq 0 ]]
-    then
-        status_success "package_${pkg_name}_full.html#${pkg_name}_check"
-    elif [[ "${check}" -eq 2 ]]
-    then
-        status_ignore "package_${pkg_name}_full.html#${pkg_name}_check"
-    else
-        status_fail "package_${pkg_name}_full.html#${pkg_name}_check"
-    fi
-    
+      
     if [[ "${test}" -eq 0 ]]
     then
         status_success "package_${pkg_name}_test.html#${pkg_name}_test"
@@ -117,7 +117,7 @@ html="${html}
             </table>
 
             <p>Command output</p>
-            <iframe class=\"log text-above space-below\" src=\"../log/_stdout.txt\" style=\"height: 300px;\"></iframe>"
+            <iframe class=\"log text-above space-below\" src=\"../log/_stdout.txt\" style=\"height: 500px;\"></iframe>"
 
 cat /dev/null > "${output_html}"
 cat "${html_template}/summary_top.html" >> "${output_html}"

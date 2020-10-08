@@ -92,9 +92,9 @@ do
     html="
             <h1>Test: ${pkg_name}-${pkg_version}</h1>
 
-            <p>Logs for unit test for ${pkg_name} from ${pkg_source}.</p>
+            <p class=\"space-below\">Logs for unit test for ${pkg_name} from ${pkg_source}.</p>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_test\" >Test log</a></p>
+            <h2><a id=\"${pkg_name}_test\" >Test log</a></h2>
             <iframe class=\"log text-above\" src=\"../log/test_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>
             "
 
