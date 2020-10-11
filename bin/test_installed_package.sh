@@ -36,7 +36,8 @@ fi
 # Test package
 echo "Testing '${pkg_name}' with testthat"
 test_log="${log_dir}/test_${pkg_name}.txt"
-cmd="${rscript} -e \"testthat::test_package('${pkg_name}', reporter='location'); testthat::test_package('${pkg_name}', reporter='check')\""
+test_dir="${lib_dir}/${pkg_name}/test"
+cmd="${rscript} -e \"testthat::test_dir('${test_dir}')\""
 echo -e "CMD: ${cmd}\n----------\n\n" > "${test_log}"
 eval -- "${cmd}" >> "${test_log}" 2>&1
 echo -e "\n\n----------\nExit status: $?">> "${test_log}"

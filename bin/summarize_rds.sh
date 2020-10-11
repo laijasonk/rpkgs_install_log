@@ -39,7 +39,7 @@ then
 fi
 cat /dev/null > "${results_csv}"
 
-rds_file="${check_dir}/${pkg_name}.Rcheck/tests/unit_testing_results.rds"
+rds_file="${lib_dir}/${pkg_name}/tests/unit_testing_results.rds"
 echo "Checking for rds file in '${rds_file}'"
 if [[ ! -f "$rds_file" ]]
 then
@@ -51,29 +51,35 @@ fi
 # Run R script to convert RDS results to CSV
 echo "Converting rds file to '${results_csv}'"
 Rscript - <<EOF
-    tmp <- as.data.frame(readRDS(file.path('${rds_file}')))
+    status_check_cross <- function(x) {
+        ifelse(is.null(x) | x == -1, "", ifelse((is.logical(x) & x == TRUE) | (is.numeric(x) & x == 0), "\\u2714", "\\u2718"))
+    }
+
+    library(testthat)
+    rds_contents <- as.data.frame(readRDS(file.path('${rds_file}')))
     
-    tmp\$file_context = paste0(tmp\$file, ": ", tmp\$context)
+    rds_contents\$file_context = paste0(rds_contents\$file, ": ", rds_contents\$context)
     
-    x <- lapply(
-      unique(tmp\$file_context),
-      function(file_context) {
-        tmp2 <- tmp[which(tmp\$file_context == file_context), ]
-        data.frame(
-          test = tmp2\$test,
-          number_of_assertions = tmp2\$nb,
-          failed = tmp2\$failed,
-          skipped = tmp2\$skipped,
-          error = tmp2\$error,
-          warning = tmp2\$warning,
-          pass = status_check_cross(tmp2\$error == FALSE & tmp2\$skipped == FALSE)
+    output_df = data.frame()
+    for (file_context in unique(rds_contents\$file_context)) {
+        context_data <- rds_contents[which(rds_contents\$file_context == file_context), ]
+        append_df <- data.frame(
+            file_context = file_context,
+            test = context_data\$test,
+            number_of_assertions = context_data\$nb,
+            failed = context_data\$failed,
+            skipped = context_data\$skipped,
+            error = context_data\$error,
+            warning = context_data\$warning,
+            pass = status_check_cross(context_data\$error == FALSE & context_data\$skipped == FALSE)
         )
-      }
-    )
+        output_df <- rbind(output_df, append_df)
+    }
     
-    names(x) <- unique(tmp\$file_context)
-    x
-    row.names(x) <- NULL
-    write.csv(x, '${results_csv}')
+    names(output_df) <- unique(rds_contents\$file_context)
+
+    colnames(output_df) <- c("file_context", "test", "number_of_assertions", "failed", "skipped", "error", "warning", "pass")
+    row.names(output_df) <- NULL
+    write.csv(output_df, '${results_csv}')
 EOF
 
