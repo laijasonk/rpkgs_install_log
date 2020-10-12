@@ -38,27 +38,22 @@ echo "Testing '${pkg_name}' with testthat"
 test_log="${log_dir}/test_${pkg_name}.txt"
 test_dir="${lib_dir}/${pkg_name}/tests"
 cmd="${rscript} -e \"testthat::test_dir('${test_dir}')\""
-echo -e "CMD: ${cmd}\n----------\n\n" > "${test_log}"
-eval -- "${cmd}" >> "${test_log}" 2>&1
-echo -e "\n\n----------\nExit status: $?">> "${test_log}"
+run_and_log_cmd "${cmd}" "${test_log}"
 echo "Results saved to '${test_log}'"
 
-# Store RDS results to log
-rds_file="${lib_dir}/${pkg_name}/tests/unit_testing_results.rds"
-results_csv="${log_dir}/rds_${pkg_name}.txt"
-cat /dev/null > "${results_csv}"
-
 # Run R script to convert RDS results to CSV
+rds_file="${lib_dir}/${pkg_name}/tests/unit_testing_results.rds"
 echo "Checking for rds file in '${rds_file}'"
 if [[ ! -f "$rds_file" ]]
 then
     echo "No 'unit_testing_results.rds' file found in '${lib_dir}/${pkg_name}/tests'"
-    echo "WARNING: RDS file does not exist (${rds_file})" > ${results_csv}
     exit 0
 fi
 
 # Run R code to convert rds results into CSV table
 echo "Converting rds file to '${results_csv}'"
+results_csv="${log_dir}/rds_${pkg_name}.txt"
+cat /dev/null > "${results_csv}"
 Rscript - <<EOF
 status_check_cross <- function(x) {
     ifelse(is.null(x) | x == -1, "", ifelse((is.logical(x) & x == TRUE) | (is.numeric(x) & x == 0), "\\u2714", "\\u2718"))

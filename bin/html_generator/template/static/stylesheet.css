@@ -314,6 +314,32 @@ iframe.log {
     text-decoration: none;
 }
 
+.rds-table {
+    table-layout: fixed;
+    padding: 1em;
+    background-color: #e9e9e9;
+    border: 1px solid #c9c9c9;
+    width: 100%;
+    text-align: center;
+    font-size: smaller;
+}
+
+.rds-header {
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+    padding-top: 0em;
+    padding-bottom: 0.5em;
+}
+
+.rds-column1 { width: 20%; }
+.rds-column2 { width: 20%; }
+.rds-column3 { width: 10%; }
+.rds-column4 { width: 10%; }
+.rds-column5 { width: 10%; }
+.rds-column6 { width: 10%; }
+.rds-column7 { width: 10%; }
+.rds-column8 { width: 10%; }
+
 .center {
     text-align: center;
 }

@@ -73,9 +73,7 @@ then
     # Download
     echo "Downloading '${pkg_name}' to '${src_dir}'"
     cmd="wget --continue -O \"${pkg_archive}\" \"${pkg_url}\""
-    echo -e "CMD: ${cmd}\n----------\n\n" > "${download_log}"
-    eval -- "${cmd}" >> "${download_log}" 2>&1
-    echo -e "\n\n----------\nExit status: $?">> "${download_log}"
+    run_and_log_cmd "${cmd}" "${download_log}"
 
     # Logs
     echo "Extract step skipped because the build file was already provided for '${pkg_name}'" > "${extract_log}"
@@ -112,9 +110,7 @@ then
     else
         cmd="cp \"${pkg_url}\" \"${pkg_archive}\""
     fi
-    echo -e "CMD: ${cmd}\n----------\n\n" > "${download_log}"
-    eval -- "${cmd}" >> "${download_log}" 2>&1
-    echo -e "\n\n----------\nExit status: $?">> "${download_log}"
+    run_and_log_cmd "${cmd}" "${download_log}"
 
     # Extract
     echo "Extracting '${pkg_name}' to '${src_dir}'"
@@ -137,17 +133,15 @@ then
         echo "ERROR: Unrecognizable extension"
         exit 1
     fi
-    echo -e "CMD: ${cmd}\n----------\n\n" > "${extract_log}"
-    eval -- "${cmd}" >> "${extract_log}" 2>&1
-    echo -e "\n\n----------\nExit status: $?">> "${extract_log}"
+    run_and_log_cmd "${cmd}" "${extract_log}"
  
     # Build
     echo "Building '${pkg_name}' from '${src_dir}'"
     cd "${src_dir}"
     cmd="${rbinary} CMD build --no-build-vignettes \"${sourcecode_dir}\""
-    echo -e "CMD: ${cmd}\n----------\n\n" > "${build_log}"
-    eval -- "${cmd}" >> "${build_log}" 2>&1
-    tarball="$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
+    run_and_log_cmd "${cmd}" "${build_log}"
+    # Assumes build tarball is printed on 3rd to last line in the build_log
+    tarball="$(cat ${build_log} | sed '/^$/d' | head -n -2 | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
     echo -e "\n\n----------\nExit status: $?">> "${build_log}"
     cd "${curr_dir}"
 
@@ -182,28 +176,23 @@ then
         touch "${sourcecode_dir}" && rm -R -- "$(readlink -f ${sourcecode_dir})"
     fi
     cmd="git clone \"${pkg_url}\" \"${sourcecode_dir}/\""
-    echo -e "CMD: ${cmd}\n----------\n\n" > "${download_log}"
-    eval -- "${cmd}" >> "${download_log}" 2>&1
-    echo -e "\n\n----------\nExit status: $?">> "${download_log}"
+    run_and_log_cmd "${cmd}" "${download_log}"
     cd "${curr_dir}"
 
     # Checkout
     echo "Checkout '${git_commit}' for '${pkg_name}'"
     cd "${sourcecode_dir}"
     cmd="git checkout ${git_commit}"
-    echo -e "CMD: ${cmd}\n----------\n\n" > "${extract_log}"
-    eval -- "${cmd}" >> "${extract_log}" 2>&1
-    echo -e "\n\n----------\nExit status: $?">> "${extract_log}"
+    run_and_log_cmd "${cmd}" "${extract_log}"
     cd "${curr_dir}"
  
     # Build
     echo "Building '${pkg_name}' from '${src_dir}'"
     cd "${src_dir}"
     cmd="${rbinary} CMD build --no-build-vignettes \"${sourcecode_dir}\""
-    echo -e "CMD: ${cmd}\n----------\n\n" > "${build_log}"
-    eval -- "${cmd}" >> "${build_log}" 2>&1
-    tarball="$(cat ${build_log} | sed '/^$/d' | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
-    echo -e "\n\n----------\nExit status: $?">> "${build_log}"
+    run_and_log_cmd "${cmd}" "${build_log}"
+    # Assumes build tarball is printed on 3rd to last line in the build_log
+    tarball="$(cat ${build_log} | sed '/^$/d' | head -n -2 | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"
     cd "${curr_dir}"
 
     # Move

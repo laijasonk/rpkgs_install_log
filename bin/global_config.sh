@@ -34,6 +34,14 @@ function assign_arg_variables() {
     fi
 }
 
+function run_and_log_cmd() {
+    cmd="${1}"
+    log="${2}"
+    echo -e "CMD: ${cmd}\n----------\n\n" > "${log}"
+    eval -- "${cmd}" >> "${log}" 2>&1
+    echo -e "\n\n----------\nExit status: $?">> "${log}"
+}
+
 # Conditions to run script
 if [[ -z "${target_dir}" ]]
 then
