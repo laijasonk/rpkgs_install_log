@@ -142,7 +142,7 @@ do
     else
 
         html="${html}
-        <p>Note: Tests do not output to 'unit_testing_results.rds'.</p>"
+        <p>Note: Skipping RDS table display because 'unit_testing_results.rds' not found.</p>"
 
     fi
 

@@ -139,11 +139,11 @@ do
     #fi
 
     # Test log
-    error1="$(cat ${test_log} | grep -c 'Error: Test failures')"
-    error2="$(cat ${test_log} | grep -c 'Execution halted')"
-    error3="$(cat ${test_log} | grep -c 'ERROR:')"
+    error1="$(cat ${test_log} | grep -c 'Error: ')"
+    error2="$(cat ${test_log} | grep -c 'ERROR: ')"
+    error3="$(cat ${test_log} | grep -c 'testthat unit tests failed')"
     error4="$(cat ${test_log} | grep -c 'Exit status: 1')"
-    skip1="$(cat ${test_log} | grep -c 'Error: No tests found')"
+    skip1="$(cat ${test_log} | grep -c 'No matching test file in dir')"
     skip2="$(cat ${test_log} | grep -c ' skipped due to ')"
     if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]] || [[ "${error3}" -gt 0 ]] || [[ "${error4}" -gt 0 ]]
     then

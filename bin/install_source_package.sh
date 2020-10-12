@@ -64,7 +64,7 @@ function install_package() {
     fi
 
     # Install package
-    cmd="${rbinary} CMD INSTALL --install-tests --library=${lib_dir} \"${pkg_archive}\"" 
+    cmd="R_LIBS=${R_LIBS} ${rbinary} CMD INSTALL --install-tests --library=${lib_dir} \"${pkg_archive}\"" 
     run_and_log_cmd "${cmd}" "${install_log}"
 
     # Install dependencies if missing
@@ -84,7 +84,7 @@ function install_package() {
             depinstall_log="${log_dir}/depinstall_${dependency}.txt"
 
             echo "Installing missing dependency '${dependency}' to '${lib_dir}'"
-            cmd="${rscript} -e \"install.packages('${dependency}', repos='${external_repo}', lib='${lib_dir}')\""
+            cmd="R_LIBS=${R_LIBS} ${rscript} -e \"install.packages('${dependency}', repos='${external_repo}', lib='${lib_dir}')\""
             eval -- "${cmd}" &> "${depinstall_log}"
         else
             # Reset and ignore after logging the issue above

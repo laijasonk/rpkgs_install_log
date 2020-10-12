@@ -138,7 +138,7 @@ then
     # Build
     echo "Building '${pkg_name}' from '${src_dir}'"
     cd "${src_dir}"
-    cmd="${rbinary} CMD build --no-build-vignettes \"${sourcecode_dir}\""
+    cmd="R_LIBS=${R_LIBS} ${rbinary} CMD build --no-build-vignettes \"${sourcecode_dir}\""
     run_and_log_cmd "${cmd}" "${build_log}"
     # Assumes build tarball is printed on 3rd to last line in the build_log
     tarball="$(cat ${build_log} | sed '/^$/d' | head -n -2 | tail -1 | sed -e 's/^.*‘//' -e 's/’.*$//')"

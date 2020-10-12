@@ -37,7 +37,7 @@ fi
 echo "Testing '${pkg_name}' with testthat"
 test_log="${log_dir}/test_${pkg_name}.txt"
 test_dir="${lib_dir}/${pkg_name}/tests"
-cmd="${rscript} -e \"testthat::test_dir('${test_dir}')\""
+cmd="R_LIBS=${R_LIBS} ${rscript} -e \"testthat::test_dir('${test_dir}')\""
 run_and_log_cmd "${cmd}" "${test_log}"
 echo "Results saved to '${test_log}'"
 
@@ -46,7 +46,7 @@ rds_file="${lib_dir}/${pkg_name}/tests/unit_testing_results.rds"
 echo "Checking for rds file in '${rds_file}'"
 if [[ ! -f "$rds_file" ]]
 then
-    echo "No 'unit_testing_results.rds' file found in '${lib_dir}/${pkg_name}/tests'"
+    echo "Skipping RDS check because 'unit_testing_results.rds' not found'"
     exit 0
 fi
 
