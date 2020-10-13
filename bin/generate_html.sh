@@ -64,35 +64,45 @@ echo "Generating pre-installation packages page"
 echo "Generating input specifications page"
 ./bin/html_generator/generate_input.sh
 
-#echo "Generating source download page"
-#./bin/html_generator/generate_download.sh
-#./bin/html_generator/generate_downloadartifact.sh
-
 echo "Generating specific package pages"
-./bin/html_generator/generate_package_buildcheckinstall.sh
-#./bin/html_generator/generate_package_install.sh
-./bin/html_generator/generate_package_download.sh
-./bin/html_generator/generate_package_test.sh
+if [[ "${log_type}" -eq 1 ]]
+then
+    ./bin/html_generator/generate_package_download.sh
+    ./bin/html_generator/generate_package_buildcheckinstall.sh
+    ./bin/html_generator/generate_package_install.sh
+    ./bin/html_generator/generate_package_test.sh
+elif [[ "${log_type}" -eq 2 ]]
+then
+    ./bin/html_generator/generate_package_download.sh
+    ./bin/html_generator/generate_package_buildcheckinstall.sh
+    ./bin/html_generator/generate_package_install.sh
+elif [[ "${log_type}" -eq 3 ]]
+then
+    ./bin/html_generator/generate_package_downloadartifact.sh
+    ./bin/html_generator/generate_package_install.sh
+    ./bin/html_generator/generate_package_test.sh
+fi
 
-#echo "Generating package installation page"
-#./bin/html_generator/generate_install.sh
-
-#echo "Generating package check page"
-#./bin/html_generator/generate_check.sh
-
-#echo "Generating artifactory status page"
-#./bin/html_generator/generate_artifactory.sh
-
-#echo "Generating package test page"
-#./bin/html_generator/generate_test.sh
+echo "Generating artifactory page"
+if [[ "${log_type}" -eq 2 ]] || [[ "${log_type}" -eq 3 ]]
+then
+    ./bin/html_generator/generate_artifactory.sh
+fi
 
 echo "Generating post-installation packages page"
 ./bin/html_generator/generate_postpackages.sh
 
 echo "Generating summary page"
-./bin/html_generator/generate_summary_full.sh
-#./bin/html_generator/generate_summary_build.sh
-#./bin/html_generator/generate_summary_install.sh
+if [[ "${log_type}" -eq 1 ]]
+then
+    ./bin/html_generator/generate_summary_fullinstall.sh
+elif [[ "${log_type}" -eq 2 ]]
+then
+    ./bin/html_generator/generate_summary_artifactorybuild.sh
+elif [[ "${log_type}" -eq 3 ]]
+then
+    ./bin/html_generator/generate_summary_artifactoryinstall.sh
+fi
 
 echo "Copying log files"
 mkdir -p "${html_dir}/log"

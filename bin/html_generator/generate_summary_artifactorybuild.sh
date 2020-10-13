@@ -24,7 +24,7 @@ done
 
 # Default paths
 input_csv="${log_dir}/_summary.csv"
-output_html="${html_dir}/pages/summary_full.html"
+output_html="${html_dir}/pages/summary_artifactorybuild.html"
 
 html="
             <table class=\"summary-table\">
@@ -34,7 +34,6 @@ html="
                     <td class=\"summary-header summary-5col center\">Build</td>
                     <td class=\"summary-header summary-5col center\">Check</td>
                     <td class=\"summary-header summary-5col center\">Install</td>
-                    <td class=\"summary-header summary-5col center\">Test</td>
                 </tr>"
 
 function status_success() {
@@ -96,16 +95,6 @@ do
         status_ignore "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
     else
         status_fail "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
-    fi
-      
-    if [[ "${test}" -eq 0 ]]
-    then
-        status_success "package_${pkg_name}_test.html#${pkg_name}_test"
-    elif [[ "${test}" -eq 2 ]]
-    then
-        status_ignore "package_${pkg_name}_test.html#${pkg_name}_test"
-    else
-        status_fail "package_${pkg_name}_test.html#${pkg_name}_test"
     fi
 
     html="${html}

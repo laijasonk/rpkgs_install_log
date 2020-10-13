@@ -32,33 +32,33 @@ done
 
 # Default paths
 input_csv="${log_dir}/_summary.csv"
-output_html="${html_dir}/pages/package_install.html"
+output_html="${html_dir}/pages/package_downloadartifact.html"
 
 html="
         <table class=\"summary-table\">
             <tr>
                 <td class=\"summary-header\">Package</td>
-                <td class=\"summary-header summary-1col center\">Install</td>
+                <td class=\"summary-header summary-1col center\">Download</td>
             </tr>"
 
-while IFS=, read -r pkg_name pkg_version pkg_source download build check install artifact artifactcheck test
+while IFS=, read -r pkg_name pkg_version pkg_source download build check install test
 do
 
     html="${html}
             <tr>
                 <td class=\"summary-left\">${pkg_name}-${pkg_version}</td>"
 
-    if [[ "${install}" -eq 0 ]]
+    if [[ "${download}" -eq 0 ]]
     then
         html="${html}
-                <td class=\"summary-success\"><a href=\"package_${pkg_name}_install.html#${pkg_name}_install\">pass</a></td>"
-    elif [[ "${install}" -eq 2 ]]
+                <td class=\"summary-success\"><a href=\"package_${pkg_name}_downloadartifact.html#${pkg_name}_download\">pass</a></td>"
+    elif [[ "${download}" -eq 2 ]]
     then
         html="${html}
-                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_install.html#${pkg_name}_install\">skip</a></td>"
+                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_downloadartifact.html#${pkg_name}_download\">skip</a></td>"
     else
         html="${html}
-                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_install.html#${pkg_name}_install\">fail</a></td>"
+                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_downloadartifact.html#${pkg_name}_download\">fail</a></td>"
     fi
 
     html="${html}
@@ -67,11 +67,11 @@ do
 done < "${input_csv}"
 
 cat /dev/null > "${output_html}"
-cat "${html_template}/install_top.html" >> "${output_html}"
+cat "${html_template}/downloadartifact_top.html" >> "${output_html}"
 cat "${html_template}/sidebar.html" >> "${output_html}"
-cat "${html_template}/install_content.html" >> "${output_html}"
+cat "${html_template}/downloadartifact_content.html" >> "${output_html}"
 echo "${html}" >> "${output_html}"
-cat "${html_template}/install_bottom.html" >> "${output_html}"
+cat "${html_template}/downloadartifact_bottom.html" >> "${output_html}"
 
 
 
@@ -87,15 +87,18 @@ input_csv=$(readlink -f ${log_dir}/_input.csv)
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 
-    output_html="${html_dir}/pages/package_${pkg_name}_install.html"
+    output_html="${html_dir}/pages/package_${pkg_name}_downloadartifact.html"
 
     html="
-            <h1>Install: ${pkg_name}-${pkg_version}</h1>
+            <h1>Download: ${pkg_name}-${pkg_version}</h1>
 
-            <p>Logs from install for ${pkg_name} from ${pkg_source}.</p>
+            <p class=\"space-below\">Logs for artifact download for ${pkg_name} from artifactory.</p>
 
-            <p class=\"above-caption left\"><a id=\"${pkg_name}_install\" >Install log</a></p>
-            <iframe class=\"log text-above space-below\" src=\"../log/install_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>
+            <h2><a id=\"${pkg_name}_download\" >Download log</a></h2>
+            <iframe class=\"log text-above\" src=\"../log/artifact_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            
+            <h2><a id=\"${pkg_name}_download\" >Existing check log</a></h2>
+            <iframe class=\"log text-above\" src=\"../log/artifactcheck_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
             "
 
     cat /dev/null > "${output_html}"

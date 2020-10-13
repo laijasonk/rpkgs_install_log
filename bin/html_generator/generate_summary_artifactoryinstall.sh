@@ -24,16 +24,15 @@ done
 
 # Default paths
 input_csv="${log_dir}/_summary.csv"
-output_html="${html_dir}/pages/summary_install.html"
+output_html="${html_dir}/pages/summary_artifactoryinstall.html"
 
 html="
             <table class=\"summary-table\">
                 <tr>
                     <td class=\"summary-header\">Package</td>
-                    <td class=\"summary-header summary-4col center\">Artifact</td>
-                    <td class=\"summary-header summary-4col center\">Check</td>
-                    <td class=\"summary-header summary-4col center\">Install</td>
-                    <td class=\"summary-header summary-4col center\">Test</td>
+                    <td class=\"summary-header summary-5col center\">Download</td>
+                    <td class=\"summary-header summary-5col center\">Install</td>
+                    <td class=\"summary-header summary-5col center\">Test</td>
                 </tr>"
 
 function status_success() {
@@ -51,50 +50,40 @@ function status_fail() {
                     <td class=\"summary-fail\"><a href=\"${1}\">fail</a></td>"
 }
 
-while IFS=, read -r pkg_name pkg_version pkg_source download build check install artifact artifactcheck test
+while IFS=, read -r pkg_name pkg_version pkg_source download build check install test
 do
     html="${html}
                 <tr>
-                    <td class=\"summary-left\">${pkg_name}</td>"
+                    <td class=\"summary-left\">${pkg_name}-${pkg_version}</td>"
 
-    if [[ "${artifact}" -eq 0 ]]
+    if [[ "${download}" -eq 0 ]]
     then
-        status_success "artifactory.html#${pkg_name}_artifact"
-    elif [[ "${artifact}" -eq 2 ]]
+        status_success "package_${pkg_name}_download.html#${pkg_name}_download"
+    elif [[ "${download}" -eq 2 ]]
     then
-        status_ignore "artifactory.html#${pkg_name}_artifact"
+        status_ignore "package_${pkg_name}_download.html#${pkg_name}_download"
     else
-        status_fail "artifactory.html#${pkg_name}_artifact"
-    fi
-  
-    if [[ "${artifactcheck}" -eq 0 ]]
-    then
-        status_success "artifactory.html#${pkg_name}_artifactcheck"
-    elif [[ "${artifactcheck}" -eq 2 ]]
-    then
-        status_ignore "artifactory.html#${pkg_name}_artifactcheck"
-    else
-        status_fail "artifactory.html#${pkg_name}_artifactcheck"
+        status_fail "package_${pkg_name}_download.html#${pkg_name}_download"
     fi
 
     if [[ "${install}" -eq 0 ]]
     then
-        status_success "install.html#${pkg_name}_install"
+        status_success "package_${pkg_name}_install.html#${pkg_name}_install"
     elif [[ "${install}" -eq 2 ]]
     then
-        status_ignore "install.html#${pkg_name}_install"
+        status_ignore "package_${pkg_name}_install.html#${pkg_name}_install"
     else
-        status_fail "install.html#${pkg_name}_install"
+        status_fail "package_${pkg_name}_install.html#${pkg_name}_install"
     fi
 
     if [[ "${test}" -eq 0 ]]
     then
-        status_success "test.html#${pkg_name}_test"
+        status_success "package_${pkg_name}_test.html#${pkg_name}_test"
     elif [[ "${test}" -eq 2 ]]
     then
-        status_ignore "test.html#${pkg_name}_test"
+        status_ignore "package_${pkg_name}_test.html#${pkg_name}_test"
     else
-        status_fail "test.html#${pkg_name}_test"
+        status_fail "package_${pkg_name}_test.html#${pkg_name}_test"
     fi
 
     html="${html}
@@ -106,7 +95,7 @@ html="${html}
             </table>
 
             <p>Command output</p>
-            <iframe class=\"log text-above space-below\" src=\"../log/_stdout.txt\" style=\"height: 300px;\"></iframe>"
+            <iframe class=\"log text-above space-below\" src=\"../log/_stdout.txt\" style=\"height: 500px;\"></iframe>"
 
 cat /dev/null > "${output_html}"
 cat "${html_template}/summary_top.html" >> "${output_html}"
