@@ -116,6 +116,7 @@ pkg_csv="${log_dir}/_input.csv"
 echo "Saving start timestamp" | tee -a "${stdout_log}"
 echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
 echo | tee -a "${stdout_log}"
+echo "pkg_name,pkg_version,pkg_source,download_status,build_status,check_status,install_status,test_status" > ./artifactory.csv
 
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
@@ -135,6 +136,8 @@ do
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -t "${target_dir}" | tee -a "${stdout_log}"
 
+    echo "\"${pkg_name}\",\"${pkg_version}\",\"${build_dir}/${pkg_name}_${pkg_version}.tar.gz\",\"build\",\"\"" >> ./artifactory.csv
+
     if [ ${disable_checks} = false ]
     then
         ./bin/check_source_package.sh \
@@ -143,6 +146,7 @@ do
     else
         echo "Check skipped due to missing -c flag" > "${log_dir}/check_${pkg_name}.txt"
     fi
+
     
     echo
 

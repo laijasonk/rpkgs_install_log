@@ -123,6 +123,14 @@ do
 
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
+    ./bin/download_and_build.sh \
+        -n "${pkg_name}" \
+        -v "${pkg_version}" \
+        -s "${pkg_source}" \
+        -u "${pkg_url}" \
+        -c "${git_commit}" \
+        -t "${target_dir}" | tee -a "${stdout_log}"
+
     ./bin/install_source_package.sh \
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -t "${target_dir}" | tee -a "${stdout_log}"

@@ -72,7 +72,18 @@ then
 
     # Download
     echo "Downloading '${pkg_name}' to '${src_dir}'"
-    cmd="wget --continue -O \"${pkg_archive}\" \"${pkg_url}\""
+    if [[ "${pkg_url:0:4}" == "http" ]]
+    then
+        cmd="wget --continue -O \"${pkg_archive}\" \"${pkg_url}\""
+    else
+        cmd="if [[ ! -f \"${pkg_url}\" ]]; then cp \"${pkg_url}\" \"${pkg_archive}\"; fi"
+
+        # Special case for artifactories
+        if [[ -f "$(dirname ${pkg_url})/${pkg_name}.txt" ]]
+        then
+            cp "$(dirname ${pkg_url})/${pkg_name}.txt" "${build_dir}"
+        fi
+    fi
     run_and_log_cmd "${cmd}" "${download_log}"
 
     # Logs
