@@ -74,3 +74,29 @@ Install from three CSV files into three rlibs paths. The target directory is dif
     -o layer3 
 ```
 
+
+### Example: Build an artifactory
+
+Build an artifactory into a build directory with checks.
+
+```
+./artifactory_build.sh \
+    -i ./examples/artifactory.csv \
+    -o artifactory \
+    -c
+
+
+ls ./artifactory/build
+```
+
+### Example: Install from an artifactory
+
+Install all the packages in a previously-built artifactory, then run unit tests.
+
+```
+./artifactory_install.sh \
+    -i ./examples/artifactory.csv \
+    -o artifactory \
+    -t
+```
+

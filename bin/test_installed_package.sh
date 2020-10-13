@@ -46,14 +46,14 @@ rds_file="${lib_dir}/${pkg_name}/tests/unit_testing_results.rds"
 echo "Checking for rds file in '${rds_file}'"
 if [[ ! -f "$rds_file" ]]
 then
-    echo "Skipping RDS check because 'unit_testing_results.rds' not found'"
+    echo "Skipping RDS check because 'unit_testing_results.rds' not found"
     exit 0
 fi
 
 # Run R code to convert rds results into CSV table
-echo "Converting rds file to '${results_csv}'"
 results_csv="${log_dir}/rds_${pkg_name}.txt"
 cat /dev/null > "${results_csv}"
+echo "Converting rds file to '${results_csv}'"
 Rscript - <<EOF
 status_check_cross <- function(x) {
     ifelse(is.null(x) | x == -1, "", ifelse((is.logical(x) & x == TRUE) | (is.numeric(x) & x == 0), "\\u2714", "\\u2718"))

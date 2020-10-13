@@ -31,10 +31,10 @@ while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
     # Status of the file
     artifact_file="${build_dir}/${pkg_name}_${pkg_version}.tar.gz"
-    artifact_log="${log_dir}/artifact_${pkg_name}.txt"
+    artifact_log="${log_dir}/download_${pkg_name}.txt"
     if [[ ! -f "${artifact_file}" ]]
     then
-        echo "Missing file" > "${artifact_log}"
+        echo "Error: Missing file" > "${artifact_log}"
     else
         echo "Build tarball for '${pkg_name}' found." > "${artifact_log}"
         echo "    Path: ${artifact_file}" >> "${artifact_log}"

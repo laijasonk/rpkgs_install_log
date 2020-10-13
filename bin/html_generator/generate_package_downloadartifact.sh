@@ -95,9 +95,9 @@ do
             <p class=\"space-below\">Logs for artifact download for ${pkg_name} from artifactory.</p>
 
             <h2><a id=\"${pkg_name}_download\" >Download log</a></h2>
-            <iframe class=\"log text-above\" src=\"../log/artifact_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
+            <iframe class=\"log text-above\" src=\"../log/download_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
             
-            <h2><a id=\"${pkg_name}_download\" >Existing check log</a></h2>
+            <h2><a id=\"${pkg_name}_download\" >Artifact check log</a></h2>
             <iframe class=\"log text-above\" src=\"../log/artifactcheck_${pkg_name}.txt\" style=\"height: 300px;\"></iframe>
             "
 

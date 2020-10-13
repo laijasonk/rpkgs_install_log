@@ -95,7 +95,7 @@ echo "Generating post-installation packages page"
 echo "Generating summary page"
 if [[ "${log_type}" -eq 1 ]]
 then
-    ./bin/html_generator/generate_summary_fullinstall.sh
+    ./bin/html_generator/generate_summary_fullpipeline.sh
 elif [[ "${log_type}" -eq 2 ]]
 then
     ./bin/html_generator/generate_summary_artifactorybuild.sh

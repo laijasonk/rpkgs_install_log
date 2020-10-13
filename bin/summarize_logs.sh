@@ -63,8 +63,9 @@ do
     # Download log
     error1="$(cat ${download_log} | grep -c 'ERROR 404')"
     error2="$(cat ${download_log} | grep -c 'Exit status: 1')"
+    error3="$(cat ${download_log} | grep -c 'Error: Missing file')"
     skip1="$(cat ${check_log} | grep -c ' skipped because ')"
-    if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]]
+    if [[ "${error1}" -gt 0 ]] || [[ "${error2}" -gt 0 ]] || [[ "${error3}" -gt 0 ]]
     then
         download_status=1
     fi

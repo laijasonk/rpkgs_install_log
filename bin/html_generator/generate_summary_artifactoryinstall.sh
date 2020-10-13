@@ -58,12 +58,12 @@ do
 
     if [[ "${download}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_download.html#${pkg_name}_download"
+        status_success "package_${pkg_name}_downloadartifact.html#${pkg_name}_download"
     elif [[ "${download}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_download.html#${pkg_name}_download"
+        status_ignore "package_${pkg_name}_downloadartifact.html#${pkg_name}_download"
     else
-        status_fail "package_${pkg_name}_download.html#${pkg_name}_download"
+        status_fail "package_${pkg_name}_downloadartifact.html#${pkg_name}_download"
     fi
 
     if [[ "${install}" -eq 0 ]]
