@@ -27,7 +27,7 @@ input_csv="${log_dir}/_summary.csv"
 output_html="${html_dir}/pages/summary_artifactorybuild.html"
 
 html="
-            <table class=\"summary-table\">
+            <table class=\"summary-table space-below\">
                 <tr>
                     <td class=\"summary-header\">Package</td>
                     <td class=\"summary-header summary-5col center\">Download</td>

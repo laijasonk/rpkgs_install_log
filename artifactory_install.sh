@@ -51,7 +51,7 @@ do
         o) 
             mkdir -p "${OPTARG}"
             target_dir="$(readlink -f ${OPTARG})"
-            cmd="${cmd} -t ${OPTARG}" ;;
+            cmd="${cmd} -o ${OPTARG}" ;;
         h) 
             usage ;;
         *) 

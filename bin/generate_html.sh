@@ -14,6 +14,9 @@ function usage {
     exit 1
 }
 
+# Default values
+log_type=1
+
 # Argument flag handling
 while getopts "123t:h" opt
 do
@@ -31,7 +34,6 @@ done
 . ./bin/global_config.sh -t "${target_dir}"
 
 # Sidebar depends on type of log
-sidebar_template="${html_template}/sidebar_fullinstall.html"
 if [[ "${log_type}" -eq 1 ]]
 then
     sidebar_template="${html_template}/sidebar_fullinstall.html"
