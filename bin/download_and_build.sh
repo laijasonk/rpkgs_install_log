@@ -76,7 +76,7 @@ then
     then
         cmd="wget --continue -O \"${pkg_archive}\" \"${pkg_url}\""
     else
-        cmd="if [[ ! -f \"${pkg_url}\" ]]; then cp \"${pkg_url}\" \"${pkg_archive}\"; fi"
+        cmd="if [[ ! -f \"${pkg_archive}\" ]]; then cp \"${pkg_url}\" \"${pkg_archive}\" && echo \"Success: Build file copied to artifact\"; else echo \"Success: Artifact found\"; fi"
 
         # Special case for artifactories
         if [[ -f "$(dirname ${pkg_url})/${pkg_name}.txt" ]]

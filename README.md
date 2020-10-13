@@ -22,7 +22,7 @@ Flags:
 
 ## Examples
 
-### Example: Command to install via the full pipeline
+### Example: Full install from scratch
 
 This example lists out all the option flags, but many of the flags are optional. Run `./full_install.sh -h` to see the default values.
 
@@ -33,7 +33,37 @@ This example lists out all the option flags, but many of the flags are optional.
     -b /usr/bin/R \
     -s /usr/bin/Rscript \
     -c -t \
-    -o ./
+    -o ./output
+```
+
+### Example: Build and install from an artifactory
+
+Build an artifactory from an input CSV file into a target directory with checks, then install that artifactory into a separate a build directory with unit tests.
+
+```
+# Build an artifactory
+./artifactory_build.sh \
+    -i ./examples/NEST_363_release_subset.csv \
+    -o ./example_build/ \
+    -c
+
+# Confirm contents of artifactory
+ls ./example_build/build
+
+# Confirm creation of new artifactory CSV
+cat ./artifactory.csv
+
+# Rename summary.csv to avoid overwriting
+mv ./summary.csv ./example_build_summary.csv
+
+# Install from artifactory
+./artifactory_install.sh \
+    -i ./artifactory.csv \
+    -o ./example_install/ \
+    -t
+
+# Rename summary.csv for clarity
+mv ./summary.csv ./example_install_summary.csv
 ```
 
 ### Example: Install 3 layers into a single rlibs path
@@ -60,43 +90,20 @@ Install from three CSV files into three rlibs paths. The target directory is dif
 
 ```
 ./full_install.sh \
-    -i ./examples/layer1.csv
-    -o layer1 
+    -i ./examples/layer1.csv \
+    -o ./layer1 
+mv ./summary.csv ./layer1_summary.csv
 
 ./full_install.sh \
-    -i ./examples/layer2.csv
-    -l /path/to/layer1/libs
-    -o layer2 
+    -i ./examples/layer2.csv \
+    -l /path/to/layer1/libs \
+    -o ./layer2 
+mv ./summary.csv ./layer2_summary.csv
 
 ./full_install.sh \
-    -i ./examples/layer2.csv
-    -l /path/to/layer2/libs:/path/to/layer1/libs
-    -o layer3 
-```
-
-
-### Example: Build an artifactory
-
-Build an artifactory into a build directory with checks.
-
-```
-./artifactory_build.sh \
-    -i ./examples/artifactory.csv \
-    -o artifactory \
-    -c
-
-
-ls ./artifactory/build
-```
-
-### Example: Install from an artifactory
-
-Install all the packages in a previously-built artifactory, then run unit tests.
-
-```
-./artifactory_install.sh \
-    -i ./examples/artifactory.csv \
-    -o artifactory \
-    -t
+    -i ./examples/layer2.csv \
+    -l /path/to/layer2/libs:/path/to/layer1/libs \
+    -o ./layer3 
+mv ./summary.csv ./layer2_summary.csv
 ```
 

@@ -90,9 +90,9 @@ do
     output_html="${html_dir}/pages/package_${pkg_name}_install.html"
 
     html="
-            <h1>Status: ${pkg_name}-${pkg_version}</h1>
+            <h1>Install: ${pkg_name}-${pkg_version}</h1>
 
-            <p class=\"space-below\">Logs from build, check, and install for ${pkg_name} from ${pkg_source}.</p>
+            <p class=\"space-below\">Text logs from installing ${pkg_name} from ${pkg_source}.</p>
 
             <h2><a id=\"${pkg_name}_install\" >Install log</a></h2>
             <iframe class=\"log text-above space-below\" src=\"../log/install_${pkg_name}.txt\" style=\"height: 500px;\"></iframe>

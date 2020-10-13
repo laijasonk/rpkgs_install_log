@@ -14,13 +14,13 @@ cmd="${0}"
 
 # Help message
 function usage {
-    echo "Usage: $0 -i input.csv"
-    echo "       $0 -i input.csv [-l ${in_rlibs}]"
-    echo "       $0 -i input.csv [-b ${in_rbinary}] [-s ${in_rscript}]"
-    echo "       $0 -i input.csv [-c] [-t]"
-    echo "       $0 -i input.csv [-o ${target_dir}]"
+    echo "Usage: $0 -i artifactory.csv"
+    echo "       $0 -i artifactory.csv [-l ${in_rlibs}]"
+    echo "       $0 -i artifactory.csv [-b ${in_rbinary}] [-s ${in_rscript}]"
+    echo "       $0 -i artifactory.csv [-t]"
+    echo "       $0 -i artifactory.csv [-o ${target_dir}]"
     echo "Flags:"
-    echo "       -i input csv containing release packages"
+    echo "       -i artifactory csv containing build packages"
     echo "       -l OPTIONAL libpaths to build on (separated by colon on GNU/Linux)"
     echo "       -b OPTIONAL path to R binary"
     echo "       -s OPTIONAL path to Rscript executable"
@@ -109,13 +109,14 @@ pkg_csv="${log_dir}/_input.csv"
     -i "${input_csv}" \
     -o "${pkg_csv}" | tee -a "${stdout_log}"
 
+./bin/inspect_artifactory.sh \
+    -i "${pkg_csv}" \
+    -t "${target_dir}" | tee -a "${stdout_log}"
+
 ./bin/export_installed_packages.sh -1 -t "${target_dir}" | tee -a "${stdout_log}"
 echo "Saving start timestamp" | tee -a "${stdout_log}"
 echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
 echo | tee -a "${stdout_log}"
-./bin/inspect_artifactory.sh \
-    -i "${pkg_csv}" \
-    -t "${target_dir}" | tee -a "${stdout_log}"
 
 # install and test every package
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
@@ -160,4 +161,11 @@ header_msg "Creating HTML log" | tee -a "${stdout_log}"
 echo "pkg_name,pkg_version,pkg_source,download_status,build_status,check_status,install_status,test_status" > ./summary.csv
 cat "${log_dir}"/_summary.csv >> ./summary.csv
 ./bin/generate_html.sh -3 -t "${target_dir}" | tee -a "${stdout_log}"
+echo
+
+header_msg "Output" | tee -a "${stdout_log}"
+echo "Installed library: ${lib_dir}"
+echo "Summary CSV: $(pwd)/summary.csv"
+echo "HTML log: ${html_dir}/index.html"
+echo
 

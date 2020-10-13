@@ -32,16 +32,11 @@ html="
                     <td class=\"summary-header\">Artifact Package</td>
                 </tr>"
 
-function status_fail() {
-    html="${html}
-                    <td class=\"summary-fail\"><a href=\"${1}\">fail</a></td>"
-}
-
 while read -r buildfile
 do
     html="${html}
                 <tr>
-                    <td class=\"left\">${buildfile}</td>
+                    <td class=\"summary-1col\"><div class=\"oneline-overflow\">${buildfile}</div></td>
                 </tr>"
 
 done < "${artifactory_list}"
