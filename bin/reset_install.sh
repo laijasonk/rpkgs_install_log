@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Remove old files
+# Reset the directory contents
 #
 
 # Help message

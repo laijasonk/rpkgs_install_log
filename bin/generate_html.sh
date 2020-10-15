@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# Generate HTML logs to check the status of the scripts
+#
 
 # Help message
 function usage {

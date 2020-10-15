@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# Read all the logs and summarize status into a single csv log
+#
 
 # Help message
 function usage {

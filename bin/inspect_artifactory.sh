@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Inspect artifactory
+# Inspect artifactory to confirm files are present as expected
 #
 
 # Help message

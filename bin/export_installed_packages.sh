@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# Store the list of installed R packages into a text log 
+#
 
 # Help message
 function usage {

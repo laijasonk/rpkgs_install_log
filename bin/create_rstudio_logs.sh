@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Duplicate HTML logs with corrected links in an RStudio Web Server
+#
 
 # Help message
 function usage {

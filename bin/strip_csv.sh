@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Strips CSV for scripts (assumes header)
+# Strips CSV for use as input in scripts
 #
 
 # Help message

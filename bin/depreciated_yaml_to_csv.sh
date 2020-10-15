@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Convert yaml file to csv
+# Convert yaml file to csv (DEPRECIATED)
 # 
 
 # Help message

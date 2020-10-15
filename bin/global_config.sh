@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 #
-# Read config file
+# Set the global variables used across all scripts
+#
+# NOTE: This used to allow user-defined configs, but was removed to
+#       minimize user-error
 #
 
 # Help message

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Test packages with testthat
+# Test packages with testthat library in R
 #
 
 # Help message
