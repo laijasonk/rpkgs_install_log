@@ -1,3 +1,3 @@
-"pkg_name", "pkg_version", "pkg_url", "pkg_source","git_commit"
-"rtables", "0.1.7", "https://github.com/Roche/rtables/archive/aac5230788983d62cb907ff1d23ee4d6bdc56fda.zip", "sourcecode", ""
-"cyclocomp", "1.1.0", "https://github.com/MangoTheCat/cyclocomp.git", "git", "6156a12c853ac70a428ef4d258dff9a81ade0d52"
+"pkg_name","pkg_version","url","sourcetype","commit_sha"
+"htmltools","0.4.0","https://github.com/rstudio/htmltools.git","git","0366ff73ce48a7ccdec557957af73b527c8f1eda"
+"purrr","0.3.3","https://github.com/tidyverse/purrr/archive/v0.3.3.zip","sourcecode",""
