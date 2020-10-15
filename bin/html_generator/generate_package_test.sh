@@ -51,14 +51,14 @@ do
     if [[ "${test}" -eq 0 ]]
     then
         html="${html}
-                    <td class=\"summary-success\"><a href=\"package_${pkg_name}_test.html#${pkg_name}_test\">pass</a></td>"
+                    <td class=\"summary-success\"><a href=\"./package_${pkg_name}_test.html#${pkg_name}_test\">pass</a></td>"
     elif [[ "${test}" -eq 2 ]]
     then
         html="${html}
-                    <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_test.html#${pkg_name}_test\">skip</a></td>"
+                    <td class=\"summary-ignore\"><a href=\"./package_${pkg_name}_test.html#${pkg_name}_test\">skip</a></td>"
     else
         html="${html}
-                    <td class=\"summary-fail\"><a href=\"package_${pkg_name}_test.html#${pkg_name}_test\">fail</a></td>"
+                    <td class=\"summary-fail\"><a href=\"./package_${pkg_name}_test.html#${pkg_name}_test\">fail</a></td>"
     fi
 
     html="${html}

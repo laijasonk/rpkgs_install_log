@@ -60,52 +60,52 @@ do
 
     if [[ "${download}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_download.html#${pkg_name}_download"
+        status_success "./package_${pkg_name}_download.html#${pkg_name}_download"
     elif [[ "${download}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_download.html#${pkg_name}_download"
+        status_ignore "./package_${pkg_name}_download.html#${pkg_name}_download"
     else
-        status_fail "package_${pkg_name}_download.html#${pkg_name}_download"
+        status_fail "./package_${pkg_name}_download.html#${pkg_name}_download"
     fi
 
     if [[ "${build}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
+        status_success "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
     elif [[ "${build}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
+        status_ignore "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
     else
-        status_fail "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
+        status_fail "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build"
     fi
  
     if [[ "${check}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
+        status_success "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
     elif [[ "${check}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
+        status_ignore "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
     else
-        status_fail "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
+        status_fail "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check"
     fi
 
     if [[ "${install}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
+        status_success "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
     elif [[ "${install}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
+        status_ignore "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
     else
-        status_fail "package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
+        status_fail "./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install"
     fi
       
     if [[ "${test}" -eq 0 ]]
     then
-        status_success "package_${pkg_name}_test.html#${pkg_name}_test"
+        status_success "./package_${pkg_name}_test.html#${pkg_name}_test"
     elif [[ "${test}" -eq 2 ]]
     then
-        status_ignore "package_${pkg_name}_test.html#${pkg_name}_test"
+        status_ignore "./package_${pkg_name}_test.html#${pkg_name}_test"
     else
-        status_fail "package_${pkg_name}_test.html#${pkg_name}_test"
+        status_fail "./package_${pkg_name}_test.html#${pkg_name}_test"
     fi
 
     html="${html}

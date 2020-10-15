@@ -53,40 +53,40 @@ do
     if [[ "${build}" -eq 0 ]]
     then
         html="${html}
-                <td class=\"summary-success\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">pass</a></td>"
+                <td class=\"summary-success\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">pass</a></td>"
     elif [[ "${build}" -eq 2 ]]
     then
         html="${html}
-                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">skip</a></td>"
+                <td class=\"summary-ignore\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">skip</a></td>"
     else
         html="${html}
-                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">fail</a></td>"
+                <td class=\"summary-fail\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_build\">fail</a></td>"
     fi
 
     if [[ "${check}" -eq 0 ]]
     then
         html="${html}
-                <td class=\"summary-success\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">pass</a></td>"
+                <td class=\"summary-success\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">pass</a></td>"
     elif [[ "${check}" -eq 2 ]]
     then
         html="${html}
-                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">skip</a></td>"
+                <td class=\"summary-ignore\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">skip</a></td>"
     else
         html="${html}
-                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">fail</a></td>"
+                <td class=\"summary-fail\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_check\">fail</a></td>"
     fi
 
     if [[ "${install}" -eq 0 ]]
     then
         html="${html}
-                <td class=\"summary-success\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">pass</a></td>"
+                <td class=\"summary-success\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">pass</a></td>"
     elif [[ "${install}" -eq 2 ]]
     then
         html="${html}
-                <td class=\"summary-ignore\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">skip</a></td>"
+                <td class=\"summary-ignore\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">skip</a></td>"
     else
         html="${html}
-                <td class=\"summary-fail\"><a href=\"package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">fail</a></td>"
+                <td class=\"summary-fail\"><a href=\"./package_${pkg_name}_buildcheckinstall.html#${pkg_name}_install\">fail</a></td>"
     fi
 
     html="${html}

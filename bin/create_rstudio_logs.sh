@@ -25,6 +25,8 @@ done
 # Define new rstudio log directory
 html_base_dir="${target_dir}/rstudio_log"
 html_pages_dir="${target_dir}/rstudio_log/pages"
+escaped_base_dir="$(echo ${html_base_dir} | sed -e 's/\\/\\\\/g' -e 's/\//\\\//g')"
+escaped_pages_dir="$(echo ${html_pages_dir} | sed -e 's/\\/\\\\/g' -e 's/\//\\\//g')"
 
 # If rstudio logs already exist, go ahead and delete them
 if [[ -d "${html_base_dir}" ]]
@@ -35,21 +37,14 @@ fi
 # Copy current log to new rstudio log location
 cp -R "${html_dir}" "${html_base_dir}"
 
-# Function for converting all links to rstudio links
-function convert_urls() {
-    in_file="$1"
-    base_dir="$(echo ${html_base_dir} | sed -e 's/\\/\\\\/g' -e 's/\//\\\//g')"
-    pages_dir="$(echo ${html_pages_dir} | sed -e 's/\\/\\\\/g' -e 's/\//\\\//g')"
-    sed -i 's/"\.\.\//"http:\/\/localhost:8787\/file_show?path='"${base_dir}"'\//g' ${in_file}
-    sed -i 's/"\.\//"http:\/\/localhost:8787\/file_show?path='"${pages_dir}"'\//g' ${in_file}
-}
-
 # Convert the index page first
-convert_urls "${html_base_dir}/index.html"
+index_file="${html_base_dir}/index.html"
+sed -i 's/"\.\//"http:\/\/localhost:8787\/file_show?path='"${escaped_base_dir}"'\//g' ${index_file}
 
 # Convert every file in the pages directory
 for html_file in "${html_pages_dir}"/*.html
 do 
-    convert_urls "${html_file}"
+    sed -i 's/"\.\.\//"http:\/\/localhost:8787\/file_show?path='"${escaped_base_dir}"'\//g' ${html_file}
+    sed -i 's/"\.\//"http:\/\/localhost:8787\/file_show?path='"${escaped_pages_dir}"'\//g' ${html_file}
 done
 
