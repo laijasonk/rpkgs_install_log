@@ -248,20 +248,19 @@ iframe.log {
     padding: 1em;
     background-color: #e9e9e9;
     border: 1px solid #c9c9c9;
+    font-size: smaller;
     width: 100%;
 }
 
 .summary-header {
     font-weight: bold;
     border-bottom: 1px solid #000;
-    font-size: smaller;
     padding-top: 0em;
     padding-bottom: 0.5em;
 }
 
 .summary-left {
     width: 40%;
-    font-size: smaller;
     padding: 0.5em;
 }
 
@@ -287,14 +286,12 @@ iframe.log {
 
 .summary-success {
     text-align: center;
-    font-size: smaller;
     font-weight: bold;
     background-color: #b2d3c2;
     padding: 0.5em;
 }
 .summary-ignore {
     text-align: center;
-    font-size: smaller;
     font-weight: bold;
     background-color: #fffdd0;
     padding: 0.5em;
@@ -302,7 +299,6 @@ iframe.log {
 
 .summary-fail {
     text-align: center;
-    font-size: smaller;
     font-weight: bold;
     background-color: #bc544b;
     padding: 0.5em;

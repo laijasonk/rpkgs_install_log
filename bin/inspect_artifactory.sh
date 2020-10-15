@@ -45,7 +45,7 @@ do
     new_artifact_check_log="${log_dir}/artifactcheck_${pkg_name}.txt"
     if [[ ! -f "${artifact_check_log}" ]]
     then
-        echo "Missing file" > "${new_artifact_check_log}"
+        echo "Check file not provided in artifactory (possibly due to missing '-c' flag during build)" > "${new_artifact_check_log}"
     else
         cp "${artifact_check_log}" "${new_artifact_check_log}"
     fi

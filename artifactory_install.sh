@@ -21,7 +21,7 @@ function usage {
     echo "       $0 -i artifactory.csv [-t] [-r]"
     echo "       $0 -i artifactory.csv [-o ${target_dir}]"
     echo "Flags:"
-    echo "       -i input csv containing release packages"
+    echo "       -i artifactory csv containing build packages"
     echo "       -l OPTIONAL libpaths to build on (separated by colon on GNU/Linux)"
     echo "       -b OPTIONAL path to R binary"
     echo "       -s OPTIONAL path to Rscript executable"
@@ -56,7 +56,7 @@ do
         o) 
             mkdir -p "${OPTARG}"
             target_dir="$(readlink -f ${OPTARG})"
-            cmd="${cmd} -t ${OPTARG}" ;;
+            cmd="${cmd} -o ${OPTARG}" ;;
         h) 
             usage ;;
         *) 
@@ -114,19 +114,28 @@ pkg_csv="${log_dir}/_input.csv"
     -i "${input_csv}" \
     -o "${pkg_csv}" | tee -a "${stdout_log}"
 
+./bin/inspect_artifactory.sh \
+    -i "${pkg_csv}" \
+    -t "${target_dir}" | tee -a "${stdout_log}"
+
 ./bin/export_installed_packages.sh -1 -t "${target_dir}" | tee -a "${stdout_log}"
 echo "Saving start timestamp" | tee -a "${stdout_log}"
 echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
 echo | tee -a "${stdout_log}"
-./bin/inspect_artifactory.sh \
-    -i "${pkg_csv}" \
-    -t "${target_dir}" | tee -a "${stdout_log}"
 
 # install and test every package
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
+
+    ./bin/download_and_build.sh \
+        -n "${pkg_name}" \
+        -v "${pkg_version}" \
+        -s "${pkg_source}" \
+        -u "${pkg_url}" \
+        -c "${git_commit}" \
+        -t "${target_dir}" | tee -a "${stdout_log}"
 
     ./bin/install_source_package.sh \
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
