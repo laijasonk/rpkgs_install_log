@@ -62,10 +62,8 @@ do
             mkdir -p "${OPTARG}"
             target_dir="$(readlink -f ${OPTARG})"
             cmd="${cmd} -o ${OPTARG}" ;;
-        h) 
-            usage ;;
-        *) 
-            usage ;;
+        h) usage ;;
+        *) usage ;;
     esac
 done
 
@@ -97,16 +95,30 @@ function header_msg() {
     fi
 }
 
-# Variables
+# Get the global variables
 . ./bin/global_config.sh -t "${target_dir}"
+
+# Store some of the paths into files
 echo "${in_rlibs}" > "${log_dir}"/_rlibs.txt
 echo "${in_rbinary}" > "${log_dir}"/_rbinary.txt
 echo "${in_rscript}" > "${log_dir}"/_rscript.txt
+
+# Reset the global variables after setting the paths above
 . ./bin/global_config.sh -t "${target_dir}"
+
+# Store the current command to a log
 echo "CMD: ${cmd}" > ./_stdout.txt
 echo >> ./_stdout.txt
 
-# Prepare system
+
+##################################################
+#
+# Initializing system
+#
+##################################################
+
+
+# Print the heading
 header_msg "Initializing system" | tee -a ./_stdout.txt
 
 # Set the default variables and reset install
@@ -116,21 +128,36 @@ header_msg "Initializing system" | tee -a ./_stdout.txt
 stdout_log="${log_dir}/_stdout.txt"
 mv ./_stdout.txt "${stdout_log}"
 
+# Prepare the input CSV by stripping extra characters
 pkg_csv="${log_dir}/_input.csv"
 ./bin/strip_csv.sh \
     -1 \
     -i "${input_csv}" \
     -o "${pkg_csv}" | tee -a "${stdout_log}"
 
+# Save a list of the installed R packages
 ./bin/export_installed_packages.sh -1 -t "${target_dir}" | tee -a "${stdout_log}"
+
+# Track the timestamps
 echo "Saving start timestamp" | tee -a "${stdout_log}"
 echo "$(date)" > "${log_dir}/_start_timestamp.txt" | tee -a "${stdout_log}"
+
+# Nicer display
 echo | tee -a "${stdout_log}"
+
+
+##################################################
+#
+# Per-package instructions
+#
+##################################################
+
 
 # Build, install, check, and test every package
 while IFS=, read -r pkg_name pkg_version pkg_url pkg_source git_commit
 do
 
+    # Print out the heading
     header_msg "${pkg_name}-${pkg_version}" | tee -a "${stdout_log}"
 
     ./bin/download_and_build.sh \
@@ -145,6 +172,7 @@ do
         -i "${build_dir}/${pkg_name}_${pkg_version}.tar.gz" \
         -t "${target_dir}" | tee -a "${stdout_log}"
 
+    # Check package if option flags set
     if [ ${disable_checks} = false ]
     then
         ./bin/check_source_package.sh \
@@ -154,6 +182,7 @@ do
         echo "Check skipped due to missing -c flag" > "${log_dir}/check_${pkg_name}.txt"
     fi
     
+    # Test package if option flags set
     if [ ${disable_tests} = false ]
     then
         ./bin/test_installed_package.sh \
@@ -163,31 +192,77 @@ do
         echo "Test skipped due to missing -t flag" > "${log_dir}/test_${pkg_name}.txt"
     fi
 
-    echo
+    # Nicer display
+    echo | tee -a "${stdout_log}"
 
 done < "${pkg_csv}"
 
+
+##################################################
+#
+# Post-installation
+#
+##################################################
+
+
+# Print out the heading
 header_msg "Post-installation" | tee -a "${stdout_log}"
+
+# Save another list of the installed R packages
 ./bin/export_installed_packages.sh -2 -t "${target_dir}" | tee -a "${stdout_log}"
+
+# Track the timestamps
 echo "Saving end timestamp" | tee -a "${stdout_log}"
 echo "$(date)" > "${log_dir}/_end_timestamp.txt" | tee -a "${stdout_log}"
+
+# Nicer display
 echo | tee -a "${stdout_log}"
 
+
+##################################################
+#
+# Creating HTML log
+#
+##################################################
+
+
+# Print out the heading
 header_msg "Creating HTML log" | tee -a "${stdout_log}"
+
+# Examine all the logs and summarize the results into a single log file
 ./bin/summarize_logs.sh -i "${pkg_csv}" -t "${target_dir}" &> /dev/null
 echo "pkg_name,pkg_version,pkg_source,download_status,build_status,check_status,install_status,test_status" > ./summary.csv
 cat "${log_dir}"/_summary.csv >> ./summary.csv
+
+# Generate all HTML pages
 ./bin/generate_html.sh -f -t "${target_dir}" | tee -a "${stdout_log}"
+
+# Generate logs for the built-in RStudio Web Server Browser
 if [ ${create_rstudio_logs} = true ]
 then
     echo "Creating logs for viewing within RStudio's web browser"
     ./bin/create_rstudio_logs.sh -t "${target_dir}"
 fi
-echo
 
+# Nicer display
+echo | tee -a "${stdout_log}"
+
+
+##################################################
+#
+# Output
+#
+##################################################
+
+
+# Print out the heading
 header_msg "Output" | tee -a "${stdout_log}"
+
+# Print out the output files/dirs 
 echo "Installed library: ${lib_dir}"
 echo "Summary CSV: $(pwd)/summary.csv"
 echo "HTML log: ${html_dir}/index.html"
-echo
+
+# Nicer display
+echo | tee -a "${stdout_log}"
 
