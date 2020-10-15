@@ -7,6 +7,7 @@
 wait_between_packages=false
 disable_checks=true
 disable_tests=true
+create_rstudio_logs=false
 in_rlibs=$(Rscript -e "cat(paste(.libPaths(), collapse=':'))")
 in_rbinary="$(which R)"
 in_rscript="$(which Rscript)"
@@ -18,7 +19,7 @@ function usage {
     echo "Usage: $0 -i input.csv"
     echo "       $0 -i input.csv [-l ${in_rlibs}]"
     echo "       $0 -i input.csv [-b ${in_rbinary}] [-s ${in_rscript}]"
-    echo "       $0 -i input.csv [-c] [-t]"
+    echo "       $0 -i input.csv [-c] [-t] [-r]"
     echo "       $0 -i input.csv [-o ${target_dir}]"
     echo "Flags:"
     echo "       -i input csv containing release packages"
@@ -27,12 +28,13 @@ function usage {
     echo "       -s OPTIONAL path to Rscript executable"
     echo "       -c OPTIONAL enable and run checks (disabled by default)"
     echo "       -t OPTIONAL enable and run unit tests (disabled by default)"
+    echo "       -r OPTIONAL create RStudio web logs (disabled by default)"
     echo "       -o OPTIONAL target directory (default: current directory)"
     exit 1
 }
 
 # Argument flag handling
-while getopts "i:l:b:s:cto:h" opt
+while getopts "i:l:b:s:ctro:h" opt
 do
     case $opt in
         i) 
@@ -53,6 +55,9 @@ do
         t)
             disable_tests=false
             cmd="${cmd} -t" ;;
+        r)
+            create_rstudio_logs=true
+            cmd="${cmd} -r" ;;
         o) 
             mkdir -p "${OPTARG}"
             target_dir="$(readlink -f ${OPTARG})"
@@ -172,5 +177,17 @@ header_msg "Creating HTML log" | tee -a "${stdout_log}"
 ./bin/summarize_logs.sh -i "${pkg_csv}" -t "${target_dir}" &> /dev/null
 echo "pkg_name,pkg_version,pkg_source,download_status,build_status,check_status,install_status,test_status" > ./summary.csv
 cat "${log_dir}"/_summary.csv >> ./summary.csv
-./bin/generate_html.sh -t "${target_dir}" | tee -a "${stdout_log}"
+./bin/generate_html.sh -1 -t "${target_dir}" | tee -a "${stdout_log}"
+if [ ${create_rstudio_logs} = true ]
+then
+    echo "Creating logs for viewing within RStudio's web browser"
+    ./bin/create_rstudio_logs.sh -t "${target_dir}"
+fi
+echo
+
+header_msg "Output" | tee -a "${stdout_log}"
+echo "Installed library: ${lib_dir}"
+echo "Summary CSV: $(pwd)/summary.csv"
+echo "HTML log: ${html_dir}/index.html"
+echo
 
