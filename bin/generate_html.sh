@@ -3,27 +3,27 @@
 # Help message
 function usage {
     echo "Usage: $0"
-    echo "       $0 -1"
-    echo "       $0 -2"
-    echo "       $0 -3"
+    echo "       $0 -f"
+    echo "       $0 -b"
+    echo "       $0 -i"
     echo "Flags:"
-    echo "       -1 full install log"
-    echo "       -2 build artifactory log"
-    echo "       -3 install artifactory log"
+    echo "       -f full install log"
+    echo "       -b build artifactory log"
+    echo "       -i install artifactory log"
     echo "       -t OPTIONAL path to target directory"
     exit 1
 }
 
 # Default values
-log_type=1
+log_type="fullinstall"
 
 # Argument flag handling
-while getopts "123t:h" opt
+while getopts "fbit:h" opt
 do
     case $opt in
-        1) log_type=1 ;;
-        2) log_type=2 ;;
-        3) log_type=3 ;;
+        f) log_type="fullinstall" ;;
+        b) log_type="artifactorybuild" ;;
+        i) log_type="artifactoryinstall" ;;
         t) target_dir="${OPTARG}" ;;
         h) usage ;;
         *) usage ;;
@@ -34,13 +34,13 @@ done
 . ./bin/global_config.sh -t "${target_dir}"
 
 # Sidebar depends on type of log
-if [[ "${log_type}" -eq 1 ]]
+if [[ "${log_type}" == "fullinstall" ]]
 then
     sidebar_template="${html_template}/sidebar_fullinstall.html"
-elif [[ "${log_type}" -eq 2 ]]
+elif [[ "${log_type}" == "artifactorybuild" ]]
 then
     sidebar_template="${html_template}/sidebar_artifactorybuild.html"
-elif [[ "${log_type}" -eq 3 ]]
+elif [[ "${log_type}" == "artifactoryinstall" ]]
 then
     sidebar_template="${html_template}/sidebar_artifactoryinstall.html"
 fi
@@ -54,15 +54,15 @@ cp -R "${html_template}"/static/ "${html_dir}"
 cp "${sidebar_template}" "${html_template}"/sidebar.html
 
 echo "Generating home page"
-if [[ "${log_type}" -eq 1 ]]
+if [[ "${log_type}" == "fullinstall" ]]
 then
-    ./bin/html_generator/generate_home.sh -1 -t "${target_dir}"
-elif [[ "${log_type}" -eq 2 ]]
+    ./bin/html_generator/generate_home.sh -f -t "${target_dir}"
+elif [[ "${log_type}" == "artifactorybuild" ]]
 then
-    ./bin/html_generator/generate_home.sh -2 -t "${target_dir}"
-elif [[ "${log_type}" -eq 3 ]]
+    ./bin/html_generator/generate_home.sh -b -t "${target_dir}"
+elif [[ "${log_type}" == "artifactoryinstall" ]]
 then
-    ./bin/html_generator/generate_home.sh -3 -t "${target_dir}"
+    ./bin/html_generator/generate_home.sh -i -t "${target_dir}"
 fi
 
 echo "Generating system information page"
@@ -78,18 +78,18 @@ echo "Generating post-installation packages page"
 ./bin/html_generator/generate_postpackages.sh -t "${target_dir}"
 
 echo "Generating specific package pages"
-if [[ "${log_type}" -eq 1 ]]
+if [[ "${log_type}" == "fullinstall" ]]
 then
     ./bin/html_generator/generate_package_download.sh -t "${target_dir}"
     ./bin/html_generator/generate_package_buildcheckinstall.sh -t "${target_dir}"
     ./bin/html_generator/generate_package_install.sh -t "${target_dir}"
     ./bin/html_generator/generate_package_test.sh -t "${target_dir}"
-elif [[ "${log_type}" -eq 2 ]]
+elif [[ "${log_type}" == "artifactorybuild" ]]
 then
     ./bin/html_generator/generate_package_download.sh -t "${target_dir}"
     ./bin/html_generator/generate_package_buildcheckinstall.sh -t "${target_dir}"
     ./bin/html_generator/generate_package_install.sh -t "${target_dir}"
-elif [[ "${log_type}" -eq 3 ]]
+elif [[ "${log_type}" == "artifactoryinstall" ]]
 then
     ./bin/html_generator/generate_package_downloadartifact.sh -t "${target_dir}"
     ./bin/html_generator/generate_package_install.sh -t "${target_dir}"
@@ -97,19 +97,19 @@ then
 fi
 
 echo "Generating artifactory page"
-if [[ "${log_type}" -eq 2 ]] || [[ "${log_type}" -eq 3 ]]
+if [[ "${log_type}" == "artifactorybuild" ]] || [[ "${log_type}" == "artifactoryinstall" ]]
 then
     ./bin/html_generator/generate_artifactory.sh -t "${target_dir}"
 fi
 
 echo "Generating summary page"
-if [[ "${log_type}" -eq 1 ]]
+if [[ "${log_type}" == "fullinstall" ]]
 then
     ./bin/html_generator/generate_summary_fullinstall.sh -t "${target_dir}"
-elif [[ "${log_type}" -eq 2 ]]
+elif [[ "${log_type}" == "artifactorybuild" ]]
 then
     ./bin/html_generator/generate_summary_artifactorybuild.sh -t "${target_dir}"
-elif [[ "${log_type}" -eq 3 ]]
+elif [[ "${log_type}" == "artifactoryinstall" ]]
 then
     ./bin/html_generator/generate_summary_artifactoryinstall.sh -t "${target_dir}"
 fi
