@@ -1,0 +1,5 @@
+"pkg_name", "pkg_version", "pkg_url", "pkg_source","git_commit"
+"remotes","2.2.0","http://cran.fhcrc.org/src/contrib/remotes_2.2.0.tar.gz","build",""
+"htmltools","0.4.0","http://cran.fhcrc.org//src/contrib/Archive/htmltools/htmltools_0.4.0.tar.gz","build",""
+"plyr","1.8.6","http://cran.fhcrc.org/src/contrib/plyr_1.8.6.tar.gz","build",""
+"dplyr","0.8.5","http://cran.fhcrc.org//src/contrib/Archive/dplyr/dplyr_0.8.5.tar.gz","build",""

@@ -1,0 +1,75 @@
+
+            <h1>Artifactory Build</h1>
+
+            <h2>Description</h2>
+
+            <p>"Install and IV" is a series of BASH scripts that can be used to install R packages onto any system with R and verify the results of the installation commands in a multi-page HTML log. This HTLM log describes the "Artifactory Build" version of the scripts, which aims to accomplish the following tasks:</p>
+
+            <div class="log" style="height: auto; padding: 0.5em">
+                <ul style="line-height: 175%;">
+                    <li><strong>Specify</strong> which R packages should be included in the artifactory</li>
+                    <li><strong>Download</strong> specified R packages
+                        <ul style="font-size: smaller;">
+                            <li>Source type can be URLs to bundled build archives (tar.gz)</li>
+                            <li>Source type can be URLs to source code in archives (zip, tar.gz, tar.bz2, or rar)
+                                <ul>
+                                    <li>Archive source files are extracted</li>
+                                    <li>Extracted source directories are bundled into build tar.gz files</li>
+                                </ul>
+                            </li>
+                            <li>Source type can be git repo URLs with commit SHA
+                                <ul>
+                                    <li>Git repos are cloned</li>
+                                    <li>Commits are checked out according to the SHA hash</li>
+                                    <li>Source code are bundled into build tar.gz files</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Build</strong> and <strong>check</strong> every specified package build
+                        <ul style="font-size: smaller;">
+                            <li>Build: converts a package source directory into a single bundled tar.gz</li>
+                            <li>Check: performs checks on source packages using all known best practices</li>
+                        </ul>
+                    </li>
+                    <li><strong>Verify</strong> the results and status in an automatically-generated HTML log</li>
+                </ul>
+            </div>
+
+            <p class="space-below">These scripts currently only support GNU/Linux systems with GNU coreutils installed. Depending on the package input specifications, other system tools that may need to be available are "wget" and "git". The "testthat" R library has to be installed if unit testing is turned on when running the scripts.</p>
+
+            <h2>Example</h2>
+
+            <p>To run the artifactory build pipeline for downloading, building, and checking all packages into an artifactory, use the provided "artifactory_build.sh" script. This script takes an input CSV file containing the artifactory specifications/instructions and builds an artifactory. With the exception of the input CSV, all option flags are optional.</p>
+
+            <p>A full list of the options plus descriptions are shown when running "artifactory_install.sh" with the "-h" flag. The default help message is shown below.</p>
+ 
+            <div class="log" style="height: auto;">
+<pre>Usage: ./artifactory_build.sh -i input.csv
+       ./artifactory_build.sh -i input.csv [-l /usr/lib64/R/library]
+       ./artifactory_build.sh -i input.csv [-b /usr/bin/R] [-s /usr/bin/Rscript]
+       ./artifactory_build.sh -i input.csv [-c]
+       ./artifactory_build.sh -i input.csv [-o ./output]
+Flags:
+       -i input csv containing release packages
+       -l OPTIONAL libpaths to build on (separated by colon on GNU/Linux)
+       -b OPTIONAL path to R binary
+       -s OPTIONAL path to Rscript executable
+       -c OPTIONAL enable and run checks (disabled by default)
+       -o OPTIONAL target directory (default: current directory)</pre>
+            </div>
+
+            <p>Following the guideline provided in the help message above, an artifactory can be built with the following command:</p>
+            
+            <div class="log" style="height: auto;">
+<pre>./artifactory_build.sh \
+    -i ./examples/NEST_363_release_subset.csv \
+    -l /usr/lib64/R/library
+    -b /usr/bin/R \
+    -s /usr/bin/Rscript \
+    -c \
+    -o ./example_test</pre>
+            </div>
+		
+            <p>The above command will build an artifactory as defined in the input CSV and output a new artifactory CSV. Options specify for the pipeline to include only the libraries in /usr/lib64/R/library, use the specified R and Rscript executables, run checks on all packages, and ultimately create an artifactory called ./example_test/build relative to the current path.</p> 
+
